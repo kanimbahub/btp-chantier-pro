@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BTP Chantier Pro</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+<div id="app">Chargement...</div>
+<script>
+const { createClient } = supabase
+
+const db = createClient(
+  'https://aktwkafyzrujqgvojolx.supabase.co',
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFrdHdrYWZ5enJ1anFndm9qb2x4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM2OTY2MDAsImV4cCI6MjA4OTI3MjYwMH0.OLBuhijTx3lRK5VofjxmoplGgQ1UsxbgIs3igj2hGpM'
+)
+
+async function init() {
+  const { data: chantiers } = await db.from('chantiers').select('*')
+  const { data: ouvriers }  = await db.from('ouvriers').select('*')
+  const { data: materiaux } = await db.from('materiaux').select('*')
+  const { data: imprevus }  = await db.from('imprevus').select('*')
+
+  document.getElementById('app').innerHTML = `
+    <h2>✅ Connexion Supabase OK</h2>
+    <p>🏗️  Chantiers : ${chantiers.length}</p>
+    <p>👷 Ouvriers  : ${ouvriers.length}</p>
+    <p>📦 Matériaux : ${materiaux.length}</p>
+    <p>⚠️  Imprévus  : ${imprevus.length}</p>
+  `
+}
+
+init()
+</script>
+</body>
+</html>

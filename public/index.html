@@ -6,26 +6,9 @@
 <title>BTP Chantier Pro</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
-[data-theme="dark"] {
-  --bg:#0e1510;--bg2:#141e15;--bg3:#1a2a1c;--bg4:#223024;
-  --border:rgba(255,255,255,0.07);--border2:rgba(255,255,255,0.13);
-  --text:#e4ece5;--text2:#7d9e80;--text3:#4a6b4d;
-  --shadow:0 2px 12px rgba(0,0,0,0.4);
-}
-[data-theme="light"] {
-  --bg:#f4f7f4;--bg2:#ffffff;--bg3:#edf2ed;--bg4:#e0ebe0;
-  --border:rgba(0,0,0,0.07);--border2:rgba(0,0,0,0.13);
-  --text:#1a2b1c;--text2:#4a6e4d;--text3:#8aaa8d;
-  --shadow:0 2px 12px rgba(0,0,0,0.08);
-}
-:root {
-  --green:#3dba6a;--green-l:#eaf7ef;--green-d:#0f2e18;
-  --amber:#f5a623;--amber-l:#fef6e7;--amber-d:#301e04;
-  --red:#e8524a;--red-l:#fdecea;--red-d:#2e0e0c;
-  --blue:#4a9eed;--blue-l:#e8f3fc;--blue-d:#0b2040;
-  --font:'DM Sans',sans-serif;--mono:'DM Mono',monospace;
-  --radius:10px;--radius-lg:14px;
-}
+[data-theme="dark"]{--bg:#0e1510;--bg2:#141e15;--bg3:#1a2a1c;--bg4:#223024;--border:rgba(255,255,255,0.07);--border2:rgba(255,255,255,0.13);--text:#e4ece5;--text2:#7d9e80;--text3:#4a6b4d;--shadow:0 2px 12px rgba(0,0,0,0.4);}
+[data-theme="light"]{--bg:#f4f7f4;--bg2:#ffffff;--bg3:#edf2ed;--bg4:#e0ebe0;--border:rgba(0,0,0,0.07);--border2:rgba(0,0,0,0.13);--text:#1a2b1c;--text2:#4a6e4d;--text3:#8aaa8d;--shadow:0 2px 12px rgba(0,0,0,0.08);}
+:root{--green:#3dba6a;--green-l:#eaf7ef;--green-d:#0f2e18;--amber:#f5a623;--amber-l:#fef6e7;--amber-d:#301e04;--red:#e8524a;--red-l:#fdecea;--red-d:#2e0e0c;--blue:#4a9eed;--blue-l:#e8f3fc;--blue-d:#0b2040;--font:'DM Sans',sans-serif;--mono:'DM Mono',monospace;--radius:10px;--radius-lg:14px;}
 *{box-sizing:border-box;margin:0;padding:0;}
 body{background:var(--bg);color:var(--text);font-family:var(--font);font-size:14px;min-height:100vh;transition:background 0.25s,color 0.25s;}
 .sidebar{position:fixed;top:0;left:0;bottom:0;width:220px;background:var(--bg2);border-right:1px solid var(--border);display:flex;flex-direction:column;z-index:200;}
@@ -93,25 +76,38 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);font-size:14
 .stock-icon{width:38px;height:38px;border-radius:var(--radius);background:var(--bg3);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
 .alert-bar{background:var(--red-d);border:1px solid rgba(232,82,74,0.3);border-radius:var(--radius);padding:11px 16px;margin-bottom:16px;display:flex;align-items:center;gap:10px;}
 .toast{position:fixed;bottom:20px;right:20px;z-index:999;background:var(--bg2);border:1px solid var(--green);color:var(--green);padding:10px 16px;border-radius:10px;font-size:13px;}
-.loading{display:flex;align-items:center;justify-content:center;height:200px;color:var(--text2);font-size:14px;}
+.loading{display:flex;align-items:center;justify-content:center;height:80px;color:var(--text2);font-size:13px;}
+.modal-overlay{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.55);z-index:500;align-items:center;justify-content:center;}
+.modal-box{background:var(--bg2);border-radius:var(--radius-lg);padding:24px;width:480px;border:1px solid var(--border2);max-height:90vh;overflow-y:auto;}
+.modal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;}
+.modal-title{font-size:15px;font-weight:600;}
+.modal-close{background:none;border:none;color:var(--text2);font-size:20px;cursor:pointer;line-height:1;}
+.form-group{margin-bottom:10px;}
+.form-group label{font-size:11px;color:var(--text2);display:block;margin-bottom:4px;}
+.form-input{width:100%;background:var(--bg3);border:1px solid var(--border2);color:var(--text);padding:8px 10px;border-radius:8px;font-size:13px;outline:none;transition:border-color 0.2s;}
+.form-input:focus{border-color:var(--green);}
+.form-grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.modal-footer{display:flex;gap:10px;margin-top:16px;justify-content:flex-end;}
 </style>
 </head>
 <body>
+
 <div class="sidebar">
   <div class="sidebar-logo">
     <div class="logo-icon">🏗</div>
     <div class="logo-text">BTP Chantier Pro<span>Afrique de l'Ouest</span></div>
   </div>
-  <div style="padding:8px 10px 4px;">
+  <div style="padding:8px 10px 0;">
     <select class="chantier-sel" id="chantier-sel" onchange="changeChantier(this.value)">
-      <option value="">Chargement...</option>
+      <option>Chargement...</option>
     </select>
+    <button class="btn btn-green" style="width:100%;margin-bottom:8px;font-size:12px;padding:7px;" onclick="openModal('modal-chantier')">+ Nouveau chantier</button>
   </div>
-  <div style="padding:10px 10px 4px;font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:0.8px;">Menu</div>
+  <div style="padding:6px 10px 4px;font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:0.8px;">Menu</div>
   <div class="nav-item active" onclick="goPage('dashboard',this)">📊 Tableau de bord</div>
   <div class="nav-item" onclick="goPage('ouvriers',this)">👷 Ouvriers & Paie</div>
   <div class="nav-item" onclick="goPage('stock',this)">📦 Stock matériaux</div>
-  <div class="nav-item" onclick="goPage('budget',this)">💰 Budget & Imprévus<span class="nav-badge">!</span></div>
+  <div class="nav-item" onclick="goPage('budget',this)">💰 Budget & Imprévus <span class="nav-badge">!</span></div>
   <div class="sidebar-bottom">
     <button class="theme-toggle" onclick="toggleTheme()">
       <span id="theme-label">🌙 Mode sombre</span>
@@ -128,14 +124,11 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);font-size:14
       <div style="width:32px;height:32px;border-radius:50%;background:var(--green);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;color:#fff;">AB</div>
     </div>
   </div>
-
   <div class="content">
 
     <!-- DASHBOARD -->
     <div class="page active" id="page-dashboard">
-      <div class="stats-grid" id="dash-stats">
-        <div class="loading">Chargement...</div>
-      </div>
+      <div class="stats-grid" id="dash-stats"><div class="loading">Chargement...</div></div>
       <div class="grid2">
         <div class="card">
           <div class="card-head"><div class="card-title">Chantiers</div></div>
@@ -155,8 +148,9 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);font-size:14
         <div class="card-head">
           <div class="card-title">Présence — <span id="ouv-date"></span></div>
           <div style="display:flex;gap:8px;">
+            <button class="btn btn-outline btn-sm" onclick="openModal('modal-ouvrier')">+ Ouvrier</button>
             <button class="btn btn-outline btn-sm" onclick="allPresent()">Tous présents</button>
-            <button class="btn btn-green btn-sm" onclick="savePresences()">Valider</button>
+            <button class="btn btn-green btn-sm" onclick="savePresences()">Valider ✓</button>
           </div>
         </div>
         <div class="card-body" style="padding:8px 18px;" id="ouvriers-list"><div class="loading">...</div></div>
@@ -176,12 +170,17 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);font-size:14
       <div class="card">
         <div class="card-head">
           <div class="card-title">Matériaux</div>
-          <button class="btn btn-green btn-sm" onclick="showToast('📦 Fonctionnalité bientôt disponible')">+ Entrée stock</button>
+          <div style="display:flex;gap:8px;">
+            <button class="btn btn-outline btn-sm" onclick="openModal('modal-materiau')">+ Matériau</button>
+            <button class="btn btn-green btn-sm" onclick="openModal('modal-stock')">Entrée / Sortie</button>
+          </div>
         </div>
         <div class="card-body" style="padding:8px 18px;" id="stock-list"><div class="loading">...</div></div>
       </div>
       <div class="card">
-        <div class="card-head"><div class="card-title">Bons de commande</div></div>
+        <div class="card-head"><div class="card-title">Bons de commande</div>
+          <button class="btn btn-green btn-sm" onclick="openModal('modal-bon')">+ Bon commande</button>
+        </div>
         <table class="tbl">
           <thead><tr><th>Fournisseur</th><th>Description</th><th>Montant</th><th>Statut</th></tr></thead>
           <tbody id="bons-tbody"></tbody>
@@ -210,25 +209,136 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);font-size:14
       <div class="card">
         <div class="card-head"><div class="card-title">Enregistrer un imprévu</div></div>
         <div class="card-body">
-          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:10px;">
-            <div><label style="font-size:11px;color:var(--text2);display:block;margin-bottom:4px;">Description</label>
-              <input type="text" id="imp-desc" placeholder="Ex: Fondations renforcées" style="width:100%;background:var(--bg3);border:1px solid var(--border2);color:var(--text);padding:8px 10px;border-radius:8px;font-size:13px;outline:none;"></div>
-            <div><label style="font-size:11px;color:var(--text2);display:block;margin-bottom:4px;">Montant (GNF)</label>
-              <input type="number" id="imp-montant" placeholder="15000000" style="width:100%;background:var(--bg3);border:1px solid var(--border2);color:var(--text);padding:8px 10px;border-radius:8px;font-size:13px;outline:none;"></div>
-            <div><label style="font-size:11px;color:var(--text2);display:block;margin-bottom:4px;">Priorité</label>
-              <select id="imp-priorite" style="width:100%;background:var(--bg3);border:1px solid var(--border2);color:var(--text);padding:8px 10px;border-radius:8px;font-size:13px;outline:none;">
-                <option value="haute">Haute</option>
-                <option value="moyenne" selected>Moyenne</option>
-                <option value="faible">Faible</option>
-              </select></div>
+          <div class="form-grid2" style="margin-bottom:10px;">
+            <div class="form-group"><label>Description *</label><input type="text" id="imp-desc" class="form-input" placeholder="Ex: Fondations renforcées"></div>
+            <div class="form-group"><label>Montant (GNF) *</label><input type="number" id="imp-montant" class="form-input" placeholder="15000000"></div>
           </div>
-          <button class="btn btn-green" onclick="addImprev()">Enregistrer & recalculer →</button>
+          <div class="form-group" style="width:200px;">
+            <label>Priorité</label>
+            <select id="imp-priorite" class="form-input">
+              <option value="haute">Haute</option>
+              <option value="moyenne" selected>Moyenne</option>
+              <option value="faible">Faible</option>
+            </select>
+          </div>
+          <button class="btn btn-green" style="margin-top:10px;" onclick="addImprev()">Enregistrer & recalculer →</button>
         </div>
       </div>
     </div>
 
   </div>
 </div>
+
+<!-- MODAL NOUVEAU CHANTIER -->
+<div class="modal-overlay" id="modal-chantier">
+  <div class="modal-box">
+    <div class="modal-head"><div class="modal-title">🏗 Nouveau chantier</div><button class="modal-close" onclick="closeModal('modal-chantier')">✕</button></div>
+    <div class="form-group"><label>Nom du chantier *</label><input type="text" id="ch-nom" class="form-input" placeholder="Ex: Villa Corniche"></div>
+    <div class="form-group"><label>Adresse</label><input type="text" id="ch-adresse" class="form-input" placeholder="Ex: Conakry, Ratoma"></div>
+    <div class="form-grid2">
+      <div class="form-group"><label>Date début</label><input type="date" id="ch-debut" class="form-input"></div>
+      <div class="form-group"><label>Date fin prévue</label><input type="date" id="ch-fin" class="form-input"></div>
+    </div>
+    <div class="form-group"><label>Budget initial (GNF) *</label><input type="number" id="ch-budget" class="form-input" placeholder="Ex: 450000000"></div>
+    <div class="form-group"><label>Statut</label>
+      <select id="ch-statut" class="form-input">
+        <option value="planifie">Planifié</option>
+        <option value="encours">En cours</option>
+      </select>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('modal-chantier')">Annuler</button>
+      <button class="btn btn-green" onclick="saveChantier()">Créer →</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL NOUVEL OUVRIER -->
+<div class="modal-overlay" id="modal-ouvrier">
+  <div class="modal-box">
+    <div class="modal-head"><div class="modal-title">👷 Nouvel ouvrier</div><button class="modal-close" onclick="closeModal('modal-ouvrier')">✕</button></div>
+    <div class="form-grid2">
+      <div class="form-group"><label>Nom *</label><input type="text" id="ov-nom" class="form-input" placeholder="Konaté"></div>
+      <div class="form-group"><label>Prénom</label><input type="text" id="ov-prenom" class="form-input" placeholder="Mamadou"></div>
+    </div>
+    <div class="form-group"><label>Rôle *</label>
+      <select id="ov-role" class="form-input">
+        <option>Maçon</option><option>Chef maçon</option><option>Ferrailleur</option>
+        <option>Électricien</option><option>Plombier</option><option>Manœuvre</option>
+        <option>Charpentier</option><option>Peintre</option><option>Autre</option>
+      </select>
+    </div>
+    <div class="form-group"><label>Téléphone</label><input type="text" id="ov-tel" class="form-input" placeholder="+224 620 000 000"></div>
+    <div class="form-group"><label>Taux journalier (GNF) *</label><input type="number" id="ov-taux" class="form-input" placeholder="25000"></div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('modal-ouvrier')">Annuler</button>
+      <button class="btn btn-green" onclick="saveOuvrier()">Ajouter →</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL NOUVEAU MATERIAU -->
+<div class="modal-overlay" id="modal-materiau">
+  <div class="modal-box">
+    <div class="modal-head"><div class="modal-title">📦 Nouveau matériau</div><button class="modal-close" onclick="closeModal('modal-materiau')">✕</button></div>
+    <div class="form-group"><label>Nom du matériau *</label><input type="text" id="mat-nom" class="form-input" placeholder="Ex: Ciment"></div>
+    <div class="form-grid2">
+      <div class="form-group"><label>Unité</label><input type="text" id="mat-unite" class="form-input" placeholder="sacs, m³, tonnes..."></div>
+      <div class="form-group"><label>Stock initial</label><input type="number" id="mat-qte" class="form-input" placeholder="0"></div>
+    </div>
+    <div class="form-grid2">
+      <div class="form-group"><label>Stock maximum</label><input type="number" id="mat-max" class="form-input" placeholder="200"></div>
+      <div class="form-group"><label>Seuil alerte</label><input type="number" id="mat-seuil" class="form-input" placeholder="50"></div>
+    </div>
+    <div class="form-group"><label>Prix unitaire (GNF)</label><input type="number" id="mat-prix" class="form-input" placeholder="100000"></div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('modal-materiau')">Annuler</button>
+      <button class="btn btn-green" onclick="saveMateriau()">Ajouter →</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL ENTREE/SORTIE STOCK -->
+<div class="modal-overlay" id="modal-stock">
+  <div class="modal-box">
+    <div class="modal-head"><div class="modal-title">📦 Entrée / Sortie stock</div><button class="modal-close" onclick="closeModal('modal-stock')">✕</button></div>
+    <div class="form-group"><label>Matériau *</label><select id="st-materiau" class="form-input"></select></div>
+    <div class="form-group"><label>Type</label>
+      <select id="st-type" class="form-input">
+        <option value="entree">Entrée (livraison)</option>
+        <option value="sortie">Sortie (utilisation)</option>
+      </select>
+    </div>
+    <div class="form-group"><label>Quantité *</label><input type="number" id="st-quantite" class="form-input" placeholder="50"></div>
+    <div class="form-group"><label>Motif</label><input type="text" id="st-motif" class="form-input" placeholder="Ex: Livraison fournisseur"></div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('modal-stock')">Annuler</button>
+      <button class="btn btn-green" onclick="saveMouvement()">Enregistrer →</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL BON DE COMMANDE -->
+<div class="modal-overlay" id="modal-bon">
+  <div class="modal-box">
+    <div class="modal-head"><div class="modal-title">📋 Bon de commande</div><button class="modal-close" onclick="closeModal('modal-bon')">✕</button></div>
+    <div class="form-group"><label>Fournisseur *</label><input type="text" id="bon-fournisseur" class="form-input" placeholder="Ex: SOGUIMAT Conakry"></div>
+    <div class="form-group"><label>Description</label><input type="text" id="bon-desc" class="form-input" placeholder="Ex: Fer à béton 2T"></div>
+    <div class="form-group"><label>Montant (GNF)</label><input type="number" id="bon-montant" class="form-input" placeholder="28500000"></div>
+    <div class="form-group"><label>Statut</label>
+      <select id="bon-statut" class="form-input">
+        <option value="attente">En attente</option>
+        <option value="urgent">Urgent</option>
+        <option value="livre">Livré</option>
+      </select>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('modal-bon')">Annuler</button>
+      <button class="btn btn-green" onclick="saveBon()">Créer →</button>
+    </div>
+  </div>
+</div>
+
 <script>
 const { createClient } = supabase
 const db = createClient(
@@ -239,182 +349,155 @@ const db = createClient(
 let currentChantier = null
 let ouvriersData = []
 
-function fmt(n) {
-  if(n>=1e9) return (n/1e9).toFixed(1)+'Md'
-  if(n>=1e6) return (n/1e6).toFixed(1)+'M'
-  return n?.toLocaleString('fr-FR') || '0'
+function fmt(n){if(!n)return '0';if(n>=1e9)return(n/1e9).toFixed(1)+'Md';if(n>=1e6)return(n/1e6).toFixed(1)+'M';return n.toLocaleString('fr-FR')}
+
+function showToast(msg){
+  const t=document.createElement('div');t.className='toast';t.textContent=msg;
+  document.body.appendChild(t);setTimeout(()=>t.remove(),3000)
 }
 
-function showToast(msg) {
-  const t = document.createElement('div')
-  t.className = 'toast'
-  t.textContent = msg
-  document.body.appendChild(t)
-  setTimeout(() => t.remove(), 3000)
+function toggleTheme(){
+  const h=document.documentElement;const d=h.dataset.theme==='dark'
+  h.dataset.theme=d?'light':'dark'
+  document.getElementById('theme-label').textContent=d?'☀️ Mode clair':'🌙 Mode sombre'
 }
 
-function toggleTheme() {
-  const html = document.documentElement
-  const isDark = html.dataset.theme === 'dark'
-  html.dataset.theme = isDark ? 'light' : 'dark'
-  document.getElementById('theme-label').textContent = isDark ? '☀️ Mode clair' : '🌙 Mode sombre'
+function goPage(id,el){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'))
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'))
+  document.getElementById('page-'+id).classList.add('active');el.classList.add('active')
+  const t={dashboard:'Tableau de bord',ouvriers:'Ouvriers & Paie',stock:'Stock matériaux',budget:'Budget & Imprévus'}
+  document.getElementById('page-title').textContent=t[id]
 }
 
-function goPage(id, el) {
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'))
-  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'))
-  document.getElementById('page-' + id).classList.add('active')
-  el.classList.add('active')
-  const titles = { dashboard:'Tableau de bord', ouvriers:'Ouvriers & Paie', stock:'Stock matériaux', budget:'Budget & Imprévus' }
-  document.getElementById('page-title').textContent = titles[id]
+function openModal(id){
+  document.getElementById(id).style.display='flex'
+  if(id==='modal-stock')loadMateriauxSelect()
+}
+function closeModal(id){document.getElementById(id).style.display='none'}
+
+async function loadChantiers(){
+  const{data}=await db.from('chantiers').select('*')
+  const sel=document.getElementById('chantier-sel')
+  sel.innerHTML=data.map(c=>`<option value="${c.id}">${c.nom}</option>`).join('')
+  if(data.length>0){currentChantier=data[0];loadAll()}
 }
 
-async function loadChantiers() {
-  const { data } = await db.from('chantiers').select('*')
-  const sel = document.getElementById('chantier-sel')
-  sel.innerHTML = data.map(c => `<option value="${c.id}">${c.nom}</option>`).join('')
-  if(data.length > 0) {
-    currentChantier = data[0]
-    loadAll()
-  }
+async function changeChantier(id){
+  const{data}=await db.from('chantiers').select('*').eq('id',id).single()
+  currentChantier=data;loadAll()
 }
 
-async function changeChantier(id) {
-  const { data } = await db.from('chantiers').select('*').eq('id', id).single()
-  currentChantier = data
-  loadAll()
-}
+function loadAll(){loadDashboard();loadOuvriers();loadStock();loadBudget()}
 
-function loadAll() {
-  loadDashboard()
-  loadOuvriers()
-  loadStock()
-  loadBudget()
-}
+async function loadDashboard(){
+  const{data:chantiers}=await db.from('chantiers').select('*')
+  const{data:ouvriers}=await db.from('ouvriers').select('*').eq('chantier_id',currentChantier.id)
+  const{data:materiaux}=await db.from('materiaux').select('*').eq('chantier_id',currentChantier.id)
+  const{data:imprevus}=await db.from('imprevus').select('*').eq('chantier_id',currentChantier.id)
+  const alertes=materiaux.filter(m=>m.quantite_stock<=m.seuil_alerte)
+  const totalImp=imprevus.reduce((s,i)=>s+Number(i.montant),0)
 
-async function loadDashboard() {
-  const { data: chantiers } = await db.from('chantiers').select('*')
-  const { data: ouvriers }  = await db.from('ouvriers').select('*').eq('chantier_id', currentChantier.id)
-  const { data: materiaux } = await db.from('materiaux').select('*').eq('chantier_id', currentChantier.id)
-  const { data: imprevus }  = await db.from('imprevus').select('*').eq('chantier_id', currentChantier.id)
-
-  const alertes = materiaux.filter(m => m.quantite_stock <= m.seuil_alerte)
-  const totalImprevus = imprevus.reduce((s,i) => s + Number(i.montant), 0)
-  const budgetRevise = Number(currentChantier.budget_initial) + totalImprevus
-
-  document.getElementById('dash-stats').innerHTML = `
-    <div class="stat-card"><div class="stat-label">Chantiers actifs</div><div class="stat-value c-blue">${chantiers.length}</div><div class="stat-sub">total</div></div>
+  document.getElementById('dash-stats').innerHTML=`
+    <div class="stat-card"><div class="stat-label">Chantiers</div><div class="stat-value c-blue">${chantiers.length}</div><div class="stat-sub">total</div></div>
     <div class="stat-card"><div class="stat-label">Ouvriers</div><div class="stat-value c-green">${ouvriers.length}</div><div class="stat-sub">${currentChantier.nom}</div></div>
     <div class="stat-card"><div class="stat-label">Budget initial</div><div class="stat-value c-amber">${fmt(currentChantier.budget_initial)}</div><div class="stat-sub">GNF</div></div>
-    <div class="stat-card"><div class="stat-label">Alertes stock</div><div class="stat-value c-red">${alertes.length}</div><div class="stat-sub">ruptures imminentes</div></div>
-  `
+    <div class="stat-card"><div class="stat-label">Alertes stock</div><div class="stat-value c-red">${alertes.length}</div><div class="stat-sub">ruptures imminentes</div></div>`
 
-  document.getElementById('dash-chantiers').innerHTML = chantiers.map(c => {
-    const col = c.statut==='encours'?'var(--green)':c.statut==='retard'?'var(--amber)':'var(--text3)'
-    const badge = c.statut==='encours'?'bg-green':c.statut==='retard'?'bg-amber':'bg-blue'
-    const lbl = c.statut==='encours'?'En cours':c.statut==='retard'?'Retard':'Planifié'
-    return `<div style="margin-bottom:12px;">
+  document.getElementById('dash-chantiers').innerHTML=chantiers.map(c=>{
+    const col=c.statut==='encours'?'var(--green)':c.statut==='retard'?'var(--amber)':'var(--text3)'
+    const badge=c.statut==='encours'?'bg-green':c.statut==='retard'?'bg-amber':'bg-blue'
+    const lbl=c.statut==='encours'?'En cours':c.statut==='retard'?'Retard':'Planifié'
+    return`<div style="margin-bottom:12px;">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:5px;">
         <span style="font-size:13px;font-weight:500">${c.nom}</span>
         <span class="badge ${badge}">${lbl}</span>
       </div>
       <div class="pbar-bg"><div class="pbar-fill" style="width:${c.avancement}%;background:${col};"></div></div>
       <div style="font-size:11px;color:var(--text2);margin-top:3px">${c.avancement}% — ${fmt(c.budget_initial)} GNF</div>
-    </div>`
-  }).join('')
+    </div>`}).join('')
 
-  document.getElementById('dash-alertes').innerHTML = alertes.length === 0
-    ? '<div style="color:var(--text2);font-size:13px;text-align:center;padding:20px">✅ Aucune alerte</div>'
-    : alertes.map(m => `
-      <div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--border);">
-        <span style="font-size:16px">⚠️</span>
-        <div style="flex:1">
-          <div style="font-size:13px;font-weight:500">${m.nom}</div>
-          <div style="font-size:11px;color:var(--text2)">${m.quantite_stock} ${m.unite} restants</div>
-        </div>
-        <span class="badge bg-red">Urgent</span>
-      </div>`).join('')
+  document.getElementById('dash-alertes').innerHTML=alertes.length===0
+    ?'<div style="color:var(--text2);font-size:13px;text-align:center;padding:20px">✅ Aucune alerte</div>'
+    :alertes.map(m=>`<div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--border);">
+      <span>⚠️</span>
+      <div style="flex:1"><div style="font-size:13px;font-weight:500">${m.nom}</div>
+      <div style="font-size:11px;color:var(--text2)">${m.quantite_stock} ${m.unite} restants</div></div>
+      <span class="badge bg-red">Urgent</span></div>`).join('')
 }
 
-async function loadOuvriers() {
-  const { data } = await db.from('ouvriers').select('*').eq('chantier_id', currentChantier.id)
-  const { data: presences } = await db.from('presences').select('*').eq('chantier_id', currentChantier.id).eq('date', new Date().toISOString().split('T')[0])
-  ouvriersData = data.map(o => ({ ...o, present: presences?.some(p => p.ouvrier_id === o.id && p.present) ?? true }))
+async function loadOuvriers(){
+  const{data}=await db.from('ouvriers').select('*').eq('chantier_id',currentChantier.id)
+  const today=new Date().toISOString().split('T')[0]
+  const{data:presences}=await db.from('presences').select('*').eq('chantier_id',currentChantier.id).eq('date',today)
+  ouvriersData=data.map(o=>({...o,present:presences?.some(p=>p.ouvrier_id===o.id&&p.present)??true}))
+  const presents=ouvriersData.filter(o=>o.present).length
+  const paie=ouvriersData.filter(o=>o.present).reduce((s,o)=>s+Number(o.taux_journalier),0)
 
-  const presents = ouvriersData.filter(o => o.present).length
-  const paie = ouvriersData.filter(o => o.present).reduce((s,o) => s + Number(o.taux_journalier), 0)
-
-  document.getElementById('ouv-stats').innerHTML = `
+  document.getElementById('ouv-stats').innerHTML=`
     <div class="stat-card"><div class="stat-label">Présents</div><div class="stat-value c-green">${presents}</div><div class="stat-sub">sur ${data.length}</div></div>
-    <div class="stat-card"><div class="stat-label">Absents</div><div class="stat-value c-red">${data.length - presents}</div><div class="stat-sub">aujourd'hui</div></div>
+    <div class="stat-card"><div class="stat-label">Absents</div><div class="stat-value c-red">${data.length-presents}</div><div class="stat-sub">aujourd'hui</div></div>
     <div class="stat-card"><div class="stat-label">Paie du jour</div><div class="stat-value c-green">${fmt(paie)}</div><div class="stat-sub">GNF</div></div>
-    <div class="stat-card"><div class="stat-label">Total ouvriers</div><div class="stat-value c-blue">${data.length}</div><div class="stat-sub">enregistrés</div></div>
-  `
+    <div class="stat-card"><div class="stat-label">Total ouvriers</div><div class="stat-value c-blue">${data.length}</div><div class="stat-sub">enregistrés</div></div>`
 
-  document.getElementById('ouvriers-list').innerHTML = ouvriersData.map((o,i) => `
+  document.getElementById('ouvriers-list').innerHTML=ouvriersData.map((o,i)=>`
     <div class="ouvrier-row">
       <div class="avatar">${o.nom[0]}${o.prenom?.[0]||''}</div>
       <div style="flex:1">
-        <div style="font-size:13px;font-weight:500">${o.prenom} ${o.nom}</div>
+        <div style="font-size:13px;font-weight:500">${o.prenom||''} ${o.nom}</div>
         <div style="font-size:11px;color:var(--text2)">${o.role} · ${fmt(o.taux_journalier)} GNF/j</div>
       </div>
       <button class="presence-btn ${o.present?'present':'absent'}" onclick="togglePresence(${i},this)">${o.present?'✓':'✗'}</button>
     </div>`).join('')
 
-  document.getElementById('ouv-date').textContent = new Date().toLocaleDateString('fr-FR')
-
-  document.getElementById('paie-tbody').innerHTML = ouvriersData.map(o => `
+  document.getElementById('ouv-date').textContent=new Date().toLocaleDateString('fr-FR')
+  document.getElementById('paie-tbody').innerHTML=ouvriersData.map(o=>`
     <tr>
-      <td><span style="font-weight:500">${o.prenom} ${o.nom}</span></td>
+      <td><span style="font-weight:500">${o.prenom||''} ${o.nom}</span></td>
       <td style="color:var(--text2)">${o.role}</td>
       <td style="font-family:var(--mono)">${fmt(o.taux_journalier)} GNF</td>
       <td><span class="badge ${o.present?'bg-green':'bg-red'}">${o.present?'Présent':'Absent'}</span></td>
     </tr>`).join('')
 }
 
-function togglePresence(i, btn) {
-  ouvriersData[i].present = !ouvriersData[i].present
-  btn.classList.toggle('present', ouvriersData[i].present)
-  btn.classList.toggle('absent', !ouvriersData[i].present)
-  btn.textContent = ouvriersData[i].present ? '✓' : '✗'
+function togglePresence(i,btn){
+  ouvriersData[i].present=!ouvriersData[i].present
+  btn.classList.toggle('present',ouvriersData[i].present)
+  btn.classList.toggle('absent',!ouvriersData[i].present)
+  btn.textContent=ouvriersData[i].present?'✓':'✗'
   loadOuvriers()
 }
 
-function allPresent() {
-  ouvriersData.forEach(o => o.present = true)
-  loadOuvriers()
-}
+function allPresent(){ouvriersData.forEach(o=>o.present=true);loadOuvriers()}
 
-async function savePresences() {
-  const today = new Date().toISOString().split('T')[0]
-  for(const o of ouvriersData) {
-    await db.from('presences').upsert({ ouvrier_id: o.id, chantier_id: currentChantier.id, date: today, present: o.present }, { onConflict: 'ouvrier_id,date' })
+async function savePresences(){
+  const today=new Date().toISOString().split('T')[0]
+  for(const o of ouvriersData){
+    await db.from('presences').upsert({ouvrier_id:o.id,chantier_id:currentChantier.id,date:today,present:o.present},{onConflict:'ouvrier_id,date'})
   }
-  showToast('✅ Présences enregistrées dans la base de données !')
+  showToast('✅ Présences enregistrées !')
 }
 
-async function loadStock() {
-  const { data } = await db.from('materiaux').select('*').eq('chantier_id', currentChantier.id)
-  const { data: bons } = await db.from('bons_commande').select('*').eq('chantier_id', currentChantier.id)
+async function loadStock(){
+  const{data}=await db.from('materiaux').select('*').eq('chantier_id',currentChantier.id)
+  const{data:bons}=await db.from('bons_commande').select('*').eq('chantier_id',currentChantier.id)
+  const urgent=data.filter(m=>m.quantite_stock===0).length
+  const faible=data.filter(m=>m.quantite_stock>0&&m.quantite_stock<=m.seuil_alerte).length
+  const valeur=data.reduce((s,m)=>s+Number(m.quantite_stock)*Number(m.prix_unitaire),0)
 
-  const urgent = data.filter(m => m.quantite_stock === 0).length
-  const faible = data.filter(m => m.quantite_stock > 0 && m.quantite_stock <= m.seuil_alerte).length
-  const valeur = data.reduce((s,m) => s + Number(m.quantite_stock) * Number(m.prix_unitaire), 0)
-
-  document.getElementById('stock-stats').innerHTML = `
-    <div class="stat-card"><div class="stat-label">Références</div><div class="stat-value c-blue">${data.length}</div><div class="stat-sub">matériaux suivis</div></div>
-    <div class="stat-card"><div class="stat-label">En rupture</div><div class="stat-value c-red">${urgent}</div><div class="stat-sub">commander urgent</div></div>
+  document.getElementById('stock-stats').innerHTML=`
+    <div class="stat-card"><div class="stat-label">Références</div><div class="stat-value c-blue">${data.length}</div><div class="stat-sub">matériaux</div></div>
+    <div class="stat-card"><div class="stat-label">En rupture</div><div class="stat-value c-red">${urgent}</div><div class="stat-sub">urgent</div></div>
     <div class="stat-card"><div class="stat-label">Stock faible</div><div class="stat-value c-amber">${faible}</div><div class="stat-sub">à surveiller</div></div>
-    <div class="stat-card"><div class="stat-label">Valeur stock</div><div class="stat-value c-green">${fmt(valeur)}</div><div class="stat-sub">GNF total</div></div>
-  `
+    <div class="stat-card"><div class="stat-label">Valeur stock</div><div class="stat-value c-green">${fmt(valeur)}</div><div class="stat-sub">GNF</div></div>`
 
-  document.getElementById('stock-list').innerHTML = data.map(m => {
-    const pct = Math.round(m.quantite_stock / m.max_quantite * 100) || Math.round(m.quantite_stock / m.quantite_max * 100) || 0
-    const alert = m.quantite_stock === 0 ? 'urgent' : m.quantite_stock <= m.seuil_alerte ? 'moyen' : 'ok'
-    const col = alert==='urgent'?'var(--red)':alert==='moyen'?'var(--amber)':'var(--green)'
-    const badge = alert==='urgent'?'bg-red':alert==='moyen'?'bg-amber':'bg-green'
-    const lbl = alert==='urgent'?'Urgent':alert==='moyen'?'Faible':'OK'
-    return `<div class="stock-row">
+  document.getElementById('stock-list').innerHTML=data.map(m=>{
+    const pct=m.quantite_max>0?Math.round(m.quantite_stock/m.quantite_max*100):0
+    const alert=m.quantite_stock===0?'urgent':m.quantite_stock<=m.seuil_alerte?'moyen':'ok'
+    const col=alert==='urgent'?'var(--red)':alert==='moyen'?'var(--amber)':'var(--green)'
+    const badge=alert==='urgent'?'bg-red':alert==='moyen'?'bg-amber':'bg-green'
+    const lbl=alert==='urgent'?'Urgent':alert==='moyen'?'Faible':'OK'
+    return`<div class="stock-row">
       <div class="stock-icon">📦</div>
       <div style="flex:1">
         <div style="font-size:13px;font-weight:500">${m.nom}</div>
@@ -422,89 +505,176 @@ async function loadStock() {
         <div style="font-size:11px;color:var(--text2);margin-top:2px">${m.quantite_stock} / ${m.quantite_max} ${m.unite}</div>
       </div>
       <span class="badge ${badge}">${lbl}</span>
-    </div>`
-  }).join('')
+    </div>`}).join('')
 
-  document.getElementById('bons-tbody').innerHTML = (bons||[]).map(b => {
-    const badge = b.statut==='livre'?'bg-green':b.statut==='urgent'?'bg-red':'bg-amber'
-    return `<tr>
+  document.getElementById('bons-tbody').innerHTML=(bons||[]).map(b=>{
+    const badge=b.statut==='livre'?'bg-green':b.statut==='urgent'?'bg-red':'bg-amber'
+    return`<tr>
       <td style="font-weight:500">${b.fournisseur}</td>
       <td style="color:var(--text2)">${b.description||''}</td>
       <td style="font-family:var(--mono)">${fmt(b.montant)} GNF</td>
       <td><span class="badge ${badge}">${b.statut}</span></td>
-    </tr>`
-  }).join('')
+    </tr>`}).join('')
 }
 
-async function loadBudget() {
-  const { data: phases }   = await db.from('phases').select('*').eq('chantier_id', currentChantier.id).order('ordre')
-  const { data: imprevus } = await db.from('imprevus').select('*').eq('chantier_id', currentChantier.id)
+async function loadBudget(){
+  const{data:phases}=await db.from('phases').select('*').eq('chantier_id',currentChantier.id).order('ordre')
+  const{data:imprevus}=await db.from('imprevus').select('*').eq('chantier_id',currentChantier.id)
+  const totalImp=imprevus.reduce((s,i)=>s+Number(i.montant),0)
+  const budgetRevise=Number(currentChantier.budget_initial)+totalImp
+  const depense=phases.reduce((s,p)=>s+Number(p.budget_reel),0)
+  const depassement=((budgetRevise-currentChantier.budget_initial)/currentChantier.budget_initial*100).toFixed(1)
 
-  const totalImprevus = imprevus.reduce((s,i) => s + Number(i.montant), 0)
-  const budgetRevise  = Number(currentChantier.budget_initial) + totalImprevus
-  const depense       = phases.reduce((s,p) => s + Number(p.budget_reel), 0)
-  const eac           = depense > 0 ? depense / (phases.filter(p=>p.avancement>0).reduce((s,p)=>s+p.avancement,0) / phases.filter(p=>p.avancement>0).length / 100 || 1) : budgetRevise
-  const depassement   = ((eac - currentChantier.budget_initial) / currentChantier.budget_initial * 100).toFixed(1)
-
-  if(totalImprevus > 0) {
-    document.getElementById('budget-alert').style.display = 'flex'
-    document.getElementById('budget-alert-text').innerHTML = `<strong style="color:var(--red)">Imprévus détectés</strong> — Total: +${fmt(totalImprevus)} GNF sur ce chantier.`
+  if(totalImp>0){
+    document.getElementById('budget-alert').style.display='flex'
+    document.getElementById('budget-alert-text').innerHTML=`<strong style="color:var(--red)">Imprévus détectés</strong> — Total: +${fmt(totalImp)} GNF`
   }
 
-  document.getElementById('budget-stats').innerHTML = `
+  document.getElementById('budget-stats').innerHTML=`
     <div class="stat-card"><div class="stat-label">Budget initial</div><div class="stat-value c-blue">${fmt(currentChantier.budget_initial)}</div><div class="stat-sub">GNF</div></div>
     <div class="stat-card"><div class="stat-label">Budget révisé</div><div class="stat-value c-amber">${fmt(budgetRevise)}</div><div class="stat-sub">après imprévus</div></div>
-    <div class="stat-card"><div class="stat-label">Dépensé</div><div class="stat-value">${fmt(depense)}</div><div class="stat-sub">GNF phases réelles</div></div>
-    <div class="stat-card"><div class="stat-label">Dépassement estimé</div><div class="stat-value c-red">+${depassement}%</div><div class="stat-sub">vs budget initial</div></div>
-  `
+    <div class="stat-card"><div class="stat-label">Dépensé</div><div class="stat-value">${fmt(depense)}</div><div class="stat-sub">GNF réel</div></div>
+    <div class="stat-card"><div class="stat-label">Écart imprévus</div><div class="stat-value c-red">+${depassement}%</div><div class="stat-sub">vs budget initial</div></div>`
 
-  const statusMap = { done:'bg-green', over:'bg-red', progress:'bg-amber', pending:'bg-blue', revised:'bg-blue' }
-  const lblMap    = { done:'Terminé ✓', over:'Dépassement', progress:'En cours', pending:'À venir', revised:'Révisé' }
-  const colMap    = { done:'var(--green)', over:'var(--red)', progress:'var(--amber)', pending:'var(--text3)', revised:'var(--blue)' }
+  const sMap={done:'bg-green',over:'bg-red',progress:'bg-amber',pending:'bg-blue',revised:'bg-blue'}
+  const lMap={done:'Terminé ✓',over:'Dépassement',progress:'En cours',pending:'À venir',revised:'Révisé'}
+  const cMap={done:'var(--green)',over:'var(--red)',progress:'var(--amber)',pending:'var(--text3)',revised:'var(--blue)'}
 
-  document.getElementById('budget-phases').innerHTML = `<div class="card-body">${phases.map(p => {
-    const ecart = Number(p.budget_reel) - Number(p.budget_prevu)
-    return `<div style="margin-bottom:10px;">
+  document.getElementById('budget-phases').innerHTML=phases.map(p=>{
+    const ecart=Number(p.budget_reel)-Number(p.budget_prevu)
+    return`<div style="margin-bottom:10px;">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
         <div><span style="font-size:13px;font-weight:500">${p.nom}</span>
-          <span class="badge ${statusMap[p.statut]}" style="margin-left:6px">${lblMap[p.statut]}</span></div>
+          <span class="badge ${sMap[p.statut]}" style="margin-left:6px">${lMap[p.statut]}</span></div>
         <span style="font-size:12px;color:${ecart>0?'var(--red)':ecart<0?'var(--green)':'var(--text2)'};font-family:var(--mono)">
           ${p.avancement>0?(ecart>0?'+':'')+fmt(ecart)+' GNF':'—'}</span>
       </div>
-      <div class="pbar-bg"><div class="pbar-fill" style="width:${p.avancement}%;background:${colMap[p.statut]};"></div></div>
+      <div class="pbar-bg"><div class="pbar-fill" style="width:${p.avancement}%;background:${cMap[p.statut]};"></div></div>
       <div style="font-size:11px;color:var(--text2);margin-top:2px">${p.avancement}% — prévu: ${fmt(p.budget_prevu)} GNF</div>
-    </div>`}).join('')}</div>`
+    </div>`}).join('')
 
-  document.getElementById('imprevus-list').innerHTML = imprevus.map(i => {
-    const badge = i.priorite==='haute'?'bg-red':'bg-amber'
-    return `<div style="display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--border);">
-      <div style="width:38px;height:38px;border-radius:var(--radius);background:var(--red-d);display:flex;align-items:center;justify-content:center;font-size:18px;">⚠️</div>
+  document.getElementById('imprevus-list').innerHTML=imprevus.map(i=>{
+    const badge=i.priorite==='haute'?'bg-red':'bg-amber'
+    return`<div style="display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--border);">
+      <div style="width:38px;height:38px;border-radius:var(--radius);background:var(--red-d);display:flex;align-items:center;justify-content:center;">⚠️</div>
       <div style="flex:1">
         <div style="font-size:13px;font-weight:500">${i.description}</div>
         <div style="font-size:11px;color:var(--text2)">${i.type||''} · ${i.date}</div>
       </div>
       <div style="text-align:right">
         <div style="font-size:13px;font-weight:600;color:var(--red);font-family:var(--mono)">+${fmt(i.montant)} GNF</div>
-        <span class="badge ${badge}" style="margin-top:3px">${i.priorite}</span>
+        <span class="badge ${badge}">${i.priorite}</span>
       </div>
     </div>`}).join('')
 }
 
-async function addImprev() {
-  const desc = document.getElementById('imp-desc').value
-  const montant = parseInt(document.getElementById('imp-montant').value) || 0
-  const priorite = document.getElementById('imp-priorite').value
-  if(!desc || !montant) { showToast('⚠️ Remplir description et montant'); return }
-  const { error } = await db.from('imprevus').insert({ chantier_id: currentChantier.id, description: desc, montant, priorite })
-  if(error) { showToast('❌ Erreur: ' + error.message); return }
-  document.getElementById('imp-desc').value = ''
-  document.getElementById('imp-montant').value = ''
-  showToast('✅ Imprévu enregistré dans Supabase !')
+async function addImprev(){
+  const desc=document.getElementById('imp-desc').value
+  const montant=parseInt(document.getElementById('imp-montant').value)||0
+  const priorite=document.getElementById('imp-priorite').value
+  if(!desc||!montant){showToast('⚠️ Remplir description et montant');return}
+  const{error}=await db.from('imprevus').insert({chantier_id:currentChantier.id,description:desc,montant,priorite})
+  if(error){showToast('❌ Erreur: '+error.message);return}
+  document.getElementById('imp-desc').value=''
+  document.getElementById('imp-montant').value=''
+  showToast('✅ Imprévu enregistré !')
   loadBudget()
 }
 
+async function saveChantier(){
+  const nom=document.getElementById('ch-nom').value
+  const budget=parseInt(document.getElementById('ch-budget').value)||0
+  if(!nom||!budget){showToast('⚠️ Nom et budget obligatoires');return}
+  const{data:ent}=await db.from('entreprises').select('id').limit(1).single()
+  const{error}=await db.from('chantiers').insert({
+    entreprise_id:ent.id,nom,
+    adresse:document.getElementById('ch-adresse').value,
+    date_debut:document.getElementById('ch-debut').value||null,
+    date_fin_prevue:document.getElementById('ch-fin').value||null,
+    budget_initial:budget,
+    statut:document.getElementById('ch-statut').value,
+    avancement:0
+  })
+  if(error){showToast('❌ Erreur: '+error.message);return}
+  closeModal('modal-chantier')
+  showToast('✅ Chantier créé !')
+  loadChantiers()
+}
+
+async function saveOuvrier(){
+  const nom=document.getElementById('ov-nom').value
+  const taux=parseInt(document.getElementById('ov-taux').value)||0
+  if(!nom||!taux){showToast('⚠️ Nom et taux obligatoires');return}
+  const{error}=await db.from('ouvriers').insert({
+    chantier_id:currentChantier.id,nom,
+    prenom:document.getElementById('ov-prenom').value,
+    role:document.getElementById('ov-role').value,
+    telephone:document.getElementById('ov-tel').value,
+    taux_journalier:taux
+  })
+  if(error){showToast('❌ Erreur: '+error.message);return}
+  closeModal('modal-ouvrier')
+  showToast('✅ Ouvrier ajouté !')
+  loadOuvriers()
+}
+
+async function saveMateriau(){
+  const nom=document.getElementById('mat-nom').value
+  if(!nom){showToast('⚠️ Nom obligatoire');return}
+  const{error}=await db.from('materiaux').insert({
+    chantier_id:currentChantier.id,nom,
+    unite:document.getElementById('mat-unite').value||'unité',
+    quantite_stock:parseFloat(document.getElementById('mat-qte').value)||0,
+    quantite_max:parseFloat(document.getElementById('mat-max').value)||0,
+    seuil_alerte:parseFloat(document.getElementById('mat-seuil').value)||0,
+    prix_unitaire:parseFloat(document.getElementById('mat-prix').value)||0
+  })
+  if(error){showToast('❌ Erreur: '+error.message);return}
+  closeModal('modal-materiau')
+  showToast('✅ Matériau ajouté !')
+  loadStock()
+}
+
+async function loadMateriauxSelect(){
+  const{data}=await db.from('materiaux').select('*').eq('chantier_id',currentChantier.id)
+  document.getElementById('st-materiau').innerHTML=data.map(m=>`<option value="${m.id}" data-qte="${m.quantite_stock}">${m.nom} (${m.quantite_stock} ${m.unite})</option>`).join('')
+}
+
+async function saveMouvement(){
+  const sel=document.getElementById('st-materiau')
+  const materiau_id=sel.value
+  const type=document.getElementById('st-type').value
+  const quantite=parseFloat(document.getElementById('st-quantite').value)||0
+  const motif=document.getElementById('st-motif').value
+  if(!quantite){showToast('⚠️ Quantité obligatoire');return}
+  await db.from('mouvements_stock').insert({materiau_id,type,quantite,motif})
+  const qteActuelle=parseFloat(sel.options[sel.selectedIndex].dataset.qte)||0
+  const nouvelleQte=type==='entree'?qteActuelle+quantite:Math.max(0,qteActuelle-quantite)
+  const{error}=await db.from('materiaux').update({quantite_stock:nouvelleQte}).eq('id',materiau_id)
+  if(error){showToast('❌ Erreur: '+error.message);return}
+  closeModal('modal-stock')
+  showToast(`✅ ${type==='entree'?'Entrée':'Sortie'} enregistrée !`)
+  loadStock()
+}
+
+async function saveBon(){
+  const fournisseur=document.getElementById('bon-fournisseur').value
+  if(!fournisseur){showToast('⚠️ Fournisseur obligatoire');return}
+  const{error}=await db.from('bons_commande').insert({
+    chantier_id:currentChantier.id,
+    fournisseur,
+    description:document.getElementById('bon-desc').value,
+    montant:parseInt(document.getElementById('bon-montant').value)||0,
+    statut:document.getElementById('bon-statut').value
+  })
+  if(error){showToast('❌ Erreur: '+error.message);return}
+  closeModal('modal-bon')
+  showToast('✅ Bon de commande créé !')
+  loadStock()
+}
+
 // INIT
-document.getElementById('today-date').textContent = new Date().toLocaleDateString('fr-FR', { weekday:'long', day:'numeric', month:'long' })
+document.getElementById('today-date').textContent=new Date().toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long'})
 loadChantiers()
 </script>
 </body>

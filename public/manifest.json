@@ -1,0 +1,24 @@
+{
+  "name": "BTP Chantier Pro",
+  "short_name": "BTP Pro",
+  "description": "Gestion de chantiers BTP - Afrique de l'Ouest",
+  "start_url": "/login.html",
+  "display": "standalone",
+  "background_color": "#0e1510",
+  "theme_color": "#3dba6a",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect width='192' height='192' rx='24' fill='%233dba6a'/><text y='140' x='30' font-size='120' font-family='sans-serif'>🏗</text></svg>",
+      "sizes": "192x192",
+      "type": "image/svg+xml"
+    },
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><rect width='512' height='512' rx='64' fill='%233dba6a'/><text y='380' x='60' font-size='320' font-family='sans-serif'>🏗</text></svg>",
+      "sizes": "512x512",
+      "type": "image/svg+xml"
+    }
+  ],
+  "categories": ["business", "productivity"],
+  "lang": "fr"
+}

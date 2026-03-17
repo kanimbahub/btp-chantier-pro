@@ -4,6 +4,10 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>BTP Chantier Pro</title>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#3dba6a">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="BTP Pro">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 [data-theme="dark"]{--bg:#0e1510;--bg2:#141e15;--bg3:#1a2a1c;--bg4:#223024;--border:rgba(255,255,255,0.07);--border2:rgba(255,255,255,0.13);--text:#e4ece5;--text2:#7d9e80;--text3:#4a6b4d;--shadow:0 2px 16px rgba(0,0,0,0.5);}
@@ -752,5 +756,6 @@ db.auth.getSession().then(({data:{session}})=>{
   loadChantiers()
 })
 </script>
+<script>if("serviceWorker" in navigator){navigator.serviceWorker.register("/sw.js").then(()=>console.log("SW OK")).catch(e=>console.log("SW erreur",e))}</script>
 </body>
 </html>

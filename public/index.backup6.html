@@ -6,8 +6,8 @@
 <title>BTP Chantier Pro</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
-[data-theme="dark"]{--bg:#0e1510;--bg2:#141e15;--bg3:#1a2a1c;--bg4:#223024;--border:rgba(255,255,255,0.07);--border2:rgba(255,255,255,0.13);--text:#e4ece5;--text2:#7d9e80;--text3:#4a6b4d;--shadow:0 2px 16px rgba(0,0,0,0.5);}
-[data-theme="light"]{--bg:#f4f7f4;--bg2:#ffffff;--bg3:#edf2ed;--bg4:#e0ebe0;--border:rgba(0,0,0,0.07);--border2:rgba(0,0,0,0.13);--text:#1a2b1c;--text2:#4a6e4d;--text3:#8aaa8d;--shadow:0 2px 16px rgba(0,0,0,0.1);}
+[data-theme="dark"]{--bg:#0e1510;--bg2:#141e15;--bg3:#1a2a1c;--bg4:#223024;--border:rgba(255,255,255,0.07);--border2:rgba(255,255,255,0.13);--text:#e4ece5;--text2:#7d9e80;--text3:#4a6b4d;--shadow:0 2px 12px rgba(0,0,0,0.4);}
+[data-theme="light"]{--bg:#f4f7f4;--bg2:#ffffff;--bg3:#edf2ed;--bg4:#e0ebe0;--border:rgba(0,0,0,0.07);--border2:rgba(0,0,0,0.13);--text:#1a2b1c;--text2:#4a6e4d;--text3:#8aaa8d;--shadow:0 2px 12px rgba(0,0,0,0.08);}
 :root{--green:#3dba6a;--green-l:#eaf7ef;--green-d:#0f2e18;--amber:#f5a623;--amber-l:#fef6e7;--amber-d:#301e04;--red:#e8524a;--red-l:#fdecea;--red-d:#2e0e0c;--blue:#4a9eed;--blue-l:#e8f3fc;--blue-d:#0b2040;--purple:#9b7fea;--purple-l:#f0ecfd;--purple-d:#1d1535;--font:'DM Sans',sans-serif;--mono:'DM Mono',monospace;--radius:10px;--radius-lg:14px;}
 *{box-sizing:border-box;margin:0;padding:0;}
 body{background:var(--bg);color:var(--text);font-family:var(--font);font-size:14px;min-height:100vh;transition:background 0.25s,color 0.25s;}
@@ -88,9 +88,6 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);font-size:14
 [data-theme="light"] .alert-bar{background:var(--red-l);}
 .toast{position:fixed;bottom:20px;right:20px;z-index:999;background:var(--bg2);border:1px solid var(--green);color:var(--green);padding:10px 16px;border-radius:10px;font-size:13px;box-shadow:var(--shadow);}
 .loading{display:flex;align-items:center;justify-content:center;height:80px;color:var(--text2);font-size:13px;}
-.empty-state{text-align:center;padding:40px 20px;color:var(--text2);}
-.empty-state div{font-size:32px;margin-bottom:10px;}
-.empty-state p{font-size:13px;}
 .modal-overlay{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.55);z-index:500;align-items:center;justify-content:center;}
 .modal-box{background:var(--bg2);border-radius:var(--radius-lg);padding:24px;width:540px;border:1px solid var(--border2);max-height:90vh;overflow-y:auto;}
 .modal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;}
@@ -114,11 +111,9 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);font-size:14
 [data-theme="light"] .contrat-cdd{background:var(--blue-l);}
 [data-theme="light"] .contrat-journalier{background:var(--amber-l);}
 [data-theme="light"] .contrat-independant{background:var(--purple-l);}
-.profile-menu{display:none;position:absolute;right:0;top:44px;background:var(--bg2);border:1px solid var(--border2);border-radius:var(--radius-lg);padding:6px;width:220px;box-shadow:var(--shadow);z-index:300;}
-.profile-menu-item{padding:8px 12px;font-size:13px;cursor:pointer;border-radius:var(--radius);color:var(--text);transition:background 0.15s;}
-.profile-menu-item:hover{background:var(--bg3);}
-.profile-menu-item.danger{color:var(--red);}
-.profile-menu-item.danger:hover{background:var(--red-d);}
+.empty-state{text-align:center;padding:40px 20px;color:var(--text2);}
+.empty-state div{font-size:32px;margin-bottom:10px;}
+.empty-state p{font-size:13px;}
 </style>
 </head>
 <body>
@@ -152,20 +147,9 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);font-size:14
     <div class="page-title" id="page-title">Tableau de bord</div>
     <div style="display:flex;align-items:center;gap:10px;">
       <span style="font-size:12px;color:var(--text2)" id="today-date"></span>
-      <div style="position:relative;">
-        <div onclick="toggleProfileMenu()" style="width:34px;height:34px;border-radius:50%;background:var(--green);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:600;color:#fff;cursor:pointer;user-select:none;" id="user-avatar">?</div>
-        <div class="profile-menu" id="profile-menu">
-          <div style="padding:10px 12px;border-bottom:1px solid var(--border);margin-bottom:4px;">
-            <div style="font-size:12px;font-weight:500;color:var(--text)" id="menu-email">...</div>
-            <div style="font-size:11px;color:var(--text2);margin-top:2px;">Compte connecté</div>
-          </div>
-          <div class="profile-menu-item" onclick="openModal('modal-password');toggleProfileMenu()">🔑 Changer mot de passe</div>
-          <div class="profile-menu-item danger" onclick="logout()">🚪 Déconnexion</div>
-        </div>
-      </div>
+      <div style="width:32px;height:32px;border-radius:50%;background:var(--green);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:600;color:#fff;" id="user-avatar">?</div>
     </div>
   </div>
-
   <div class="content">
 
     <!-- DASHBOARD -->
@@ -396,16 +380,6 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);font-size:14
   </div>
 </div>
 
-<!-- MODAL CHANGER MOT DE PASSE -->
-<div class="modal-overlay" id="modal-password">
-  <div class="modal-box" style="width:400px;">
-    <div class="modal-head"><div class="modal-title">🔑 Changer mot de passe</div><button class="modal-close" onclick="closeModal('modal-password')">✕</button></div>
-    <div class="form-group"><label>Nouveau mot de passe *</label><input type="password" id="pw-new" class="form-input" placeholder="Min. 8 caractères"></div>
-    <div class="form-group"><label>Confirmer *</label><input type="password" id="pw-confirm" class="form-input" placeholder="Répéter le mot de passe"></div>
-    <div class="modal-footer"><button class="btn btn-outline" onclick="closeModal('modal-password')">Annuler</button><button class="btn btn-green" onclick="changePassword()">Mettre à jour →</button></div>
-  </div>
-</div>
-
 <script>
 const{createClient}=supabase
 const db=createClient('https://aktwkafyzrujqgvojolx.supabase.co','eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFrdHdrYWZ5enJ1anFndm9qb2x4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM2OTY2MDAsImV4cCI6MjA4OTI3MjYwMH0.OLBuhijTx3lRK5VofjxmoplGgQ1UsxbgIs3igj2hGpM')
@@ -423,32 +397,7 @@ function remuLabel(e){if(e.type_contrat==='permanent'||e.type_contrat==='cdd')re
 function remuJour(e){if(e.type_contrat==='permanent'||e.type_contrat==='cdd')return Number(e.salaire_mensuel)/26;if(e.type_contrat==='independant')return 0;return Number(e.taux_journalier)}
 function updateRemuFields(){const v=document.getElementById('emp-contrat').value;document.getElementById('remu-journalier').style.display=(v==='journalier'||v==='stagiaire')?'block':'none';document.getElementById('remu-mensuel').style.display=(v==='permanent'||v==='cdd')?'block':'none';document.getElementById('remu-prestation').style.display=v==='independant'?'block':'none'}
 
-function toggleProfileMenu(){
-  const m=document.getElementById('profile-menu')
-  m.style.display=m.style.display==='block'?'none':'block'
-}
-
-document.addEventListener('click',e=>{
-  if(!e.target.closest('#user-avatar')&&!e.target.closest('#profile-menu')){
-    const m=document.getElementById('profile-menu')
-    if(m)m.style.display='none'
-  }
-})
-
 async function logout(){await db.auth.signOut();window.location.href='login.html'}
-
-async function changePassword(){
-  const pw=document.getElementById('pw-new').value
-  const confirm=document.getElementById('pw-confirm').value
-  if(!pw||pw.length<8){showToast('⚠️ Minimum 8 caractères',true);return}
-  if(pw!==confirm){showToast('⚠️ Les mots de passe ne correspondent pas',true);return}
-  const{error}=await db.auth.updateUser({password:pw})
-  if(error){showToast('❌ '+error.message,true);return}
-  closeModal('modal-password')
-  showToast('✅ Mot de passe mis à jour !')
-  document.getElementById('pw-new').value=''
-  document.getElementById('pw-confirm').value=''
-}
 
 async function loadChantiers(){
   const{data,error}=await db.from('chantiers').select('*').eq('user_id',currentUser.id)
@@ -457,7 +406,7 @@ async function loadChantiers(){
   if(!data||data.length===0){
     sel.innerHTML='<option value="">Aucun chantier</option>'
     document.getElementById('dash-stats').innerHTML='<div class="empty-state"><div>🏗</div><p>Aucun chantier — créez votre premier chantier !</p></div>'
-    document.getElementById('dash-chantiers').innerHTML='<div class="empty-state"><div>🏗</div><p>Cliquez sur "+ Nouveau chantier" dans la sidebar</p></div>'
+    document.getElementById('dash-chantiers').innerHTML='<div class="empty-state"><div>🏗</div><p>Cliquez sur "+ Nouveau chantier"</p></div>'
     document.getElementById('dash-alertes').innerHTML='<div class="loading">—</div>'
     return
   }
@@ -637,7 +586,7 @@ async function loadStock(){
     <div class="stat-card"><div class="stat-label">Rupture</div><div class="stat-value c-red">${urgent}</div><div class="stat-sub">urgent</div></div>
     <div class="stat-card"><div class="stat-label">Stock faible</div><div class="stat-value c-amber">${faible}</div><div class="stat-sub">à surveiller</div></div>
     <div class="stat-card"><div class="stat-label">Valeur</div><div class="stat-value c-green">${fmt(valeur)}</div><div class="stat-sub">GNF</div></div>`
-  document.getElementById('stock-list').innerHTML=mat.length===0?'<div class="empty-state"><div>📦</div><p>Aucun matériau — cliquez sur + Matériau</p></div>':mat.map(m=>{
+  document.getElementById('stock-list').innerHTML=mat.length===0?'<div class="empty-state"><div>📦</div><p>Aucun matériau enregistré</p></div>':mat.map(m=>{
     const pct=Number(m.quantite_max)>0?Math.min(100,Math.round(Number(m.quantite_stock)/Number(m.quantite_max)*100)):0
     const alert=Number(m.quantite_stock)===0?'urgent':Number(m.quantite_stock)<=Number(m.seuil_alerte)?'moyen':'ok'
     const col=alert==='urgent'?'var(--red)':alert==='moyen'?'var(--amber)':'var(--green)'
@@ -676,7 +625,16 @@ async function saveChantier(){
   const nom=document.getElementById('ch-nom').value
   const budget=parseInt(document.getElementById('ch-budget').value)||0
   if(!nom||!budget){showToast('⚠️ Nom et budget obligatoires',true);return}
-  const{error}=await db.from('chantiers').insert({user_id:currentUser.id,nom,adresse:document.getElementById('ch-adresse').value,date_debut:document.getElementById('ch-debut').value||null,date_fin_prevue:document.getElementById('ch-fin').value||null,budget_initial:budget,statut:document.getElementById('ch-statut').value,avancement:0})
+  const{error}=await db.from('chantiers').insert({
+    user_id:currentUser.id,
+    nom,
+    adresse:document.getElementById('ch-adresse').value,
+    date_debut:document.getElementById('ch-debut').value||null,
+    date_fin_prevue:document.getElementById('ch-fin').value||null,
+    budget_initial:budget,
+    statut:document.getElementById('ch-statut').value,
+    avancement:0
+  })
   if(error){showToast('❌ '+error.message,true);return}
   closeModal('modal-chantier');showToast('✅ Chantier créé !');loadChantiers()
 }
@@ -745,10 +703,8 @@ document.getElementById('today-date').textContent=new Date().toLocaleDateString(
 db.auth.getSession().then(({data:{session}})=>{
   if(!session){window.location.href='login.html';return}
   currentUser=session.user
-  const email=currentUser.email
-  document.getElementById('user-email').textContent=email
-  document.getElementById('user-avatar').textContent=email[0].toUpperCase()
-  document.getElementById('menu-email').textContent=email
+  document.getElementById('user-email').textContent=currentUser.email
+  document.getElementById('user-avatar').textContent=currentUser.email[0].toUpperCase()
   loadChantiers()
 })
 </script>

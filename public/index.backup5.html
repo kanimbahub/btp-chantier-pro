@@ -6,8 +6,8 @@
 <title>BTP Chantier Pro</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
-[data-theme="dark"]{--bg:#0e1510;--bg2:#141e15;--bg3:#1a2a1c;--bg4:#223024;--border:rgba(255,255,255,0.07);--border2:rgba(255,255,255,0.13);--text:#e4ece5;--text2:#7d9e80;--text3:#4a6b4d;--shadow:0 2px 16px rgba(0,0,0,0.5);}
-[data-theme="light"]{--bg:#f4f7f4;--bg2:#ffffff;--bg3:#edf2ed;--bg4:#e0ebe0;--border:rgba(0,0,0,0.07);--border2:rgba(0,0,0,0.13);--text:#1a2b1c;--text2:#4a6e4d;--text3:#8aaa8d;--shadow:0 2px 16px rgba(0,0,0,0.1);}
+[data-theme="dark"]{--bg:#0e1510;--bg2:#141e15;--bg3:#1a2a1c;--bg4:#223024;--border:rgba(255,255,255,0.07);--border2:rgba(255,255,255,0.13);--text:#e4ece5;--text2:#7d9e80;--text3:#4a6b4d;--shadow:0 2px 12px rgba(0,0,0,0.4);}
+[data-theme="light"]{--bg:#f4f7f4;--bg2:#ffffff;--bg3:#edf2ed;--bg4:#e0ebe0;--border:rgba(0,0,0,0.07);--border2:rgba(0,0,0,0.13);--text:#1a2b1c;--text2:#4a6e4d;--text3:#8aaa8d;--shadow:0 2px 12px rgba(0,0,0,0.08);}
 :root{--green:#3dba6a;--green-l:#eaf7ef;--green-d:#0f2e18;--amber:#f5a623;--amber-l:#fef6e7;--amber-d:#301e04;--red:#e8524a;--red-l:#fdecea;--red-d:#2e0e0c;--blue:#4a9eed;--blue-l:#e8f3fc;--blue-d:#0b2040;--purple:#9b7fea;--purple-l:#f0ecfd;--purple-d:#1d1535;--font:'DM Sans',sans-serif;--mono:'DM Mono',monospace;--radius:10px;--radius-lg:14px;}
 *{box-sizing:border-box;margin:0;padding:0;}
 body{background:var(--bg);color:var(--text);font-family:var(--font);font-size:14px;min-height:100vh;transition:background 0.25s,color 0.25s;}
@@ -88,9 +88,6 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);font-size:14
 [data-theme="light"] .alert-bar{background:var(--red-l);}
 .toast{position:fixed;bottom:20px;right:20px;z-index:999;background:var(--bg2);border:1px solid var(--green);color:var(--green);padding:10px 16px;border-radius:10px;font-size:13px;box-shadow:var(--shadow);}
 .loading{display:flex;align-items:center;justify-content:center;height:80px;color:var(--text2);font-size:13px;}
-.empty-state{text-align:center;padding:40px 20px;color:var(--text2);}
-.empty-state div{font-size:32px;margin-bottom:10px;}
-.empty-state p{font-size:13px;}
 .modal-overlay{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.55);z-index:500;align-items:center;justify-content:center;}
 .modal-box{background:var(--bg2);border-radius:var(--radius-lg);padding:24px;width:540px;border:1px solid var(--border2);max-height:90vh;overflow-y:auto;}
 .modal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;}
@@ -114,11 +111,6 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);font-size:14
 [data-theme="light"] .contrat-cdd{background:var(--blue-l);}
 [data-theme="light"] .contrat-journalier{background:var(--amber-l);}
 [data-theme="light"] .contrat-independant{background:var(--purple-l);}
-.profile-menu{display:none;position:absolute;right:0;top:44px;background:var(--bg2);border:1px solid var(--border2);border-radius:var(--radius-lg);padding:6px;width:220px;box-shadow:var(--shadow);z-index:300;}
-.profile-menu-item{padding:8px 12px;font-size:13px;cursor:pointer;border-radius:var(--radius);color:var(--text);transition:background 0.15s;}
-.profile-menu-item:hover{background:var(--bg3);}
-.profile-menu-item.danger{color:var(--red);}
-.profile-menu-item.danger:hover{background:var(--red-d);}
 </style>
 </head>
 <body>
@@ -126,7 +118,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);font-size:14
 <div class="sidebar">
   <div class="sidebar-logo">
     <div class="logo-icon">🏗</div>
-    <div class="logo-text">BTP Chantier Pro<span id="user-email">...</span></div>
+    <div class="logo-text">BTP Chantier Pro<span id="user-email">Chargement...</span></div>
   </div>
   <div style="padding:8px 10px 0;">
     <select class="chantier-sel" id="chantier-sel" onchange="changeChantier(this.value)"><option>Chargement...</option></select>
@@ -152,28 +144,17 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);font-size:14
     <div class="page-title" id="page-title">Tableau de bord</div>
     <div style="display:flex;align-items:center;gap:10px;">
       <span style="font-size:12px;color:var(--text2)" id="today-date"></span>
-      <div style="position:relative;">
-        <div onclick="toggleProfileMenu()" style="width:34px;height:34px;border-radius:50%;background:var(--green);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:600;color:#fff;cursor:pointer;user-select:none;" id="user-avatar">?</div>
-        <div class="profile-menu" id="profile-menu">
-          <div style="padding:10px 12px;border-bottom:1px solid var(--border);margin-bottom:4px;">
-            <div style="font-size:12px;font-weight:500;color:var(--text)" id="menu-email">...</div>
-            <div style="font-size:11px;color:var(--text2);margin-top:2px;">Compte connecté</div>
-          </div>
-          <div class="profile-menu-item" onclick="openModal('modal-password');toggleProfileMenu()">🔑 Changer mot de passe</div>
-          <div class="profile-menu-item danger" onclick="logout()">🚪 Déconnexion</div>
-        </div>
-      </div>
+      <div style="width:32px;height:32px;border-radius:50%;background:var(--green);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;color:#fff;" id="user-avatar">?</div>
     </div>
   </div>
-
   <div class="content">
 
     <!-- DASHBOARD -->
     <div class="page active" id="page-dashboard">
       <div class="stats-grid" id="dash-stats"><div class="loading">Chargement...</div></div>
       <div class="grid2">
-        <div class="card"><div class="card-head"><div class="card-title">Mes chantiers</div></div><div class="card-body" id="dash-chantiers"><div class="loading">...</div></div></div>
-        <div class="card"><div class="card-head"><div class="card-title">Alertes stock</div></div><div class="card-body" id="dash-alertes"><div class="loading">...</div></div></div>
+        <div class="card"><div class="card-head"><div class="card-title">Chantiers</div></div><div class="card-body" id="dash-chantiers"><div class="loading">...</div></div></div>
+        <div class="card"><div class="card-head"><div class="card-title">Alertes</div></div><div class="card-body" id="dash-alertes"><div class="loading">...</div></div></div>
       </div>
     </div>
 
@@ -396,20 +377,10 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);font-size:14
   </div>
 </div>
 
-<!-- MODAL CHANGER MOT DE PASSE -->
-<div class="modal-overlay" id="modal-password">
-  <div class="modal-box" style="width:400px;">
-    <div class="modal-head"><div class="modal-title">🔑 Changer mot de passe</div><button class="modal-close" onclick="closeModal('modal-password')">✕</button></div>
-    <div class="form-group"><label>Nouveau mot de passe *</label><input type="password" id="pw-new" class="form-input" placeholder="Min. 8 caractères"></div>
-    <div class="form-group"><label>Confirmer *</label><input type="password" id="pw-confirm" class="form-input" placeholder="Répéter le mot de passe"></div>
-    <div class="modal-footer"><button class="btn btn-outline" onclick="closeModal('modal-password')">Annuler</button><button class="btn btn-green" onclick="changePassword()">Mettre à jour →</button></div>
-  </div>
-</div>
-
 <script>
 const{createClient}=supabase
 const db=createClient('https://aktwkafyzrujqgvojolx.supabase.co','eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFrdHdrYWZ5enJ1anFndm9qb2x4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM2OTY2MDAsImV4cCI6MjA4OTI3MjYwMH0.OLBuhijTx3lRK5VofjxmoplGgQ1UsxbgIs3igj2hGpM')
-let currentChantier=null,employesData=[],allEmployes=[],currentUser=null
+let currentChantier=null,employesData=[],allEmployes=[]
 
 function fmt(n){if(!n)return'0';if(n>=1e9)return(n/1e9).toFixed(1)+'Md';if(n>=1e6)return(n/1e6).toFixed(1)+'M';return Number(n).toLocaleString('fr-FR')}
 function showToast(msg,err=false){const t=document.createElement('div');t.className='toast';t.style.borderColor=err?'var(--red)':'var(--green)';t.style.color=err?'var(--red)':'var(--green)';t.textContent=msg;document.body.appendChild(t);setTimeout(()=>t.remove(),3500)}
@@ -423,69 +394,33 @@ function remuLabel(e){if(e.type_contrat==='permanent'||e.type_contrat==='cdd')re
 function remuJour(e){if(e.type_contrat==='permanent'||e.type_contrat==='cdd')return Number(e.salaire_mensuel)/26;if(e.type_contrat==='independant')return 0;return Number(e.taux_journalier)}
 function updateRemuFields(){const v=document.getElementById('emp-contrat').value;document.getElementById('remu-journalier').style.display=(v==='journalier'||v==='stagiaire')?'block':'none';document.getElementById('remu-mensuel').style.display=(v==='permanent'||v==='cdd')?'block':'none';document.getElementById('remu-prestation').style.display=v==='independant'?'block':'none'}
 
-function toggleProfileMenu(){
-  const m=document.getElementById('profile-menu')
-  m.style.display=m.style.display==='block'?'none':'block'
-}
-
-document.addEventListener('click',e=>{
-  if(!e.target.closest('#user-avatar')&&!e.target.closest('#profile-menu')){
-    const m=document.getElementById('profile-menu')
-    if(m)m.style.display='none'
-  }
-})
-
-async function logout(){await db.auth.signOut();window.location.href='login.html'}
-
-async function changePassword(){
-  const pw=document.getElementById('pw-new').value
-  const confirm=document.getElementById('pw-confirm').value
-  if(!pw||pw.length<8){showToast('⚠️ Minimum 8 caractères',true);return}
-  if(pw!==confirm){showToast('⚠️ Les mots de passe ne correspondent pas',true);return}
-  const{error}=await db.auth.updateUser({password:pw})
-  if(error){showToast('❌ '+error.message,true);return}
-  closeModal('modal-password')
-  showToast('✅ Mot de passe mis à jour !')
-  document.getElementById('pw-new').value=''
-  document.getElementById('pw-confirm').value=''
+async function logout(){
+  await db.auth.signOut()
+  window.location.href='login.html'
 }
 
 async function loadChantiers(){
-  const{data,error}=await db.from('chantiers').select('*').eq('user_id',currentUser.id)
-  if(error){showToast('❌ Erreur chargement',true);return}
+  const{data}=await db.from('chantiers').select('*')
   const sel=document.getElementById('chantier-sel')
-  if(!data||data.length===0){
-    sel.innerHTML='<option value="">Aucun chantier</option>'
-    document.getElementById('dash-stats').innerHTML='<div class="empty-state"><div>🏗</div><p>Aucun chantier — créez votre premier chantier !</p></div>'
-    document.getElementById('dash-chantiers').innerHTML='<div class="empty-state"><div>🏗</div><p>Cliquez sur "+ Nouveau chantier" dans la sidebar</p></div>'
-    document.getElementById('dash-alertes').innerHTML='<div class="loading">—</div>'
-    return
-  }
   sel.innerHTML=data.map(c=>`<option value="${c.id}">${c.nom}</option>`).join('')
-  currentChantier=data[0];loadAll()
+  if(data.length>0){currentChantier=data[0];loadAll()}
 }
-
-async function changeChantier(id){
-  if(!id)return
-  const{data}=await db.from('chantiers').select('*').eq('id',id).eq('user_id',currentUser.id).single()
-  if(data){currentChantier=data;loadAll()}
-}
-
+async function changeChantier(id){const{data}=await db.from('chantiers').select('*').eq('id',id).single();currentChantier=data;loadAll()}
 function loadAll(){loadDashboard();loadEmployes();loadPointage();loadStock();loadBudget()}
 
 async function loadDashboard(){
-  const{data:ch}=await db.from('chantiers').select('*').eq('user_id',currentUser.id)
+  const{data:ch}=await db.from('chantiers').select('*')
   const{data:emp}=await db.from('employes').select('*').eq('chantier_id',currentChantier.id)
   const{data:mat}=await db.from('materiaux').select('*').eq('chantier_id',currentChantier.id)
   const{data:imp}=await db.from('imprevus').select('*').eq('chantier_id',currentChantier.id)
-  const alertes=(mat||[]).filter(m=>Number(m.quantite_stock)<=Number(m.seuil_alerte))
-  const perm=(emp||[]).filter(e=>e.type_contrat==='permanent').length
+  const alertes=mat.filter(m=>Number(m.quantite_stock)<=Number(m.seuil_alerte))
+  const perm=emp.filter(e=>e.type_contrat==='permanent').length
   document.getElementById('dash-stats').innerHTML=`
-    <div class="stat-card"><div class="stat-label">Mes chantiers</div><div class="stat-value c-blue">${(ch||[]).length}</div><div class="stat-sub">total</div></div>
-    <div class="stat-card"><div class="stat-label">Employés</div><div class="stat-value c-green">${(emp||[]).length}</div><div class="stat-sub">${perm} permanents</div></div>
+    <div class="stat-card"><div class="stat-label">Chantiers</div><div class="stat-value c-blue">${ch.length}</div><div class="stat-sub">actifs</div></div>
+    <div class="stat-card"><div class="stat-label">Employés</div><div class="stat-value c-green">${emp.length}</div><div class="stat-sub">${perm} permanents</div></div>
     <div class="stat-card"><div class="stat-label">Budget initial</div><div class="stat-value c-amber">${fmt(currentChantier.budget_initial)}</div><div class="stat-sub">GNF</div></div>
     <div class="stat-card"><div class="stat-label">Alertes stock</div><div class="stat-value c-red">${alertes.length}</div><div class="stat-sub">ruptures</div></div>`
-  document.getElementById('dash-chantiers').innerHTML=(ch||[]).map(c=>{
+  document.getElementById('dash-chantiers').innerHTML=ch.map(c=>{
     const col=c.statut==='encours'?'var(--green)':c.statut==='retard'?'var(--amber)':'var(--text3)'
     const badge=c.statut==='encours'?'bg-green':c.statut==='retard'?'bg-amber':'bg-blue'
     const lbl=c.statut==='encours'?'En cours':c.statut==='retard'?'Retard':'Planifié'
@@ -495,20 +430,20 @@ async function loadDashboard(){
 
 async function loadEmployes(){
   const{data}=await db.from('employes').select('*').eq('chantier_id',currentChantier.id).eq('actif',true)
-  allEmployes=data||[]
-  const perm=allEmployes.filter(e=>e.type_contrat==='permanent').length
-  const journ=allEmployes.filter(e=>e.type_contrat==='journalier').length
-  const indep=allEmployes.filter(e=>e.type_contrat==='independant').length
+  allEmployes=data
+  const perm=data.filter(e=>e.type_contrat==='permanent').length
+  const journ=data.filter(e=>e.type_contrat==='journalier').length
+  const indep=data.filter(e=>e.type_contrat==='independant').length
   document.getElementById('emp-stats').innerHTML=`
-    <div class="stat-card"><div class="stat-label">Total</div><div class="stat-value c-blue">${allEmployes.length}</div><div class="stat-sub">actifs</div></div>
+    <div class="stat-card"><div class="stat-label">Total</div><div class="stat-value c-blue">${data.length}</div><div class="stat-sub">actifs</div></div>
     <div class="stat-card"><div class="stat-label">Permanents</div><div class="stat-value c-green">${perm}</div><div class="stat-sub">CDI local</div></div>
     <div class="stat-card"><div class="stat-label">Journaliers</div><div class="stat-value c-amber">${journ}</div><div class="stat-sub">à la journée</div></div>
     <div class="stat-card"><div class="stat-label">Indépendants</div><div class="stat-value c-purple">${indep}</div><div class="stat-sub">prestataires</div></div>`
-  renderEmployesList(allEmployes)
+  renderEmployesList(data)
 }
 
 function renderEmployesList(data){
-  document.getElementById('employes-list').innerHTML=data.length===0?'<div class="empty-state"><div>👷</div><p>Aucun employé — cliquez sur + Ajouter</p></div>':data.map(e=>`
+  document.getElementById('employes-list').innerHTML=data.length===0?'<div class="loading">Aucun employé</div>':data.map(e=>`
     <div class="employe-card">
       <div class="avatar">${e.nom[0]}${e.prenom?.[0]||''}</div>
       <div style="flex:1">
@@ -520,13 +455,16 @@ function renderEmployesList(data){
         ${e.telephone?`<div style="font-size:11px;color:var(--text3);margin-top:2px">📱 ${e.telephone}</div>`:''}
       </div>
       <div style="display:flex;gap:6px;">
-        <button class="btn btn-outline btn-sm" onclick="editEmploye('${e.id}')">✏️</button>
-        <button class="btn btn-outline btn-sm" style="color:var(--red);border-color:var(--red);" onclick="deleteEmploye('${e.id}')">✕</button>
+        <button class="btn btn-outline btn-sm" onclick="editEmploye('${e.id}')">✏️ Éditer</button>
+        <button class="btn btn-outline btn-sm" style="color:var(--red);border-color:var(--red);" onclick="deleteEmploye('${e.id}')">Retirer</button>
       </div>
     </div>`).join('')
 }
 
-function filterEmployes(){const f=document.getElementById('filtre-contrat').value;renderEmployesList(f?allEmployes.filter(e=>e.type_contrat===f):allEmployes)}
+function filterEmployes(){
+  const f=document.getElementById('filtre-contrat').value
+  renderEmployesList(f?allEmployes.filter(e=>e.type_contrat===f):allEmployes)
+}
 
 async function editEmploye(id){
   const e=allEmployes.find(x=>x.id===id);if(!e)return
@@ -562,7 +500,7 @@ async function loadPointage(){
   const{data}=await db.from('employes').select('*').eq('chantier_id',currentChantier.id).eq('actif',true)
   const today=new Date().toISOString().split('T')[0]
   const{data:presences}=await db.from('presences').select('*').eq('chantier_id',currentChantier.id).eq('date',today)
-  employesData=(data||[]).map(e=>({...e,present:presences?.find(p=>p.employe_id===e.id)?.present??true}))
+  employesData=data.map(e=>({...e,present:presences?.find(p=>p.employe_id===e.id)?.present??true}))
   document.getElementById('point-date').textContent=new Date().toLocaleDateString('fr-FR')
   renderPointage();loadHistorique()
 }
@@ -575,7 +513,7 @@ function renderPointage(){
     <div class="stat-card"><div class="stat-label">Absents</div><div class="stat-value c-red">${employesData.length-presents}</div><div class="stat-sub">aujourd'hui</div></div>
     <div class="stat-card"><div class="stat-label">Paie du jour</div><div class="stat-value c-green">${fmt(Math.round(paieJour))}</div><div class="stat-sub">GNF</div></div>
     <div class="stat-card"><div class="stat-label">Effectif</div><div class="stat-value c-blue">${employesData.length}</div><div class="stat-sub">actifs</div></div>`
-  document.getElementById('pointage-list').innerHTML=employesData.length===0?'<div class="empty-state"><div>👷</div><p>Aucun employé à pointer</p></div>':employesData.map((e,i)=>`
+  document.getElementById('pointage-list').innerHTML=employesData.map((e,i)=>`
     <div style="display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--border);">
       <div class="avatar">${e.nom[0]}${e.prenom?.[0]||''}</div>
       <div style="flex:1">
@@ -628,22 +566,21 @@ async function loadHistorique(){
 async function loadStock(){
   const{data}=await db.from('materiaux').select('*').eq('chantier_id',currentChantier.id)
   const{data:bons}=await db.from('bons_commande').select('*').eq('chantier_id',currentChantier.id)
-  const mat=data||[]
-  const urgent=mat.filter(m=>Number(m.quantite_stock)===0).length
-  const faible=mat.filter(m=>Number(m.quantite_stock)>0&&Number(m.quantite_stock)<=Number(m.seuil_alerte)).length
-  const valeur=mat.reduce((s,m)=>s+Number(m.quantite_stock)*Number(m.prix_unitaire),0)
+  const urgent=data.filter(m=>Number(m.quantite_stock)===0).length
+  const faible=data.filter(m=>Number(m.quantite_stock)>0&&Number(m.quantite_stock)<=Number(m.seuil_alerte)).length
+  const valeur=data.reduce((s,m)=>s+Number(m.quantite_stock)*Number(m.prix_unitaire),0)
   document.getElementById('stock-stats').innerHTML=`
-    <div class="stat-card"><div class="stat-label">Références</div><div class="stat-value c-blue">${mat.length}</div><div class="stat-sub">matériaux</div></div>
+    <div class="stat-card"><div class="stat-label">Références</div><div class="stat-value c-blue">${data.length}</div><div class="stat-sub">matériaux</div></div>
     <div class="stat-card"><div class="stat-label">Rupture</div><div class="stat-value c-red">${urgent}</div><div class="stat-sub">urgent</div></div>
     <div class="stat-card"><div class="stat-label">Stock faible</div><div class="stat-value c-amber">${faible}</div><div class="stat-sub">à surveiller</div></div>
     <div class="stat-card"><div class="stat-label">Valeur</div><div class="stat-value c-green">${fmt(valeur)}</div><div class="stat-sub">GNF</div></div>`
-  document.getElementById('stock-list').innerHTML=mat.length===0?'<div class="empty-state"><div>📦</div><p>Aucun matériau — cliquez sur + Matériau</p></div>':mat.map(m=>{
+  document.getElementById('stock-list').innerHTML=data.map(m=>{
     const pct=Number(m.quantite_max)>0?Math.min(100,Math.round(Number(m.quantite_stock)/Number(m.quantite_max)*100)):0
     const alert=Number(m.quantite_stock)===0?'urgent':Number(m.quantite_stock)<=Number(m.seuil_alerte)?'moyen':'ok'
     const col=alert==='urgent'?'var(--red)':alert==='moyen'?'var(--amber)':'var(--green)'
     const badge=alert==='urgent'?'bg-red':alert==='moyen'?'bg-amber':'bg-green'
     return`<div class="stock-row"><div class="stock-icon">📦</div><div style="flex:1"><div style="font-size:13px;font-weight:500">${m.nom}</div><div class="pbar-bg" style="margin-top:5px;"><div class="pbar-fill" style="width:${pct}%;background:${col};"></div></div><div style="font-size:11px;color:var(--text2);margin-top:2px">${m.quantite_stock} / ${m.quantite_max} ${m.unite}</div></div><span class="badge ${badge}">${alert==='urgent'?'Rupture':alert==='moyen'?'Faible':'OK'}</span></div>`}).join('')
-  document.getElementById('bons-tbody').innerHTML=(bons||[]).length===0?'<tr><td colspan="4" style="text-align:center;color:var(--text2);padding:20px">Aucun bon de commande</td></tr>':(bons||[]).map(b=>{
+  document.getElementById('bons-tbody').innerHTML=(bons||[]).map(b=>{
     const badge=b.statut==='livre'?'bg-green':b.statut==='urgent'?'bg-red':'bg-amber'
     return`<tr><td style="font-weight:500">${b.fournisseur}</td><td style="color:var(--text2)">${b.description||''}</td><td style="font-family:var(--mono)">${fmt(b.montant)} GNF</td><td><span class="badge ${badge}">${b.statut}</span></td></tr>`}).join('')
 }
@@ -651,9 +588,9 @@ async function loadStock(){
 async function loadBudget(){
   const{data:phases}=await db.from('phases').select('*').eq('chantier_id',currentChantier.id).order('ordre')
   const{data:imp}=await db.from('imprevus').select('*').eq('chantier_id',currentChantier.id)
-  const totalImp=(imp||[]).reduce((s,i)=>s+Number(i.montant),0)
+  const totalImp=imp.reduce((s,i)=>s+Number(i.montant),0)
   const budgetRevise=Number(currentChantier.budget_initial)+totalImp
-  const depense=(phases||[]).reduce((s,p)=>s+Number(p.budget_reel),0)
+  const depense=phases.reduce((s,p)=>s+Number(p.budget_reel),0)
   const dep=totalImp>0?((totalImp/currentChantier.budget_initial)*100).toFixed(1):0
   if(totalImp>0){document.getElementById('budget-alert').style.display='flex';document.getElementById('budget-alert-text').innerHTML=`<strong style="color:var(--red)">Imprévus</strong> — Total: +${fmt(totalImp)} GNF`}
   document.getElementById('budget-stats').innerHTML=`
@@ -664,19 +601,19 @@ async function loadBudget(){
   const sM={done:'bg-green',over:'bg-red',progress:'bg-amber',pending:'bg-blue',revised:'bg-blue'}
   const lM={done:'Terminé ✓',over:'Dépassement',progress:'En cours',pending:'À venir',revised:'Révisé'}
   const cM={done:'var(--green)',over:'var(--red)',progress:'var(--amber)',pending:'var(--text3)',revised:'var(--blue)'}
-  document.getElementById('budget-phases').innerHTML=(phases||[]).length===0?'<div class="empty-state"><div>📊</div><p>Aucune phase définie</p></div>':(phases||[]).map(p=>{
+  document.getElementById('budget-phases').innerHTML=phases.map(p=>{
     const ecart=Number(p.budget_reel)-Number(p.budget_prevu)
     return`<div style="margin-bottom:10px;"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;"><div><span style="font-size:13px;font-weight:500">${p.nom}</span><span class="badge ${sM[p.statut]}" style="margin-left:6px">${lM[p.statut]}</span></div><span style="font-size:12px;color:${ecart>0?'var(--red)':ecart<0?'var(--green)':'var(--text2)'};font-family:var(--mono)">${p.avancement>0?(ecart>0?'+':'')+fmt(ecart)+' GNF':'—'}</span></div><div class="pbar-bg"><div class="pbar-fill" style="width:${p.avancement}%;background:${cM[p.statut]};"></div></div><div style="font-size:11px;color:var(--text2);margin-top:2px">${p.avancement}% — prévu: ${fmt(p.budget_prevu)} GNF</div></div>`}).join('')
-  document.getElementById('imprevus-list').innerHTML=(imp||[]).length===0?'<div class="loading">Aucun imprévu</div>':(imp||[]).map(i=>{
+  document.getElementById('imprevus-list').innerHTML=imp.length===0?'<div class="loading">Aucun imprévu</div>':imp.map(i=>{
     const badge=i.priorite==='haute'?'bg-red':'bg-amber'
     return`<div style="display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--border);"><div style="width:38px;height:38px;border-radius:var(--radius);background:var(--red-d);display:flex;align-items:center;justify-content:center;flex-shrink:0;">⚠️</div><div style="flex:1"><div style="font-size:13px;font-weight:500">${i.description}</div><div style="font-size:11px;color:var(--text2)">${i.type||''} · ${i.date}</div></div><div style="text-align:right;flex-shrink:0;"><div style="font-size:13px;font-weight:600;color:var(--red);font-family:var(--mono)">+${fmt(i.montant)} GNF</div><span class="badge ${badge}">${i.priorite}</span></div></div>`}).join('')
 }
 
 async function saveChantier(){
-  const nom=document.getElementById('ch-nom').value
-  const budget=parseInt(document.getElementById('ch-budget').value)||0
+  const nom=document.getElementById('ch-nom').value,budget=parseInt(document.getElementById('ch-budget').value)||0
   if(!nom||!budget){showToast('⚠️ Nom et budget obligatoires',true);return}
-  const{error}=await db.from('chantiers').insert({user_id:currentUser.id,nom,adresse:document.getElementById('ch-adresse').value,date_debut:document.getElementById('ch-debut').value||null,date_fin_prevue:document.getElementById('ch-fin').value||null,budget_initial:budget,statut:document.getElementById('ch-statut').value,avancement:0})
+  const{data:ent}=await db.from('entreprises').select('id').limit(1).single()
+  const{error}=await db.from('chantiers').insert({entreprise_id:ent.id,nom,adresse:document.getElementById('ch-adresse').value,date_debut:document.getElementById('ch-debut').value||null,date_fin_prevue:document.getElementById('ch-fin').value||null,budget_initial:budget,statut:document.getElementById('ch-statut').value,avancement:0})
   if(error){showToast('❌ '+error.message,true);return}
   closeModal('modal-chantier');showToast('✅ Chantier créé !');loadChantiers()
 }
@@ -707,7 +644,7 @@ async function saveMateriau(){
 
 async function loadMateriauxSelect(){
   const{data}=await db.from('materiaux').select('*').eq('chantier_id',currentChantier.id)
-  document.getElementById('st-materiau').innerHTML=(data||[]).map(m=>`<option value="${m.id}" data-qte="${m.quantite_stock}">${m.nom} (${m.quantite_stock} ${m.unite})</option>`).join('')
+  document.getElementById('st-materiau').innerHTML=data.map(m=>`<option value="${m.id}" data-qte="${m.quantite_stock}">${m.nom} (${m.quantite_stock} ${m.unite})</option>`).join('')
 }
 
 async function saveMouvement(){
@@ -740,15 +677,13 @@ async function addImprev(){
   showToast('✅ Imprévu enregistré !');loadBudget()
 }
 
-// INIT
+// INIT — vérification auth
 document.getElementById('today-date').textContent=new Date().toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long'})
 db.auth.getSession().then(({data:{session}})=>{
   if(!session){window.location.href='login.html';return}
-  currentUser=session.user
-  const email=currentUser.email
+  const email=session.user.email
   document.getElementById('user-email').textContent=email
   document.getElementById('user-avatar').textContent=email[0].toUpperCase()
-  document.getElementById('menu-email').textContent=email
   loadChantiers()
 })
 </script>

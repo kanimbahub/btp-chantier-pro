@@ -10,7 +10,6 @@
 <meta name="apple-mobile-web-app-title" content="BTP Pro">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-<script src="i18n.js"></script>
 <style>
 [data-theme="dark"]{--bg:#0e1510;--bg2:#141e15;--bg3:#1a2a1c;--bg4:#223024;--border:rgba(255,255,255,0.07);--border2:rgba(255,255,255,0.13);--text:#e4ece5;--text2:#7d9e80;--text3:#4a6b4d;--shadow:0 2px 16px rgba(0,0,0,0.5);}
 [data-theme="light"]{--bg:#f4f7f4;--bg2:#ffffff;--bg3:#edf2ed;--bg4:#e0ebe0;--border:rgba(0,0,0,0.07);--border2:rgba(0,0,0,0.13);--text:#1a2b1c;--text2:#4a6e4d;--text3:#8aaa8d;--shadow:0 2px 16px rgba(0,0,0,0.1);}
@@ -36,8 +35,6 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);font-size:14
 [data-theme="light"] .toggle-pill::after{left:17px;background:#fff;}
 .btn-logout{display:flex;align-items:center;gap:8px;padding:8px 12px;border-radius:var(--radius);cursor:pointer;font-size:12px;color:var(--red);background:var(--red-d);border:1px solid rgba(232,82,74,0.2);width:100%;}
 [data-theme="light"] .btn-logout{background:var(--red-l);}
-.lang-btn{display:flex;align-items:center;justify-content:center;padding:8px 12px;border-radius:var(--radius);cursor:pointer;font-size:12px;font-weight:500;color:var(--text2);background:var(--bg3);border:1px solid var(--border);width:100%;transition:all 0.15s;}
-.lang-btn:hover{border-color:var(--green);color:var(--green);}
 .chantier-sel{width:100%;background:var(--bg3);border:1px solid var(--border2);color:var(--text);padding:7px 10px;border-radius:var(--radius);font-size:12px;cursor:pointer;outline:none;margin:8px 0 4px;}
 .sidebar-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:199;}
 .main{margin-left:220px;min-height:100vh;}
@@ -115,6 +112,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);font-size:14
 .form-input{width:100%;background:var(--bg3);border:1px solid var(--border2);color:var(--text);padding:10px 12px;border-radius:var(--radius);font-size:14px;outline:none;transition:border-color 0.2s;font-family:var(--font);}
 .form-input:focus{border-color:var(--green);}
 .form-grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.form-grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;}
 .modal-footer{display:flex;gap:10px;margin-top:14px;justify-content:flex-end;}
 .section-divider{font-size:11px;font-weight:500;color:var(--green);text-transform:uppercase;letter-spacing:0.5px;margin:14px 0 8px;padding-bottom:4px;border-bottom:1px solid var(--border);}
 .contrat-badge{padding:2px 8px;border-radius:20px;font-size:11px;font-weight:500;}
@@ -142,6 +140,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);font-size:14
   .content{padding:12px 14px;padding-bottom:90px;}
   .stats-grid{grid-template-columns:1fr 1fr;gap:8px;}
   .grid2{grid-template-columns:1fr;}
+  .form-grid3{grid-template-columns:1fr;}
   .form-grid2{grid-template-columns:1fr;}
   .toast{bottom:90px;}
 }
@@ -161,18 +160,17 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);font-size:14
   </div>
   <div style="padding:8px 10px 0;">
     <select class="chantier-sel" id="chantier-sel" onchange="changeChantier(this.value)"><option>Chargement...</option></select>
-    <button class="btn btn-green" style="width:100%;margin-bottom:8px;font-size:12px;padding:8px;" onclick="openModal('modal-chantier');closeSidebar()" data-i18n="nouveau_chantier">+ Nouveau chantier</button>
+    <button class="btn btn-green" style="width:100%;margin-bottom:8px;font-size:12px;padding:8px;" onclick="openModal('modal-chantier');closeSidebar()">+ Nouveau chantier</button>
   </div>
   <div class="nav-section">Menu</div>
-  <div class="nav-item active" onclick="goPage('dashboard',this);closeSidebar()">📊 <span data-i18n="dashboard">Tableau de bord</span></div>
-  <div class="nav-item" onclick="goPage('employes',this);closeSidebar()">👷 <span data-i18n="employes">Employés & RH</span></div>
-  <div class="nav-item" onclick="goPage('pointage',this);closeSidebar()">✅ <span data-i18n="pointage">Pointage & Paie</span></div>
-  <div class="nav-item" onclick="goPage('stock',this);closeSidebar()">📦 <span data-i18n="stock">Stock matériaux</span></div>
-  <div class="nav-item" onclick="goPage('budget',this);closeSidebar()">💰 <span data-i18n="budget">Budget & Imprévus</span> <span class="nav-badge">!</span></div>
+  <div class="nav-item active" onclick="goPage('dashboard',this);closeSidebar()">📊 Tableau de bord</div>
+  <div class="nav-item" onclick="goPage('employes',this);closeSidebar()">👷 Employés & RH</div>
+  <div class="nav-item" onclick="goPage('pointage',this);closeSidebar()">✅ Pointage & Paie</div>
+  <div class="nav-item" onclick="goPage('stock',this);closeSidebar()">📦 Stock matériaux</div>
+  <div class="nav-item" onclick="goPage('budget',this);closeSidebar()">💰 Budget & Imprévus <span class="nav-badge">!</span></div>
   <div class="sidebar-bottom">
     <button class="theme-toggle" onclick="toggleTheme()"><span id="theme-label">🌙 Mode sombre</span><div class="toggle-pill"></div></button>
-    <button class="lang-btn" id="lang-btn" onclick="toggleLang()">🇬🇧 EN</button>
-    <button class="btn-logout" onclick="logout()" data-i18n="deconnexion">🚪 Déconnexion</button>
+    <button class="btn-logout" onclick="logout()">🚪 Déconnexion</button>
   </div>
 </div>
 
@@ -188,10 +186,10 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);font-size:14
         <div class="profile-menu" id="profile-menu">
           <div style="padding:10px 12px;border-bottom:1px solid var(--border);margin-bottom:4px;">
             <div style="font-size:12px;font-weight:500;color:var(--text)" id="menu-email">...</div>
-            <div style="font-size:11px;color:var(--text2);margin-top:2px;" data-i18n="compte_connecte">Compte connecté</div>
+            <div style="font-size:11px;color:var(--text2);margin-top:2px;">Compte connecté</div>
           </div>
-          <div class="profile-menu-item" onclick="openModal('modal-password');toggleProfileMenu()" data-i18n="changer_mdp">🔑 Changer mot de passe</div>
-          <div class="profile-menu-item danger" onclick="logout()" data-i18n="deconnexion">🚪 Déconnexion</div>
+          <div class="profile-menu-item" onclick="openModal('modal-password');toggleProfileMenu()">🔑 Changer mot de passe</div>
+          <div class="profile-menu-item danger" onclick="logout()">🚪 Déconnexion</div>
         </div>
       </div>
     </div>
@@ -203,8 +201,8 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);font-size:14
     <div class="page active" id="page-dashboard">
       <div class="stats-grid" id="dash-stats"><div class="loading">Chargement...</div></div>
       <div class="grid2">
-        <div class="card"><div class="card-head"><div class="card-title" data-i18n="mes_chantiers">Mes chantiers</div></div><div class="card-body" id="dash-chantiers"><div class="loading">...</div></div></div>
-        <div class="card"><div class="card-head"><div class="card-title" data-i18n="alertes_stock">Alertes stock</div></div><div class="card-body" id="dash-alertes"><div class="loading">...</div></div></div>
+        <div class="card"><div class="card-head"><div class="card-title">Mes chantiers</div></div><div class="card-body" id="dash-chantiers"><div class="loading">...</div></div></div>
+        <div class="card"><div class="card-head"><div class="card-title">Alertes stock</div></div><div class="card-body" id="dash-alertes"><div class="loading">...</div></div></div>
       </div>
     </div>
 
@@ -213,17 +211,12 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);font-size:14
       <div class="stats-grid" id="emp-stats"></div>
       <div class="card">
         <div class="card-head">
-          <div class="card-title" data-i18n="employes">Employés</div>
+          <div class="card-title">Employés</div>
           <div style="display:flex;gap:6px;flex-wrap:wrap;">
             <select id="filtre-contrat" class="form-input" style="width:auto;padding:5px 8px;font-size:12px;" onchange="filterEmployes()">
-              <option value="" data-i18n="tous">Tous</option>
-              <option value="permanent" data-i18n="permanent">Permanent</option>
-              <option value="cdd" data-i18n="cdd">CDD</option>
-              <option value="journalier" data-i18n="journalier">Journalier</option>
-              <option value="independant" data-i18n="independant">Indépendant</option>
-              <option value="stagiaire" data-i18n="stagiaire">Stagiaire</option>
+              <option value="">Tous</option><option value="permanent">Permanent</option><option value="cdd">CDD</option><option value="journalier">Journalier</option><option value="independant">Indépendant</option><option value="stagiaire">Stagiaire</option>
             </select>
-            <button class="btn btn-green btn-sm" onclick="openModal('modal-employe')" data-i18n="ajouter">+ Ajouter</button>
+            <button class="btn btn-green btn-sm" onclick="openModal('modal-employe')">+ Ajouter</button>
           </div>
         </div>
         <div class="card-body" id="employes-list"><div class="loading">...</div></div>
@@ -235,38 +228,38 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);font-size:14
       <div class="stats-grid" id="point-stats"></div>
       <div class="card">
         <div class="card-head">
-          <div class="card-title"><span data-i18n="pointage_titre">Pointage</span> — <span id="point-date"></span></div>
+          <div class="card-title">Pointage — <span id="point-date"></span></div>
           <div style="display:flex;gap:6px;">
-            <button class="btn btn-outline btn-sm" onclick="allPresent()" data-i18n="tous_present">Tous ✓</button>
-            <button class="btn btn-green btn-sm" onclick="savePresences()" data-i18n="valider">Valider</button>
+            <button class="btn btn-outline btn-sm" onclick="allPresent()">Tous ✓</button>
+            <button class="btn btn-green btn-sm" onclick="savePresences()">Valider</button>
           </div>
         </div>
         <div class="card-body" style="padding:8px 14px;" id="pointage-list"><div class="loading">...</div></div>
       </div>
       <div class="card">
         <div class="card-head">
-          <div class="card-title" data-i18n="paie_du_jour">Paie du jour</div>
-          <button class="btn btn-outline btn-sm" onclick="exportPDFPaie()" data-i18n="pdf_paie">📄 PDF Paie</button>
+          <div class="card-title">Paie du jour</div>
+          <button class="btn btn-outline btn-sm" onclick="exportPDFPaie()">📄 PDF Paie</button>
         </div>
         <table class="tbl">
-          <thead><tr><th data-i18n="employe">Employé</th><th data-i18n="remuneration">Rémunération</th><th data-i18n="statut">Statut</th></tr></thead>
+          <thead><tr><th>Employé</th><th>Rémunération</th><th>Contrat</th><th>Statut</th></tr></thead>
           <tbody id="paie-tbody"></tbody>
           <tfoot><tr style="background:var(--bg3);">
-            <td style="padding:10px;font-size:13px;font-weight:500;" data-i18n="total_paie">Total</td>
+            <td style="padding:10px;font-size:13px;font-weight:500;">Total</td>
             <td style="padding:10px;font-family:var(--mono);font-weight:600;color:var(--green);" id="paie-total">0 GNF</td>
-            <td></td>
+            <td></td><td></td>
           </tr></tfoot>
         </table>
       </div>
       <div class="card">
         <div class="card-head">
-          <div class="card-title" data-i18n="historique">Historique</div>
+          <div class="card-title">Historique</div>
           <select id="filtre-semaine" class="form-input" style="width:auto;padding:5px 8px;font-size:12px;" onchange="loadHistorique()">
             <option value="7">7 jours</option><option value="14">14 jours</option><option value="30">30 jours</option>
           </select>
         </div>
         <table class="tbl">
-          <thead><tr><th data-i18n="employe">Employé</th><th data-i18n="date">Date</th><th data-i18n="statut">Statut</th><th data-i18n="remuneration">GNF</th></tr></thead>
+          <thead><tr><th>Employé</th><th>Date</th><th>Statut</th><th>GNF</th></tr></thead>
           <tbody id="historique-tbody"></tbody>
         </table>
       </div>
@@ -277,18 +270,18 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);font-size:14
       <div class="stats-grid" id="stock-stats"></div>
       <div class="card">
         <div class="card-head">
-          <div class="card-title" data-i18n="materiaux">Matériaux</div>
+          <div class="card-title">Matériaux</div>
           <div style="display:flex;gap:6px;">
-            <button class="btn btn-outline btn-sm" onclick="openModal('modal-materiau')">+ <span data-i18n="materiaux">Mat.</span></button>
-            <button class="btn btn-green btn-sm" onclick="openModal('modal-stock')" data-i18n="entree_sortie">Entrée/Sortie</button>
+            <button class="btn btn-outline btn-sm" onclick="openModal('modal-materiau')">+ Mat.</button>
+            <button class="btn btn-green btn-sm" onclick="openModal('modal-stock')">Entrée/Sortie</button>
           </div>
         </div>
         <div class="card-body" style="padding:8px 14px;" id="stock-list"><div class="loading">...</div></div>
       </div>
       <div class="card">
-        <div class="card-head"><div class="card-title" data-i18n="bons_commande">Bons de commande</div><button class="btn btn-green btn-sm" onclick="openModal('modal-bon')">+ Bon</button></div>
+        <div class="card-head"><div class="card-title">Bons de commande</div><button class="btn btn-green btn-sm" onclick="openModal('modal-bon')">+ Bon</button></div>
         <table class="tbl">
-          <thead><tr><th data-i18n="fournisseur">Fournisseur</th><th data-i18n="montant">Montant</th><th data-i18n="statut">Statut</th></tr></thead>
+          <thead><tr><th>Fournisseur</th><th>Montant</th><th>Statut</th></tr></thead>
           <tbody id="bons-tbody"></tbody>
         </table>
       </div>
@@ -299,34 +292,28 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);font-size:14
       <div class="alert-bar" id="budget-alert" style="display:none;">
         <span>⚠️</span>
         <div style="flex:1;font-size:13px;" id="budget-alert-text"></div>
-        <button class="btn btn-outline btn-sm" onclick="this.parentElement.style.display='none'" data-i18n="annuler">OK</button>
+        <button class="btn btn-outline btn-sm" onclick="this.parentElement.style.display='none'">OK</button>
       </div>
       <div class="stats-grid" id="budget-stats"></div>
       <div class="grid2">
         <div class="card">
           <div class="card-head">
-            <div class="card-title" data-i18n="phases">Phases</div>
-            <button class="btn btn-outline btn-sm" onclick="exportPDFRapport()" data-i18n="pdf_rapport">📄 PDF Rapport</button>
+            <div class="card-title">Phases</div>
+            <button class="btn btn-outline btn-sm" onclick="exportPDFRapport()">📄 PDF Rapport</button>
           </div>
           <div class="card-body" id="budget-phases"><div class="loading">...</div></div>
         </div>
-        <div class="card"><div class="card-head"><div class="card-title" data-i18n="imprevu">Imprévus</div></div><div class="card-body" style="padding:8px 14px;" id="imprevus-list"><div class="loading">...</div></div></div>
+        <div class="card"><div class="card-head"><div class="card-title">Imprévus</div></div><div class="card-body" style="padding:8px 14px;" id="imprevus-list"><div class="loading">...</div></div></div>
       </div>
       <div class="card">
-        <div class="card-head"><div class="card-title" data-i18n="enregistrer_imprev">Enregistrer un imprévu</div></div>
+        <div class="card-head"><div class="card-title">Enregistrer un imprévu</div></div>
         <div class="card-body">
-          <div class="form-group"><label data-i18n="description">Description *</label><input type="text" id="imp-desc" class="form-input" placeholder="Fondations renforcées"></div>
+          <div class="form-group"><label>Description *</label><input type="text" id="imp-desc" class="form-input" placeholder="Fondations renforcées"></div>
           <div class="form-grid2" style="margin-bottom:10px;">
-            <div class="form-group"><label data-i18n="montant">Montant (GNF) *</label><input type="number" id="imp-montant" class="form-input" placeholder="15000000"></div>
-            <div class="form-group"><label data-i18n="priorite">Priorité</label>
-              <select id="imp-priorite" class="form-input">
-                <option value="haute" data-i18n="haute">Haute</option>
-                <option value="moyenne" selected data-i18n="moyenne">Moyenne</option>
-                <option value="faible" data-i18n="basse">Faible</option>
-              </select>
-            </div>
+            <div class="form-group"><label>Montant (GNF) *</label><input type="number" id="imp-montant" class="form-input" placeholder="15000000"></div>
+            <div class="form-group"><label>Priorité</label><select id="imp-priorite" class="form-input"><option value="haute">Haute</option><option value="moyenne" selected>Moyenne</option><option value="faible">Faible</option></select></div>
           </div>
-          <button class="btn btn-green" style="width:100%;" onclick="addImprev()" data-i18n="enregistrer">Enregistrer →</button>
+          <button class="btn btn-green" style="width:100%;" onclick="addImprev()">Enregistrer →</button>
         </div>
       </div>
     </div>
@@ -337,144 +324,124 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);font-size:14
 <!-- BOTTOM NAV -->
 <div class="bottom-nav">
   <div class="bottom-nav-inner">
-    <div class="bnav-item active" id="bn-dashboard" onclick="goPageMobile('dashboard',this)"><div class="bnav-icon">📊</div><span data-i18n="dashboard">Accueil</span></div>
-    <div class="bnav-item" id="bn-employes" onclick="goPageMobile('employes',this)"><div class="bnav-icon">👷</div><span data-i18n="employes">Employés</span></div>
-    <div class="bnav-item" id="bn-pointage" onclick="goPageMobile('pointage',this)"><div class="bnav-icon">✅</div><span data-i18n="pointage">Pointage</span></div>
-    <div class="bnav-item" id="bn-stock" onclick="goPageMobile('stock',this)"><div class="bnav-icon">📦</div><span data-i18n="stock">Stock</span></div>
-    <div class="bnav-item" id="bn-budget" onclick="goPageMobile('budget',this)"><div class="bnav-icon">💰</div><span data-i18n="budget">Budget</span></div>
+    <div class="bnav-item active" id="bn-dashboard" onclick="goPageMobile('dashboard',this)"><div class="bnav-icon">📊</div>Accueil</div>
+    <div class="bnav-item" id="bn-employes" onclick="goPageMobile('employes',this)"><div class="bnav-icon">👷</div>Employés</div>
+    <div class="bnav-item" id="bn-pointage" onclick="goPageMobile('pointage',this)"><div class="bnav-icon">✅</div>Pointage</div>
+    <div class="bnav-item" id="bn-stock" onclick="goPageMobile('stock',this)"><div class="bnav-icon">📦</div>Stock</div>
+    <div class="bnav-item" id="bn-budget" onclick="goPageMobile('budget',this)"><div class="bnav-icon">💰</div>Budget</div>
   </div>
 </div>
 
 <!-- MODALS -->
 <div class="modal-overlay" id="modal-chantier">
   <div class="modal-box">
-    <div class="modal-head"><div class="modal-title" data-i18n="nouveau_chantier_titre">🏗 Nouveau chantier</div><button class="modal-close" onclick="closeModal('modal-chantier')">✕</button></div>
-    <div class="form-group"><label data-i18n="nom">Nom *</label><input type="text" id="ch-nom" class="form-input" placeholder="Villa Corniche"></div>
-    <div class="form-group"><label data-i18n="adresse">Adresse</label><input type="text" id="ch-adresse" class="form-input" placeholder="Conakry, Ratoma"></div>
+    <div class="modal-head"><div class="modal-title">🏗 Nouveau chantier</div><button class="modal-close" onclick="closeModal('modal-chantier')">✕</button></div>
+    <div class="form-group"><label>Nom *</label><input type="text" id="ch-nom" class="form-input" placeholder="Villa Corniche"></div>
+    <div class="form-group"><label>Adresse</label><input type="text" id="ch-adresse" class="form-input" placeholder="Conakry, Ratoma"></div>
     <div class="form-grid2">
-      <div class="form-group"><label data-i18n="date_debut">Date début</label><input type="date" id="ch-debut" class="form-input"></div>
-      <div class="form-group"><label data-i18n="date_fin">Date fin prévue</label><input type="date" id="ch-fin" class="form-input"></div>
+      <div class="form-group"><label>Date début</label><input type="date" id="ch-debut" class="form-input"></div>
+      <div class="form-group"><label>Date fin prévue</label><input type="date" id="ch-fin" class="form-input"></div>
     </div>
-    <div class="form-group"><label data-i18n="budget_initial">Budget initial (GNF) *</label><input type="number" id="ch-budget" class="form-input" placeholder="450000000"></div>
-    <div class="form-group"><label data-i18n="statut">Statut</label>
-      <select id="ch-statut" class="form-input">
-        <option value="planifie" data-i18n="planifie">Planifié</option>
-        <option value="encours" data-i18n="en_cours">En cours</option>
-      </select>
-    </div>
-    <div class="modal-footer"><button class="btn btn-outline" onclick="closeModal('modal-chantier')" data-i18n="annuler">Annuler</button><button class="btn btn-green" onclick="saveChantier()" data-i18n="creer">Créer →</button></div>
+    <div class="form-group"><label>Budget initial (GNF) *</label><input type="number" id="ch-budget" class="form-input" placeholder="450000000"></div>
+    <div class="form-group"><label>Statut</label><select id="ch-statut" class="form-input"><option value="planifie">Planifié</option><option value="encours">En cours</option></select></div>
+    <div class="modal-footer"><button class="btn btn-outline" onclick="closeModal('modal-chantier')">Annuler</button><button class="btn btn-green" onclick="saveChantier()">Créer →</button></div>
   </div>
 </div>
 
 <div class="modal-overlay" id="modal-employe">
   <div class="modal-box">
-    <div class="modal-head"><div class="modal-title" id="emp-modal-title" data-i18n="nouvel_employe">👷 Nouvel employé</div><button class="modal-close" onclick="closeModal('modal-employe')">✕</button></div>
-    <div class="section-divider" data-i18n="infos_perso">Informations personnelles</div>
+    <div class="modal-head"><div class="modal-title" id="emp-modal-title">👷 Nouvel employé</div><button class="modal-close" onclick="closeModal('modal-employe')">✕</button></div>
+    <div class="section-divider">Informations personnelles</div>
     <div class="form-grid2">
-      <div class="form-group"><label data-i18n="nom_label">Nom *</label><input type="text" id="emp-nom" class="form-input" placeholder="Konaté"></div>
-      <div class="form-group"><label data-i18n="prenom">Prénom</label><input type="text" id="emp-prenom" class="form-input" placeholder="Mamadou"></div>
+      <div class="form-group"><label>Nom *</label><input type="text" id="emp-nom" class="form-input" placeholder="Konaté"></div>
+      <div class="form-group"><label>Prénom</label><input type="text" id="emp-prenom" class="form-input" placeholder="Mamadou"></div>
     </div>
     <div class="form-grid2">
-      <div class="form-group"><label data-i18n="date_naissance">Date de naissance</label><input type="date" id="emp-naissance" class="form-input"></div>
-      <div class="form-group"><label data-i18n="nationalite">Nationalité</label><input type="text" id="emp-nationalite" class="form-input" placeholder="Guinéenne"></div>
+      <div class="form-group"><label>Date de naissance</label><input type="date" id="emp-naissance" class="form-input"></div>
+      <div class="form-group"><label>Nationalité</label><input type="text" id="emp-nationalite" class="form-input" placeholder="Guinéenne"></div>
     </div>
     <div class="form-grid2">
-      <div class="form-group"><label data-i18n="telephone">Téléphone</label><input type="text" id="emp-tel" class="form-input" placeholder="+224 620 000 000"></div>
-      <div class="form-group"><label data-i18n="adresse_label">Adresse</label><input type="text" id="emp-adresse" class="form-input" placeholder="Conakry"></div>
+      <div class="form-group"><label>Téléphone</label><input type="text" id="emp-tel" class="form-input" placeholder="+224 620 000 000"></div>
+      <div class="form-group"><label>Adresse</label><input type="text" id="emp-adresse" class="form-input" placeholder="Conakry"></div>
     </div>
     <div class="form-grid2">
-      <div class="form-group"><label data-i18n="type_piece">Type pièce d'identité</label>
-        <select id="emp-type-piece" class="form-input"><option value="" data-i18n="choisir">-- Choisir --</option><option value="CNI">CNI</option><option value="passeport">Passeport</option><option value="permis">Permis</option><option value="autre">Autre</option></select>
+      <div class="form-group"><label>Type pièce d'identité</label>
+        <select id="emp-type-piece" class="form-input"><option value="">-- Choisir --</option><option value="CNI">CNI</option><option value="passeport">Passeport</option><option value="permis">Permis</option><option value="autre">Autre</option></select>
       </div>
-      <div class="form-group"><label data-i18n="numero_piece">Numéro pièce</label><input type="text" id="emp-num-piece" class="form-input" placeholder="GN-123456"></div>
+      <div class="form-group"><label>Numéro pièce</label><input type="text" id="emp-num-piece" class="form-input" placeholder="GN-123456"></div>
     </div>
-    <div class="section-divider" data-i18n="profil_pro">Profil professionnel</div>
+    <div class="section-divider">Profil professionnel</div>
     <div class="form-grid2">
-      <div class="form-group"><label data-i18n="role">Rôle *</label>
+      <div class="form-group"><label>Rôle *</label>
         <select id="emp-role" class="form-input">
           <option>Maçon</option><option>Chef maçon</option><option>Ferrailleur</option><option>Électricien</option><option>Plombier</option><option>Manœuvre</option><option>Charpentier</option><option>Peintre</option><option>Conducteur travaux</option><option>Ingénieur</option><option>Autre</option>
         </select>
       </div>
-      <div class="form-group"><label data-i18n="experience">Années d'expérience</label><input type="number" id="emp-experience" class="form-input" placeholder="5" min="0"></div>
+      <div class="form-group"><label>Années d'expérience</label><input type="number" id="emp-experience" class="form-input" placeholder="5" min="0"></div>
     </div>
-    <div class="form-group"><label data-i18n="specialites">Spécialités</label><input type="text" id="emp-specialites" class="form-input" placeholder="Béton armé..."></div>
-    <div class="section-divider" data-i18n="contrat_remun">Contrat & Rémunération</div>
+    <div class="form-group"><label>Spécialités</label><input type="text" id="emp-specialites" class="form-input" placeholder="Béton armé, coffrage..."></div>
+    <div class="section-divider">Contrat & Rémunération</div>
     <div class="form-grid2">
-      <div class="form-group"><label data-i18n="type_contrat">Type de contrat *</label>
+      <div class="form-group"><label>Type de contrat *</label>
         <select id="emp-contrat" class="form-input" onchange="updateRemuFields()">
-          <option value="journalier" data-i18n="journalier">Journalier</option>
-          <option value="permanent" data-i18n="permanent">Salarié permanent</option>
-          <option value="cdd" data-i18n="cdd">CDD</option>
-          <option value="independant" data-i18n="independant">Indépendant</option>
-          <option value="stagiaire" data-i18n="stagiaire">Stagiaire</option>
+          <option value="journalier">Journalier</option><option value="permanent">Salarié permanent</option><option value="cdd">CDD</option><option value="independant">Indépendant</option><option value="stagiaire">Stagiaire</option>
         </select>
       </div>
-      <div class="form-group"><label data-i18n="date_embauche">Date d'embauche</label><input type="date" id="emp-embauche" class="form-input"></div>
+      <div class="form-group"><label>Date d'embauche</label><input type="date" id="emp-embauche" class="form-input"></div>
     </div>
-    <div id="remu-journalier" class="form-group"><label data-i18n="taux_journalier">Taux journalier (GNF)</label><input type="number" id="emp-taux" class="form-input" placeholder="25000"></div>
-    <div id="remu-mensuel" class="form-group" style="display:none;"><label data-i18n="salaire_mensuel">Salaire mensuel (GNF)</label><input type="number" id="emp-salaire" class="form-input" placeholder="1000000"></div>
-    <div id="remu-prestation" class="form-group" style="display:none;"><label data-i18n="tarif_prestation">Tarif prestation (GNF)</label><input type="number" id="emp-tarif" class="form-input" placeholder="500000"></div>
+    <div id="remu-journalier" class="form-group"><label>Taux journalier (GNF)</label><input type="number" id="emp-taux" class="form-input" placeholder="25000"></div>
+    <div id="remu-mensuel" class="form-group" style="display:none;"><label>Salaire mensuel (GNF)</label><input type="number" id="emp-salaire" class="form-input" placeholder="1000000"></div>
+    <div id="remu-prestation" class="form-group" style="display:none;"><label>Tarif prestation (GNF)</label><input type="number" id="emp-tarif" class="form-input" placeholder="500000"></div>
     <input type="hidden" id="emp-edit-id">
-    <div class="modal-footer"><button class="btn btn-outline" onclick="closeModal('modal-employe')" data-i18n="annuler">Annuler</button><button class="btn btn-green" id="emp-save-btn" onclick="saveEmploye()" data-i18n="ajouter_btn">Ajouter →</button></div>
+    <div class="modal-footer"><button class="btn btn-outline" onclick="closeModal('modal-employe')">Annuler</button><button class="btn btn-green" id="emp-save-btn" onclick="saveEmploye()">Ajouter →</button></div>
   </div>
 </div>
 
 <div class="modal-overlay" id="modal-stock">
   <div class="modal-box">
-    <div class="modal-head"><div class="modal-title" data-i18n="entree_sortie_titre">📦 Entrée / Sortie</div><button class="modal-close" onclick="closeModal('modal-stock')">✕</button></div>
-    <div class="form-group"><label data-i18n="materiau">Matériau *</label><select id="st-materiau" class="form-input"></select></div>
-    <div class="form-group"><label data-i18n="type">Type</label>
-      <select id="st-type" class="form-input">
-        <option value="entree" data-i18n="entree">Entrée (livraison)</option>
-        <option value="sortie" data-i18n="sortie">Sortie (utilisation)</option>
-      </select>
-    </div>
-    <div class="form-group"><label data-i18n="quantite">Quantité *</label><input type="number" id="st-quantite" class="form-input" placeholder="50"></div>
-    <div class="form-group"><label data-i18n="motif">Motif</label><input type="text" id="st-motif" class="form-input" placeholder="Livraison fournisseur"></div>
-    <div class="modal-footer"><button class="btn btn-outline" onclick="closeModal('modal-stock')" data-i18n="annuler">Annuler</button><button class="btn btn-green" onclick="saveMouvement()" data-i18n="enregistrer">Enregistrer →</button></div>
+    <div class="modal-head"><div class="modal-title">📦 Entrée / Sortie</div><button class="modal-close" onclick="closeModal('modal-stock')">✕</button></div>
+    <div class="form-group"><label>Matériau *</label><select id="st-materiau" class="form-input"></select></div>
+    <div class="form-group"><label>Type</label><select id="st-type" class="form-input"><option value="entree">Entrée (livraison)</option><option value="sortie">Sortie (utilisation)</option></select></div>
+    <div class="form-group"><label>Quantité *</label><input type="number" id="st-quantite" class="form-input" placeholder="50"></div>
+    <div class="form-group"><label>Motif</label><input type="text" id="st-motif" class="form-input" placeholder="Livraison fournisseur"></div>
+    <div class="modal-footer"><button class="btn btn-outline" onclick="closeModal('modal-stock')">Annuler</button><button class="btn btn-green" onclick="saveMouvement()">Enregistrer →</button></div>
   </div>
 </div>
 
 <div class="modal-overlay" id="modal-materiau">
   <div class="modal-box">
-    <div class="modal-head"><div class="modal-title" data-i18n="nouveau_materiau">📦 Nouveau matériau</div><button class="modal-close" onclick="closeModal('modal-materiau')">✕</button></div>
-    <div class="form-group"><label data-i18n="nom">Nom *</label><input type="text" id="mat-nom" class="form-input" placeholder="Ciment"></div>
+    <div class="modal-head"><div class="modal-title">📦 Nouveau matériau</div><button class="modal-close" onclick="closeModal('modal-materiau')">✕</button></div>
+    <div class="form-group"><label>Nom *</label><input type="text" id="mat-nom" class="form-input" placeholder="Ciment"></div>
     <div class="form-grid2">
-      <div class="form-group"><label data-i18n="unite">Unité</label><input type="text" id="mat-unite" class="form-input" placeholder="sacs"></div>
-      <div class="form-group"><label data-i18n="stock_initial">Stock initial</label><input type="number" id="mat-qte" class="form-input" placeholder="0"></div>
+      <div class="form-group"><label>Unité</label><input type="text" id="mat-unite" class="form-input" placeholder="sacs"></div>
+      <div class="form-group"><label>Stock initial</label><input type="number" id="mat-qte" class="form-input" placeholder="0"></div>
     </div>
     <div class="form-grid2">
-      <div class="form-group"><label data-i18n="stock_max">Stock maximum</label><input type="number" id="mat-max" class="form-input" placeholder="200"></div>
-      <div class="form-group"><label data-i18n="seuil_alerte">Seuil alerte</label><input type="number" id="mat-seuil" class="form-input" placeholder="50"></div>
+      <div class="form-group"><label>Stock maximum</label><input type="number" id="mat-max" class="form-input" placeholder="200"></div>
+      <div class="form-group"><label>Seuil alerte</label><input type="number" id="mat-seuil" class="form-input" placeholder="50"></div>
     </div>
-    <div class="form-group"><label data-i18n="prix_unitaire">Prix unitaire (GNF)</label><input type="number" id="mat-prix" class="form-input" placeholder="100000"></div>
-    <div class="modal-footer"><button class="btn btn-outline" onclick="closeModal('modal-materiau')" data-i18n="annuler">Annuler</button><button class="btn btn-green" onclick="saveMateriau()" data-i18n="ajouter_btn">Ajouter →</button></div>
+    <div class="form-group"><label>Prix unitaire (GNF)</label><input type="number" id="mat-prix" class="form-input" placeholder="100000"></div>
+    <div class="modal-footer"><button class="btn btn-outline" onclick="closeModal('modal-materiau')">Annuler</button><button class="btn btn-green" onclick="saveMateriau()">Ajouter →</button></div>
   </div>
 </div>
 
 <div class="modal-overlay" id="modal-bon">
   <div class="modal-box">
-    <div class="modal-head"><div class="modal-title" data-i18n="bon_commande_titre">📋 Bon de commande</div><button class="modal-close" onclick="closeModal('modal-bon')">✕</button></div>
-    <div class="form-group"><label data-i18n="fournisseur">Fournisseur *</label><input type="text" id="bon-fournisseur" class="form-input" placeholder="SOGUIMAT Conakry"></div>
-    <div class="form-group"><label data-i18n="desc_label">Description</label><input type="text" id="bon-desc" class="form-input" placeholder="Fer à béton 2T"></div>
-    <div class="form-group"><label data-i18n="montant">Montant (GNF)</label><input type="number" id="bon-montant" class="form-input" placeholder="28500000"></div>
-    <div class="form-group"><label data-i18n="statut">Statut</label>
-      <select id="bon-statut" class="form-input">
-        <option value="attente" data-i18n="a_venir">En attente</option>
-        <option value="urgent" data-i18n="urgent">Urgent</option>
-        <option value="livre" data-i18n="termine">Livré</option>
-      </select>
-    </div>
-    <div class="modal-footer"><button class="btn btn-outline" onclick="closeModal('modal-bon')" data-i18n="annuler">Annuler</button><button class="btn btn-green" onclick="saveBon()" data-i18n="creer">Créer →</button></div>
+    <div class="modal-head"><div class="modal-title">📋 Bon de commande</div><button class="modal-close" onclick="closeModal('modal-bon')">✕</button></div>
+    <div class="form-group"><label>Fournisseur *</label><input type="text" id="bon-fournisseur" class="form-input" placeholder="SOGUIMAT Conakry"></div>
+    <div class="form-group"><label>Description</label><input type="text" id="bon-desc" class="form-input" placeholder="Fer à béton 2T"></div>
+    <div class="form-group"><label>Montant (GNF)</label><input type="number" id="bon-montant" class="form-input" placeholder="28500000"></div>
+    <div class="form-group"><label>Statut</label><select id="bon-statut" class="form-input"><option value="attente">En attente</option><option value="urgent">Urgent</option><option value="livre">Livré</option></select></div>
+    <div class="modal-footer"><button class="btn btn-outline" onclick="closeModal('modal-bon')">Annuler</button><button class="btn btn-green" onclick="saveBon()">Créer →</button></div>
   </div>
 </div>
 
 <div class="modal-overlay" id="modal-password">
   <div class="modal-box">
-    <div class="modal-head"><div class="modal-title" data-i18n="changer_mdp">🔑 Changer mot de passe</div><button class="modal-close" onclick="closeModal('modal-password')">✕</button></div>
-    <div class="form-group"><label data-i18n="nouveau_mdp">Nouveau mot de passe *</label><input type="password" id="pw-new" class="form-input" placeholder="Min. 8 caractères"></div>
-    <div class="form-group"><label data-i18n="confirmer">Confirmer *</label><input type="password" id="pw-confirm" class="form-input" placeholder="Répéter"></div>
-    <div class="modal-footer"><button class="btn btn-outline" onclick="closeModal('modal-password')" data-i18n="annuler">Annuler</button><button class="btn btn-green" onclick="changePassword()" data-i18n="maj_btn">Mettre à jour →</button></div>
+    <div class="modal-head"><div class="modal-title">🔑 Changer mot de passe</div><button class="modal-close" onclick="closeModal('modal-password')">✕</button></div>
+    <div class="form-group"><label>Nouveau mot de passe *</label><input type="password" id="pw-new" class="form-input" placeholder="Min. 8 caractères"></div>
+    <div class="form-group"><label>Confirmer *</label><input type="password" id="pw-confirm" class="form-input" placeholder="Répéter"></div>
+    <div class="modal-footer"><button class="btn btn-outline" onclick="closeModal('modal-password')">Annuler</button><button class="btn btn-green" onclick="changePassword()">Mettre à jour →</button></div>
   </div>
 </div>
 
@@ -486,31 +453,15 @@ let currentChantier=null,employesData=[],allEmployes=[],currentUser=null
 function fmt(n){if(!n)return'0';if(n>=1e9)return(n/1e9).toFixed(1)+'Md';if(n>=1e6)return(n/1e6).toFixed(1)+'M';return Number(n).toLocaleString('fr-FR')}
 function fmtPDF(n){if(!n)return'0 GNF';if(n>=1e9)return(n/1e9).toFixed(1)+'Md GNF';if(n>=1e6)return(n/1e6).toFixed(1)+'M GNF';return Number(n).toLocaleString('fr-FR')+' GNF'}
 function showToast(msg,err=false){const t=document.createElement('div');t.className='toast';t.style.borderColor=err?'var(--red)':'var(--green)';t.style.color=err?'var(--red)':'var(--green)';t.textContent=msg;document.body.appendChild(t);setTimeout(()=>t.remove(),3500)}
-function toggleTheme(){const h=document.documentElement,d=h.dataset.theme==='dark';h.dataset.theme=d?'light':'dark';document.getElementById('theme-label').textContent=d?t('mode_clair'):t('mode_sombre')}
+function toggleTheme(){const h=document.documentElement,d=h.dataset.theme==='dark';h.dataset.theme=d?'light':'dark';document.getElementById('theme-label').textContent=d?'☀️ Mode clair':'🌙 Mode sombre'}
 function openSidebar(){document.getElementById('sidebar').classList.add('open');document.getElementById('sidebar-overlay').classList.add('open')}
 function closeSidebar(){document.getElementById('sidebar').classList.remove('open');document.getElementById('sidebar-overlay').classList.remove('open')}
-
-function goPage(id,el){
-  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'))
-  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'))
-  document.getElementById('page-'+id).classList.add('active')
-  if(el)el.classList.add('active')
-  const titles={dashboard:t('dashboard'),employes:t('employes'),pointage:t('pointage'),stock:t('stock'),budget:t('budget')}
-  document.getElementById('page-title').textContent=titles[id]
-}
-
-function goPageMobile(id,el){
-  goPage(id,null)
-  document.querySelectorAll('.bnav-item').forEach(n=>n.classList.remove('active'))
-  el.classList.add('active')
-  const navMap={dashboard:0,employes:1,pointage:2,stock:3,budget:4}
-  document.querySelectorAll('.nav-item').forEach((n,i)=>{if(i===navMap[id])n.classList.add('active')})
-}
-
+function goPage(id,el){document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));document.getElementById('page-'+id).classList.add('active');if(el)el.classList.add('active');const t={dashboard:'Tableau de bord',employes:'Employés & RH',pointage:'Pointage & Paie',stock:'Stock matériaux',budget:'Budget & Imprévus'};document.getElementById('page-title').textContent=t[id]}
+function goPageMobile(id,el){goPage(id,null);document.querySelectorAll('.bnav-item').forEach(n=>n.classList.remove('active'));el.classList.add('active');const navMap={dashboard:0,employes:1,pointage:2,stock:3,budget:4};document.querySelectorAll('.nav-item').forEach((n,i)=>{if(i===navMap[id])n.classList.add('active')})}
 function openModal(id){document.getElementById(id).style.display='flex';if(id==='modal-stock')loadMateriauxSelect()}
 function closeModal(id){document.getElementById(id).style.display='none'}
-function contratLabel(type){return t(type)||type}
-function contratClass(type){return'contrat-'+(type||'journalier')}
+function contratLabel(t){return{permanent:'Permanent',cdd:'CDD',journalier:'Journalier',independant:'Indépendant',stagiaire:'Stagiaire'}[t]||t}
+function contratClass(t){return'contrat-'+(t||'journalier')}
 function remuLabel(e){if(e.type_contrat==='permanent'||e.type_contrat==='cdd')return fmt(e.salaire_mensuel)+'/mois';if(e.type_contrat==='independant')return fmt(e.tarif_prestation)+'/prest.';return fmt(e.taux_journalier)+'/j'}
 function remuJour(e){if(e.type_contrat==='permanent'||e.type_contrat==='cdd')return Number(e.salaire_mensuel)/26;if(e.type_contrat==='independant')return 0;return Number(e.taux_journalier)}
 function updateRemuFields(){const v=document.getElementById('emp-contrat').value;document.getElementById('remu-journalier').style.display=(v==='journalier'||v==='stagiaire')?'block':'none';document.getElementById('remu-mensuel').style.display=(v==='permanent'||v==='cdd')?'block':'none';document.getElementById('remu-prestation').style.display=v==='independant'?'block':'none'}
@@ -521,25 +472,19 @@ async function logout(){await db.auth.signOut();window.location.href='login.html
 
 async function changePassword(){
   const pw=document.getElementById('pw-new').value,confirm=document.getElementById('pw-confirm').value
-  if(!pw||pw.length<8){showToast('⚠️ Min 8 chars',true);return}
-  if(pw!==confirm){showToast('⚠️ Passwords differ',true);return}
+  if(!pw||pw.length<8){showToast('⚠️ Minimum 8 caractères',true);return}
+  if(pw!==confirm){showToast('⚠️ Mots de passe différents',true);return}
   const{error}=await db.auth.updateUser({password:pw})
   if(error){showToast('❌ '+error.message,true);return}
-  closeModal('modal-password');showToast(t('toast_mdp'))
+  closeModal('modal-password');showToast('✅ Mot de passe mis à jour !')
   document.getElementById('pw-new').value='';document.getElementById('pw-confirm').value=''
 }
 
 async function loadChantiers(){
   const{data,error}=await db.from('chantiers').select('*').eq('user_id',currentUser.id)
-  if(error){showToast('❌ Error loading',true);return}
+  if(error){showToast('❌ Erreur chargement',true);return}
   const sel=document.getElementById('chantier-sel')
-  if(!data||data.length===0){
-    sel.innerHTML='<option value="">--</option>'
-    document.getElementById('dash-stats').innerHTML='<div class="empty-state"><div>🏗</div><p>'+t('nouveau_chantier')+'</p></div>'
-    document.getElementById('dash-chantiers').innerHTML='<div class="empty-state"><div>🏗</div><p>'+t('nouveau_chantier')+'</p></div>'
-    document.getElementById('dash-alertes').innerHTML='<div class="loading">—</div>'
-    return
-  }
+  if(!data||data.length===0){sel.innerHTML='<option value="">Aucun chantier</option>';document.getElementById('dash-stats').innerHTML='<div class="empty-state"><div>🏗</div><p>Aucun chantier — créez votre premier chantier !</p></div>';document.getElementById('dash-chantiers').innerHTML='<div class="empty-state"><div>🏗</div><p>Cliquez sur "+ Nouveau chantier"</p></div>';document.getElementById('dash-alertes').innerHTML='<div class="loading">—</div>';return}
   sel.innerHTML=data.map(c=>`<option value="${c.id}">${c.nom}</option>`).join('')
   currentChantier=data[0];loadAll()
 }
@@ -554,16 +499,12 @@ async function loadDashboard(){
   const alertes=(mat||[]).filter(m=>Number(m.quantite_stock)<=Number(m.seuil_alerte))
   const perm=(emp||[]).filter(e=>e.type_contrat==='permanent').length
   document.getElementById('dash-stats').innerHTML=`
-    <div class="stat-card"><div class="stat-label">${t('mes_chantiers')}</div><div class="stat-value c-blue">${(ch||[]).length}</div><div class="stat-sub">${t('total')}</div></div>
-    <div class="stat-card"><div class="stat-label">${t('employes_stat')}</div><div class="stat-value c-green">${(emp||[]).length}</div><div class="stat-sub">${perm} ${t('permanents')}</div></div>
-    <div class="stat-card"><div class="stat-label">${t('budget_stat')}</div><div class="stat-value c-amber">${fmt(currentChantier.budget_initial)}</div><div class="stat-sub">${t('gnf')}</div></div>
-    <div class="stat-card"><div class="stat-label">${t('alertes')}</div><div class="stat-value c-red">${alertes.length}</div><div class="stat-sub">${t('ruptures')}</div></div>`
-  document.getElementById('dash-chantiers').innerHTML=(ch||[]).map(c=>{
-    const col=c.statut==='encours'?'var(--green)':c.statut==='retard'?'var(--amber)':'var(--text3)'
-    const badge=c.statut==='encours'?'bg-green':c.statut==='retard'?'bg-amber':'bg-blue'
-    const lbl=c.statut==='encours'?t('en_cours'):c.statut==='retard'?t('retard'):t('planifie')
-    return`<div style="margin-bottom:12px;"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:5px;"><span style="font-size:13px;font-weight:500">${c.nom}</span><span class="badge ${badge}">${lbl}</span></div><div class="pbar-bg"><div class="pbar-fill" style="width:${c.avancement}%;background:${col};"></div></div><div style="font-size:11px;color:var(--text2);margin-top:3px">${c.avancement}% — ${fmt(c.budget_initial)} GNF</div></div>`}).join('')
-  document.getElementById('dash-alertes').innerHTML=alertes.length===0?`<div style="color:var(--text2);font-size:13px;text-align:center;padding:20px">${t('aucune_alerte')}</div>`:alertes.map(m=>`<div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--border);"><span>⚠️</span><div style="flex:1"><div style="font-size:13px;font-weight:500">${m.nom}</div><div style="font-size:11px;color:var(--text2)">${m.quantite_stock} ${m.unite}</div></div><span class="badge bg-red">${t('urgent')}</span></div>`).join('')
+    <div class="stat-card"><div class="stat-label">Chantiers</div><div class="stat-value c-blue">${(ch||[]).length}</div><div class="stat-sub">total</div></div>
+    <div class="stat-card"><div class="stat-label">Employés</div><div class="stat-value c-green">${(emp||[]).length}</div><div class="stat-sub">${perm} perm.</div></div>
+    <div class="stat-card"><div class="stat-label">Budget</div><div class="stat-value c-amber">${fmt(currentChantier.budget_initial)}</div><div class="stat-sub">GNF</div></div>
+    <div class="stat-card"><div class="stat-label">Alertes</div><div class="stat-value c-red">${alertes.length}</div><div class="stat-sub">stock</div></div>`
+  document.getElementById('dash-chantiers').innerHTML=(ch||[]).map(c=>{const col=c.statut==='encours'?'var(--green)':c.statut==='retard'?'var(--amber)':'var(--text3)';const badge=c.statut==='encours'?'bg-green':c.statut==='retard'?'bg-amber':'bg-blue';const lbl=c.statut==='encours'?'En cours':c.statut==='retard'?'Retard':'Planifié';return`<div style="margin-bottom:12px;"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:5px;"><span style="font-size:13px;font-weight:500">${c.nom}</span><span class="badge ${badge}">${lbl}</span></div><div class="pbar-bg"><div class="pbar-fill" style="width:${c.avancement}%;background:${col};"></div></div><div style="font-size:11px;color:var(--text2);margin-top:3px">${c.avancement}% — ${fmt(c.budget_initial)} GNF</div></div>`}).join('')
+  document.getElementById('dash-alertes').innerHTML=alertes.length===0?'<div style="color:var(--text2);font-size:13px;text-align:center;padding:20px">✅ Aucune alerte</div>':alertes.map(m=>`<div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--border);"><span>⚠️</span><div style="flex:1"><div style="font-size:13px;font-weight:500">${m.nom}</div><div style="font-size:11px;color:var(--text2)">${m.quantite_stock} ${m.unite}</div></div><span class="badge bg-red">Urgent</span></div>`).join('')
 }
 
 async function loadEmployes(){
@@ -573,15 +514,15 @@ async function loadEmployes(){
   const journ=allEmployes.filter(e=>e.type_contrat==='journalier').length
   const indep=allEmployes.filter(e=>e.type_contrat==='independant').length
   document.getElementById('emp-stats').innerHTML=`
-    <div class="stat-card"><div class="stat-label">${t('effectif')}</div><div class="stat-value c-blue">${allEmployes.length}</div><div class="stat-sub">${t('actifs')}</div></div>
-    <div class="stat-card"><div class="stat-label">${t('permanent')}</div><div class="stat-value c-green">${perm}</div><div class="stat-sub">CDI</div></div>
-    <div class="stat-card"><div class="stat-label">${t('journalier')}</div><div class="stat-value c-amber">${journ}</div><div class="stat-sub">/ jour</div></div>
-    <div class="stat-card"><div class="stat-label">${t('independant')}</div><div class="stat-value c-purple">${indep}</div><div class="stat-sub">presta.</div></div>`
+    <div class="stat-card"><div class="stat-label">Total</div><div class="stat-value c-blue">${allEmployes.length}</div><div class="stat-sub">actifs</div></div>
+    <div class="stat-card"><div class="stat-label">Permanents</div><div class="stat-value c-green">${perm}</div><div class="stat-sub">CDI</div></div>
+    <div class="stat-card"><div class="stat-label">Journaliers</div><div class="stat-value c-amber">${journ}</div><div class="stat-sub">/ jour</div></div>
+    <div class="stat-card"><div class="stat-label">Indép.</div><div class="stat-value c-purple">${indep}</div><div class="stat-sub">presta.</div></div>`
   renderEmployesList(allEmployes)
 }
 
 function renderEmployesList(data){
-  document.getElementById('employes-list').innerHTML=data.length===0?`<div class="empty-state"><div>👷</div><p>${t('aucun_employe')}</p></div>`:data.map(e=>`
+  document.getElementById('employes-list').innerHTML=data.length===0?'<div class="empty-state"><div>👷</div><p>Aucun employé — cliquez sur + Ajouter</p></div>':data.map(e=>`
     <div class="employe-card">
       <div class="avatar">${e.nom[0]}${e.prenom?.[0]||''}</div>
       <div style="flex:1;min-width:0;">
@@ -593,8 +534,8 @@ function renderEmployesList(data){
         ${e.telephone?`<div style="font-size:11px;color:var(--text3);">📱 ${e.telephone}</div>`:''}
       </div>
       <div style="display:flex;gap:4px;flex-shrink:0;">
-        <button class="btn btn-outline btn-sm" onclick="editEmploye('${e.id}')">${t('editer')}</button>
-        <button class="btn btn-outline btn-sm" style="color:var(--red);border-color:var(--red);" onclick="deleteEmploye('${e.id}')">${t('retirer')}</button>
+        <button class="btn btn-outline btn-sm" onclick="editEmploye('${e.id}')">✏️</button>
+        <button class="btn btn-outline btn-sm" style="color:var(--red);border-color:var(--red);" onclick="deleteEmploye('${e.id}')">✕</button>
       </div>
     </div>`).join('')
 }
@@ -603,8 +544,8 @@ function filterEmployes(){const f=document.getElementById('filtre-contrat').valu
 
 async function editEmploye(id){
   const e=allEmployes.find(x=>x.id===id);if(!e)return
-  document.getElementById('emp-modal-title').textContent=t('modifier_employe')
-  document.getElementById('emp-save-btn').textContent=t('maj_btn')
+  document.getElementById('emp-modal-title').textContent='✏️ Modifier employé'
+  document.getElementById('emp-save-btn').textContent='Mettre à jour →'
   document.getElementById('emp-edit-id').value=id
   document.getElementById('emp-nom').value=e.nom||''
   document.getElementById('emp-prenom').value=e.prenom||''
@@ -625,7 +566,7 @@ async function editEmploye(id){
   updateRemuFields();openModal('modal-employe')
 }
 
-async function deleteEmploye(id){if(!confirm(t('aucun_employe')))return;await db.from('employes').update({actif:false}).eq('id',id);showToast(t('toast_employe_retire'));loadEmployes()}
+async function deleteEmploye(id){if(!confirm('Retirer cet employé ?'))return;await db.from('employes').update({actif:false}).eq('id',id);showToast('✅ Employé retiré');loadEmployes()}
 
 async function loadPointage(){
   const{data}=await db.from('employes').select('*').eq('chantier_id',currentChantier.id).eq('actif',true)
@@ -640,11 +581,11 @@ function renderPointage(){
   const presents=employesData.filter(e=>e.present).length
   const paieJour=employesData.filter(e=>e.present).reduce((s,e)=>s+remuJour(e),0)
   document.getElementById('point-stats').innerHTML=`
-    <div class="stat-card"><div class="stat-label">${t('presents')}</div><div class="stat-value c-green">${presents}</div><div class="stat-sub">/ ${employesData.length}</div></div>
-    <div class="stat-card"><div class="stat-label">${t('absents')}</div><div class="stat-value c-red">${employesData.length-presents}</div><div class="stat-sub">${t('date')}</div></div>
-    <div class="stat-card"><div class="stat-label">${t('paie_jour')}</div><div class="stat-value c-green">${fmt(Math.round(paieJour))}</div><div class="stat-sub">GNF</div></div>
-    <div class="stat-card"><div class="stat-label">${t('effectif')}</div><div class="stat-value c-blue">${employesData.length}</div><div class="stat-sub">${t('actifs')}</div></div>`
-  document.getElementById('pointage-list').innerHTML=employesData.length===0?`<div class="empty-state"><div>👷</div><p>${t('aucun_employe')}</p></div>`:employesData.map((e,i)=>`
+    <div class="stat-card"><div class="stat-label">Présents</div><div class="stat-value c-green">${presents}</div><div class="stat-sub">sur ${employesData.length}</div></div>
+    <div class="stat-card"><div class="stat-label">Absents</div><div class="stat-value c-red">${employesData.length-presents}</div><div class="stat-sub">auj.</div></div>
+    <div class="stat-card"><div class="stat-label">Paie/jour</div><div class="stat-value c-green">${fmt(Math.round(paieJour))}</div><div class="stat-sub">GNF</div></div>
+    <div class="stat-card"><div class="stat-label">Effectif</div><div class="stat-value c-blue">${employesData.length}</div><div class="stat-sub">actifs</div></div>`
+  document.getElementById('pointage-list').innerHTML=employesData.length===0?'<div class="empty-state"><div>👷</div><p>Aucun employé</p></div>':employesData.map((e,i)=>`
     <div style="display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--border);">
       <div class="avatar">${e.nom[0]}${e.prenom?.[0]||''}</div>
       <div style="flex:1;min-width:0;">
@@ -654,7 +595,7 @@ function renderPointage(){
       <button class="presence-btn ${e.present?'present':'absent'}" onclick="togglePresence(${i},this)">${e.present?'✓':'✗'}</button>
     </div>`).join('')
   let total=0
-  document.getElementById('paie-tbody').innerHTML=employesData.map(e=>{const m=e.present?Math.round(remuJour(e)):0;total+=m;return`<tr><td><span style="font-weight:500">${e.prenom?e.prenom[0]+'. ':''} ${e.nom}</span></td><td style="font-family:var(--mono)">${e.present?fmt(m)+' GNF':'—'}</td><td><span class="badge ${e.present?'bg-green':'bg-red'}">${e.present?'✓':'✗'}</span></td></tr>`}).join('')
+  document.getElementById('paie-tbody').innerHTML=employesData.map(e=>{const m=e.present?Math.round(remuJour(e)):0;total+=m;return`<tr><td><span style="font-weight:500">${e.prenom?e.prenom[0]+'. ':''} ${e.nom}</span></td><td style="font-family:var(--mono)">${e.present?fmt(m)+' GNF':'—'}</td><td><span class="contrat-badge ${contratClass(e.type_contrat)}">${contratLabel(e.type_contrat)}</span></td><td><span class="badge ${e.present?'bg-green':'bg-red'}">${e.present?'✓':'✗'}</span></td></tr>`}).join('')
   document.getElementById('paie-total').textContent=fmt(total)+' GNF'
 }
 
@@ -662,18 +603,18 @@ function togglePresence(i,btn){employesData[i].present=!employesData[i].present;
 function allPresent(){employesData.forEach(e=>e.present=true);renderPointage()}
 
 async function savePresences(){
-  if(employesData.length===0){showToast('⚠️',true);return}
+  if(employesData.length===0){showToast('⚠️ Aucun employé',true);return}
   const today=new Date().toISOString().split('T')[0]
   let ok=true
   for(const e of employesData){const{error}=await db.from('presences').upsert({employe_id:e.id,chantier_id:currentChantier.id,date:today,present:e.present},{onConflict:'employe_id,date'});if(error){ok=false;showToast('❌ '+error.message,true);break}}
-  if(ok){showToast(t('toast_presences'));loadHistorique()}
+  if(ok){showToast('✅ Présences enregistrées !');loadHistorique()}
 }
 
 async function loadHistorique(){
   const jours=parseInt(document.getElementById('filtre-semaine')?.value||'7')
   const dateDebut=new Date();dateDebut.setDate(dateDebut.getDate()-jours)
   const{data:presences}=await db.from('presences').select('*,employes(nom,prenom,role,type_contrat,taux_journalier,salaire_mensuel,tarif_prestation)').eq('chantier_id',currentChantier.id).gte('date',dateDebut.toISOString().split('T')[0]).order('date',{ascending:false})
-  document.getElementById('historique-tbody').innerHTML=!presences||presences.length===0?`<tr><td colspan="4" style="text-align:center;color:var(--text2);padding:20px">${t('aucun_pointage')}</td></tr>`:presences.map(p=>{const e=p.employes;const montant=p.present&&e?Math.round(remuJour(e)):0;return`<tr><td><span style="font-weight:500">${e?.prenom?e.prenom[0]+'. ':''} ${e?.nom||'—'}</span></td><td style="font-family:var(--mono);color:var(--text2);font-size:12px;">${p.date}</td><td><span class="badge ${p.present?'bg-green':'bg-red'}">${p.present?'✓':'✗'}</span></td><td style="font-family:var(--mono)">${p.present?fmt(montant):'—'}</td></tr>`}).join('')
+  document.getElementById('historique-tbody').innerHTML=!presences||presences.length===0?'<tr><td colspan="4" style="text-align:center;color:var(--text2);padding:20px">Aucun pointage</td></tr>':presences.map(p=>{const e=p.employes;const montant=p.present&&e?Math.round(remuJour(e)):0;return`<tr><td><span style="font-weight:500">${e?.prenom?e.prenom[0]+'. ':''} ${e?.nom||'—'}</span></td><td style="font-family:var(--mono);color:var(--text2);font-size:12px;">${p.date}</td><td><span class="badge ${p.present?'bg-green':'bg-red'}">${p.present?'✓':'✗'}</span></td><td style="font-family:var(--mono)">${p.present?fmt(montant):'—'}</td></tr>`}).join('')
 }
 
 async function loadStock(){
@@ -684,12 +625,12 @@ async function loadStock(){
   const faible=mat.filter(m=>Number(m.quantite_stock)>0&&Number(m.quantite_stock)<=Number(m.seuil_alerte)).length
   const valeur=mat.reduce((s,m)=>s+Number(m.quantite_stock)*Number(m.prix_unitaire),0)
   document.getElementById('stock-stats').innerHTML=`
-    <div class="stat-card"><div class="stat-label">${t('references')}</div><div class="stat-value c-blue">${mat.length}</div><div class="stat-sub">${t('materiaux')}</div></div>
-    <div class="stat-card"><div class="stat-label">${t('rupture')}</div><div class="stat-value c-red">${urgent}</div><div class="stat-sub">${t('urgent')}</div></div>
-    <div class="stat-card"><div class="stat-label">${t('faible')}</div><div class="stat-value c-amber">${faible}</div><div class="stat-sub">${t('surveiller')}</div></div>
-    <div class="stat-card"><div class="stat-label">${t('valeur')}</div><div class="stat-value c-green">${fmt(valeur)}</div><div class="stat-sub">GNF</div></div>`
-  document.getElementById('stock-list').innerHTML=mat.length===0?`<div class="empty-state"><div>📦</div><p>${t('aucun_materiau')}</p></div>`:mat.map(m=>{const pct=Number(m.quantite_max)>0?Math.min(100,Math.round(Number(m.quantite_stock)/Number(m.quantite_max)*100)):0;const alert=Number(m.quantite_stock)===0?'urgent':Number(m.quantite_stock)<=Number(m.seuil_alerte)?'moyen':'ok';const col=alert==='urgent'?'var(--red)':alert==='moyen'?'var(--amber)':'var(--green)';const badge=alert==='urgent'?'bg-red':alert==='moyen'?'bg-amber':'bg-green';return`<div class="stock-row"><div class="stock-icon">📦</div><div style="flex:1"><div style="font-size:13px;font-weight:500">${m.nom}</div><div class="pbar-bg" style="margin-top:4px;"><div class="pbar-fill" style="width:${pct}%;background:${col};"></div></div><div style="font-size:11px;color:var(--text2);margin-top:2px">${m.quantite_stock} / ${m.quantite_max} ${m.unite}</div></div><span class="badge ${badge}">${alert==='urgent'?t('rupture'):alert==='moyen'?t('faible'):'OK'}</span></div>`}).join('')
-  document.getElementById('bons-tbody').innerHTML=(bons||[]).length===0?`<tr><td colspan="3" style="text-align:center;color:var(--text2);padding:20px">${t('aucun_bon')}</td></tr>`:(bons||[]).map(b=>{const badge=b.statut==='livre'?'bg-green':b.statut==='urgent'?'bg-red':'bg-amber';return`<tr><td style="font-weight:500">${b.fournisseur}</td><td style="font-family:var(--mono)">${fmt(b.montant)}</td><td><span class="badge ${badge}">${b.statut}</span></td></tr>`}).join('')
+    <div class="stat-card"><div class="stat-label">Réf.</div><div class="stat-value c-blue">${mat.length}</div><div class="stat-sub">matériaux</div></div>
+    <div class="stat-card"><div class="stat-label">Rupture</div><div class="stat-value c-red">${urgent}</div><div class="stat-sub">urgent</div></div>
+    <div class="stat-card"><div class="stat-label">Faible</div><div class="stat-value c-amber">${faible}</div><div class="stat-sub">surveiller</div></div>
+    <div class="stat-card"><div class="stat-label">Valeur</div><div class="stat-value c-green">${fmt(valeur)}</div><div class="stat-sub">GNF</div></div>`
+  document.getElementById('stock-list').innerHTML=mat.length===0?'<div class="empty-state"><div>📦</div><p>Aucun matériau</p></div>':mat.map(m=>{const pct=Number(m.quantite_max)>0?Math.min(100,Math.round(Number(m.quantite_stock)/Number(m.quantite_max)*100)):0;const alert=Number(m.quantite_stock)===0?'urgent':Number(m.quantite_stock)<=Number(m.seuil_alerte)?'moyen':'ok';const col=alert==='urgent'?'var(--red)':alert==='moyen'?'var(--amber)':'var(--green)';const badge=alert==='urgent'?'bg-red':alert==='moyen'?'bg-amber':'bg-green';return`<div class="stock-row"><div class="stock-icon">📦</div><div style="flex:1"><div style="font-size:13px;font-weight:500">${m.nom}</div><div class="pbar-bg" style="margin-top:4px;"><div class="pbar-fill" style="width:${pct}%;background:${col};"></div></div><div style="font-size:11px;color:var(--text2);margin-top:2px">${m.quantite_stock} / ${m.quantite_max} ${m.unite}</div></div><span class="badge ${badge}">${alert==='urgent'?'Rupture':alert==='moyen'?'Faible':'OK'}</span></div>`}).join('')
+  document.getElementById('bons-tbody').innerHTML=(bons||[]).length===0?'<tr><td colspan="3" style="text-align:center;color:var(--text2);padding:20px">Aucun bon</td></tr>':(bons||[]).map(b=>{const badge=b.statut==='livre'?'bg-green':b.statut==='urgent'?'bg-red':'bg-amber';return`<tr><td style="font-weight:500">${b.fournisseur}</td><td style="font-family:var(--mono)">${fmt(b.montant)}</td><td><span class="badge ${badge}">${b.statut}</span></td></tr>`}).join('')
 }
 
 async function loadBudget(){
@@ -699,30 +640,30 @@ async function loadBudget(){
   const budgetRevise=Number(currentChantier.budget_initial)+totalImp
   const depense=(phases||[]).reduce((s,p)=>s+Number(p.budget_reel),0)
   const dep=totalImp>0?((totalImp/currentChantier.budget_initial)*100).toFixed(1):0
-  if(totalImp>0){document.getElementById('budget-alert').style.display='flex';document.getElementById('budget-alert-text').innerHTML=`<strong style="color:var(--red)">${t('imprevu')}</strong> — +${fmt(totalImp)} GNF`}
+  if(totalImp>0){document.getElementById('budget-alert').style.display='flex';document.getElementById('budget-alert-text').innerHTML=`<strong style="color:var(--red)">Imprévus</strong> — +${fmt(totalImp)} GNF`}
   document.getElementById('budget-stats').innerHTML=`
-    <div class="stat-card"><div class="stat-label">${t('initial')}</div><div class="stat-value c-blue">${fmt(currentChantier.budget_initial)}</div><div class="stat-sub">GNF</div></div>
-    <div class="stat-card"><div class="stat-label">${t('revise')}</div><div class="stat-value c-amber">${fmt(budgetRevise)}</div><div class="stat-sub">GNF</div></div>
-    <div class="stat-card"><div class="stat-label">${t('depense')}</div><div class="stat-value">${fmt(depense)}</div><div class="stat-sub">GNF</div></div>
-    <div class="stat-card"><div class="stat-label">${t('ecart')}</div><div class="stat-value c-red">+${dep}%</div><div class="stat-sub">${t('imprevu')}</div></div>`
+    <div class="stat-card"><div class="stat-label">Initial</div><div class="stat-value c-blue">${fmt(currentChantier.budget_initial)}</div><div class="stat-sub">GNF</div></div>
+    <div class="stat-card"><div class="stat-label">Révisé</div><div class="stat-value c-amber">${fmt(budgetRevise)}</div><div class="stat-sub">GNF</div></div>
+    <div class="stat-card"><div class="stat-label">Dépensé</div><div class="stat-value">${fmt(depense)}</div><div class="stat-sub">GNF</div></div>
+    <div class="stat-card"><div class="stat-label">Écart</div><div class="stat-value c-red">+${dep}%</div><div class="stat-sub">imprévus</div></div>`
   const sM={done:'bg-green',over:'bg-red',progress:'bg-amber',pending:'bg-blue',revised:'bg-blue'}
-  const lM={done:t('termine'),over:t('depassement'),progress:t('en_cours'),pending:t('a_venir'),revised:t('revise_badge')}
+  const lM={done:'✓ Terminé',over:'Dépassement',progress:'En cours',pending:'À venir',revised:'Révisé'}
   const cM={done:'var(--green)',over:'var(--red)',progress:'var(--amber)',pending:'var(--text3)',revised:'var(--blue)'}
-  document.getElementById('budget-phases').innerHTML=(phases||[]).length===0?`<div class="empty-state"><div>📊</div><p>${t('aucune_phase')}</p></div>`:(phases||[]).map(p=>{const ecart=Number(p.budget_reel)-Number(p.budget_prevu);return`<div style="margin-bottom:10px;"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;"><div><span style="font-size:13px;font-weight:500">${p.nom}</span><span class="badge ${sM[p.statut]}" style="margin-left:6px">${lM[p.statut]}</span></div><span style="font-size:11px;color:${ecart>0?'var(--red)':ecart<0?'var(--green)':'var(--text2)'};font-family:var(--mono)">${p.avancement>0?(ecart>0?'+':'')+fmt(ecart)+' GNF':'—'}</span></div><div class="pbar-bg"><div class="pbar-fill" style="width:${p.avancement}%;background:${cM[p.statut]};"></div></div><div style="font-size:11px;color:var(--text2);margin-top:2px">${p.avancement}% — ${fmt(p.budget_prevu)} GNF</div></div>`}).join('')
-  document.getElementById('imprevus-list').innerHTML=(imp||[]).length===0?`<div class="loading">${t('aucun_imprev')}</div>`:(imp||[]).map(i=>{const badge=i.priorite==='haute'?'bg-red':'bg-amber';return`<div style="display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--border);"><div style="width:36px;height:36px;border-radius:var(--radius);background:var(--red-d);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:16px;">⚠️</div><div style="flex:1;min-width:0;"><div style="font-size:13px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${i.description}</div><div style="font-size:11px;color:var(--text2)">${i.date}</div></div><div style="text-align:right;flex-shrink:0;"><div style="font-size:13px;font-weight:600;color:var(--red);font-family:var(--mono)">+${fmt(i.montant)}</div><span class="badge ${badge}">${i.priorite}</span></div></div>`}).join('')
+  document.getElementById('budget-phases').innerHTML=(phases||[]).length===0?'<div class="empty-state"><div>📊</div><p>Aucune phase</p></div>':(phases||[]).map(p=>{const ecart=Number(p.budget_reel)-Number(p.budget_prevu);return`<div style="margin-bottom:10px;"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;"><div><span style="font-size:13px;font-weight:500">${p.nom}</span><span class="badge ${sM[p.statut]}" style="margin-left:6px">${lM[p.statut]}</span></div><span style="font-size:11px;color:${ecart>0?'var(--red)':ecart<0?'var(--green)':'var(--text2)'};font-family:var(--mono)">${p.avancement>0?(ecart>0?'+':'')+fmt(ecart)+' GNF':'—'}</span></div><div class="pbar-bg"><div class="pbar-fill" style="width:${p.avancement}%;background:${cM[p.statut]};"></div></div><div style="font-size:11px;color:var(--text2);margin-top:2px">${p.avancement}% — prévu: ${fmt(p.budget_prevu)} GNF</div></div>`}).join('')
+  document.getElementById('imprevus-list').innerHTML=(imp||[]).length===0?'<div class="loading">Aucun imprévu</div>':(imp||[]).map(i=>{const badge=i.priorite==='haute'?'bg-red':'bg-amber';return`<div style="display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--border);"><div style="width:36px;height:36px;border-radius:var(--radius);background:var(--red-d);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:16px;">⚠️</div><div style="flex:1;min-width:0;"><div style="font-size:13px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${i.description}</div><div style="font-size:11px;color:var(--text2)">${i.date}</div></div><div style="text-align:right;flex-shrink:0;"><div style="font-size:13px;font-weight:600;color:var(--red);font-family:var(--mono)">+${fmt(i.montant)}</div><span class="badge ${badge}">${i.priorite}</span></div></div>`}).join('')
 }
 
 async function saveChantier(){
   const nom=document.getElementById('ch-nom').value,budget=parseInt(document.getElementById('ch-budget').value)||0
-  if(!nom||!budget){showToast('⚠️',true);return}
+  if(!nom||!budget){showToast('⚠️ Nom et budget obligatoires',true);return}
   const{error}=await db.from('chantiers').insert({user_id:currentUser.id,nom,adresse:document.getElementById('ch-adresse').value,date_debut:document.getElementById('ch-debut').value||null,date_fin_prevue:document.getElementById('ch-fin').value||null,budget_initial:budget,statut:document.getElementById('ch-statut').value,avancement:0})
   if(error){showToast('❌ '+error.message,true);return}
-  closeModal('modal-chantier');showToast(t('toast_chantier'));loadChantiers()
+  closeModal('modal-chantier');showToast('✅ Chantier créé !');loadChantiers()
 }
 
 async function saveEmploye(){
   const nom=document.getElementById('emp-nom').value
-  if(!nom){showToast('⚠️',true);return}
+  if(!nom){showToast('⚠️ Nom obligatoire',true);return}
   const editId=document.getElementById('emp-edit-id').value
   const contrat=document.getElementById('emp-contrat').value
   const payload={chantier_id:currentChantier.id,nom,prenom:document.getElementById('emp-prenom').value,date_naissance:document.getElementById('emp-naissance').value||null,nationalite:document.getElementById('emp-nationalite').value||'Guinéenne',telephone:document.getElementById('emp-tel').value,adresse:document.getElementById('emp-adresse').value,type_piece:document.getElementById('emp-type-piece').value||null,numero_piece:document.getElementById('emp-num-piece').value,role:document.getElementById('emp-role').value,specialites:document.getElementById('emp-specialites').value,experience_annees:parseInt(document.getElementById('emp-experience').value)||0,type_contrat:contrat,taux_journalier:contrat==='journalier'||contrat==='stagiaire'?parseFloat(document.getElementById('emp-taux').value)||0:0,salaire_mensuel:contrat==='permanent'||contrat==='cdd'?parseFloat(document.getElementById('emp-salaire').value)||0:0,tarif_prestation:contrat==='independant'?parseFloat(document.getElementById('emp-tarif').value)||0:0,date_embauche:document.getElementById('emp-embauche').value||null,actif:true}
@@ -731,17 +672,17 @@ async function saveEmploye(){
   else{const res=await db.from('employes').insert(payload);error=res.error}
   if(error){showToast('❌ '+error.message,true);return}
   document.getElementById('emp-edit-id').value=''
-  document.getElementById('emp-modal-title').textContent=t('nouvel_employe')
-  document.getElementById('emp-save-btn').textContent=t('ajouter_btn')
-  closeModal('modal-employe');showToast(editId?t('toast_employe_maj'):t('toast_employe_add'));loadEmployes();loadPointage()
+  document.getElementById('emp-modal-title').textContent='👷 Nouvel employé'
+  document.getElementById('emp-save-btn').textContent='Ajouter →'
+  closeModal('modal-employe');showToast(editId?'✅ Mis à jour !':'✅ Employé ajouté !');loadEmployes();loadPointage()
 }
 
 async function saveMateriau(){
   const nom=document.getElementById('mat-nom').value
-  if(!nom){showToast('⚠️',true);return}
+  if(!nom){showToast('⚠️ Nom obligatoire',true);return}
   const{error}=await db.from('materiaux').insert({chantier_id:currentChantier.id,nom,unite:document.getElementById('mat-unite').value||'unité',quantite_stock:parseFloat(document.getElementById('mat-qte').value)||0,quantite_max:parseFloat(document.getElementById('mat-max').value)||0,seuil_alerte:parseFloat(document.getElementById('mat-seuil').value)||0,prix_unitaire:parseFloat(document.getElementById('mat-prix').value)||0})
   if(error){showToast('❌ '+error.message,true);return}
-  closeModal('modal-materiau');showToast(t('toast_materiau'));loadStock()
+  closeModal('modal-materiau');showToast('✅ Matériau ajouté !');loadStock()
 }
 
 async function loadMateriauxSelect(){
@@ -752,36 +693,37 @@ async function loadMateriauxSelect(){
 async function saveMouvement(){
   const sel=document.getElementById('st-materiau'),type=document.getElementById('st-type').value
   const quantite=parseFloat(document.getElementById('st-quantite').value)||0
-  if(!quantite){showToast('⚠️',true);return}
+  if(!quantite){showToast('⚠️ Quantité obligatoire',true);return}
   await db.from('mouvements_stock').insert({materiau_id:sel.value,type,quantite,motif:document.getElementById('st-motif').value})
   const qte=parseFloat(sel.options[sel.selectedIndex].dataset.qte)||0
   const nQte=type==='entree'?qte+quantite:Math.max(0,qte-quantite)
   const{error}=await db.from('materiaux').update({quantite_stock:nQte}).eq('id',sel.value)
   if(error){showToast('❌ '+error.message,true);return}
-  closeModal('modal-stock');showToast(t('toast_mouvement'));loadStock()
+  closeModal('modal-stock');showToast(`✅ ${type==='entree'?'Entrée':'Sortie'} enregistrée !`);loadStock()
 }
 
 async function saveBon(){
   const f=document.getElementById('bon-fournisseur').value
-  if(!f){showToast('⚠️',true);return}
+  if(!f){showToast('⚠️ Fournisseur obligatoire',true);return}
   const{error}=await db.from('bons_commande').insert({chantier_id:currentChantier.id,fournisseur:f,description:document.getElementById('bon-desc').value,montant:parseInt(document.getElementById('bon-montant').value)||0,statut:document.getElementById('bon-statut').value})
   if(error){showToast('❌ '+error.message,true);return}
-  closeModal('modal-bon');showToast(t('toast_bon'));loadStock()
+  closeModal('modal-bon');showToast('✅ Bon créé !');loadStock()
 }
 
 async function addImprev(){
   const desc=document.getElementById('imp-desc').value,montant=parseInt(document.getElementById('imp-montant').value)||0
-  if(!desc||!montant){showToast('⚠️',true);return}
+  if(!desc||!montant){showToast('⚠️ Description et montant obligatoires',true);return}
   const{error}=await db.from('imprevus').insert({chantier_id:currentChantier.id,description:desc,montant,priorite:document.getElementById('imp-priorite').value})
   if(error){showToast('❌ '+error.message,true);return}
   document.getElementById('imp-desc').value=''
   document.getElementById('imp-montant').value=''
-  showToast(t('toast_imprev'));loadBudget()
+  showToast('✅ Imprévu enregistré !');loadBudget()
 }
 
+// ===== PDF FUNCTIONS =====
 async function exportPDFPaie(){
-  if(!window.jspdf){showToast('⚠️ jsPDF not loaded',true);return}
-  showToast('⏳ Generating PDF...')
+  if(!window.jspdf){showToast('⚠️ jsPDF non chargé',true);return}
+  showToast('⏳ Génération PDF paie...')
   try{
     const jsPDF=window.jspdf.jsPDF
     const doc=new jsPDF()
@@ -791,21 +733,19 @@ async function exportPDFPaie(){
     doc.setTextColor(255,255,255);doc.setFontSize(18);doc.setFont('helvetica','bold')
     doc.text('BTP CHANTIER PRO',14,14)
     doc.setFontSize(11);doc.setFont('helvetica','normal')
-    doc.text(currentLang==='fr'?'Récapitulatif de paie':'Payroll Summary',14,22)
+    doc.text('Récapitulatif de paie',14,22)
     doc.text(today,196,14,{align:'right'})
     y=45
     doc.setTextColor(30,30,30);doc.setFontSize(12);doc.setFont('helvetica','bold')
-    doc.text((currentLang==='fr'?'Chantier : ':'Project: ')+currentChantier.nom,14,y)
+    doc.text('Chantier : '+currentChantier.nom,14,y)
     y+=7;doc.setFontSize(10);doc.setFont('helvetica','normal');doc.setTextColor(80,80,80)
-    doc.text((currentLang==='fr'?'Date : ':'Date: ')+today,14,y)
+    doc.text('Date : '+today,14,y)
     y+=12
     doc.setDrawColor(26,110,58);doc.setLineWidth(0.5);doc.line(14,y,196,y);y+=8
     doc.setFillColor(240,247,240);doc.rect(14,y-4,182,8,'F')
     doc.setTextColor(30,30,30);doc.setFontSize(9);doc.setFont('helvetica','bold')
-    doc.text(t('employe'),16,y+1);doc.text(t('role')||'Role',70,y+1)
-    doc.text(t('type_contrat')||'Contract',110,y+1)
-    doc.text(t('taux_journalier')||'Rate/day',148,y+1,{align:'right'})
-    doc.text('Total',196,y+1,{align:'right'})
+    doc.text('Employé',16,y+1);doc.text('Rôle',70,y+1);doc.text('Contrat',110,y+1)
+    doc.text('Taux/j',148,y+1,{align:'right'});doc.text('Total',196,y+1,{align:'right'})
     y+=10
     let grandTotal=0
     doc.setFont('helvetica','normal')
@@ -820,7 +760,7 @@ async function exportPDFPaie(){
       doc.text(e.role||'',70,y+1)
       doc.text(contratLabel(e.type_contrat),110,y+1)
       doc.text(fmtPDF(rj),148,y+1,{align:'right'})
-      if(!e.present){doc.setTextColor(180,50,50);doc.text(currentLang==='fr'?'Absent':'Absent',196,y+1,{align:'right'})}
+      if(!e.present){doc.setTextColor(180,50,50);doc.text('Absent',196,y+1,{align:'right'})}
       else{doc.setFont('helvetica','bold');doc.text(fmtPDF(total),196,y+1,{align:'right'})}
       doc.setFont('helvetica','normal');doc.setTextColor(30,30,30)
       y+=8
@@ -828,18 +768,18 @@ async function exportPDFPaie(){
     y+=4;doc.setDrawColor(26,110,58);doc.line(14,y,196,y);y+=6
     doc.setFillColor(26,110,58);doc.rect(100,y-4,96,10,'F')
     doc.setTextColor(255,255,255);doc.setFontSize(11);doc.setFont('helvetica','bold')
-    doc.text(currentLang==='fr'?'TOTAL À PAYER':'TOTAL TO PAY',102,y+2)
+    doc.text('TOTAL À PAYER',102,y+2)
     doc.text(fmtPDF(grandTotal),196,y+2,{align:'right'})
     doc.setTextColor(150,150,150);doc.setFontSize(8);doc.setFont('helvetica','normal')
-    doc.text('BTP Chantier Pro — '+today,14,285)
-    doc.save('payroll_'+currentChantier.nom.replace(/ /g,'_')+'_'+today.replace(/\//g,'-')+'.pdf')
-    showToast(t('toast_pdf_paie'))
-  }catch(e){showToast('❌ '+e.message,true)}
+    doc.text('Document généré par BTP Chantier Pro — '+today,14,285)
+    doc.save('paie_'+currentChantier.nom.replace(/ /g,'_')+'_'+today.replace(/\//g,'-')+'.pdf')
+    showToast('✅ PDF paie téléchargé !')
+  }catch(e){showToast('❌ Erreur: '+e.message,true)}
 }
 
 async function exportPDFRapport(){
-  if(!window.jspdf){showToast('⚠️ jsPDF not loaded',true);return}
-  showToast('⏳ Generating PDF...')
+  if(!window.jspdf){showToast('⚠️ jsPDF non chargé',true);return}
+  showToast('⏳ Génération rapport PDF...')
   try{
     const{data:phases}=await db.from('phases').select('*').eq('chantier_id',currentChantier.id).order('ordre')
     const{data:imp}=await db.from('imprevus').select('*').eq('chantier_id',currentChantier.id)
@@ -851,14 +791,13 @@ async function exportPDFRapport(){
     doc.setTextColor(255,255,255);doc.setFontSize(18);doc.setFont('helvetica','bold')
     doc.text('BTP CHANTIER PRO',14,14)
     doc.setFontSize(11);doc.setFont('helvetica','normal')
-    doc.text(currentLang==='fr'?'Rapport d\'avancement':'Progress Report',14,22)
-    doc.text(today,196,14,{align:'right'})
+    doc.text('Rapport d\'avancement — '+today,14,22)
     y=45
     doc.setTextColor(30,30,30);doc.setFontSize(13);doc.setFont('helvetica','bold')
     doc.text(currentChantier.nom,14,y);y+=7
     doc.setFontSize(10);doc.setFont('helvetica','normal');doc.setTextColor(80,80,80)
-    doc.text((currentLang==='fr'?'Statut : ':'Status: ')+currentChantier.statut+' | '+(currentLang==='fr'?'Avancement : ':'Progress: ')+currentChantier.avancement+'%',14,y);y+=6
-    doc.text((currentLang==='fr'?'Budget initial : ':'Initial budget: ')+fmtPDF(currentChantier.budget_initial),14,y);y+=10
+    doc.text('Statut : '+currentChantier.statut+' | Avancement : '+currentChantier.avancement+'%',14,y);y+=6
+    doc.text('Budget initial : '+fmtPDF(currentChantier.budget_initial),14,y);y+=10
     doc.setDrawColor(200,200,200);doc.setLineWidth(0.3);doc.rect(14,y,182,6)
     doc.setFillColor(26,110,58);doc.rect(14,y,Math.max(1,182*(currentChantier.avancement/100)),6,'F')
     doc.setTextColor(30,30,30);doc.setFontSize(8);doc.text(currentChantier.avancement+'%',197,y+4.5,{align:'right'})
@@ -866,13 +805,10 @@ async function exportPDFRapport(){
     if(phases&&phases.length>0){
       doc.setDrawColor(26,110,58);doc.line(14,y,196,y);y+=6
       doc.setFontSize(12);doc.setFont('helvetica','bold');doc.setTextColor(26,110,58)
-      doc.text(currentLang==='fr'?'PHASES DU CHANTIER':'PROJECT PHASES',14,y);y+=8
+      doc.text('PHASES DU CHANTIER',14,y);y+=8
       doc.setFillColor(240,247,240);doc.rect(14,y-4,182,8,'F')
       doc.setFontSize(9);doc.setTextColor(30,30,30);doc.setFont('helvetica','bold')
-      doc.text(t('phases'),16,y+1);doc.text('%',90,y+1)
-      doc.text(currentLang==='fr'?'Prévu':'Budget',130,y+1,{align:'right'})
-      doc.text(currentLang==='fr'?'Réel':'Actual',165,y+1,{align:'right'})
-      doc.text(t('ecart'),196,y+1,{align:'right'})
+      doc.text('Phase',16,y+1);doc.text('Avanc.',90,y+1);doc.text('Prévu',130,y+1,{align:'right'});doc.text('Réel',165,y+1,{align:'right'});doc.text('Écart',196,y+1,{align:'right'})
       y+=10;doc.setFont('helvetica','normal')
       phases.forEach((p,i)=>{
         if(y>260){doc.addPage();y=20}
@@ -892,7 +828,7 @@ async function exportPDFRapport(){
       if(y>240){doc.addPage();y=20}
       doc.setDrawColor(26,110,58);doc.line(14,y,196,y);y+=6
       doc.setFontSize(12);doc.setFont('helvetica','bold');doc.setTextColor(26,110,58)
-      doc.text(currentLang==='fr'?'IMPRÉVUS':'UNEXPECTED COSTS',14,y);y+=8
+      doc.text('IMPRÉVUS',14,y);y+=8
       const totalImp=imp.reduce((s,i)=>s+Number(i.montant),0)
       doc.setFontSize(9);doc.setFont('helvetica','normal');doc.setTextColor(30,30,30)
       imp.forEach((im,i)=>{
@@ -904,21 +840,21 @@ async function exportPDFRapport(){
         doc.setFont('helvetica','normal');doc.setTextColor(30,30,30);y+=8
       })
       y+=4;doc.setFont('helvetica','bold')
-      doc.text((currentLang==='fr'?'Total imprévus : ':'Total costs: ')+'+'+fmtPDF(totalImp),196,y,{align:'right'})
+      doc.text('Total imprévus : +'+fmtPDF(totalImp),196,y,{align:'right'})
     }
     if(allEmployes.length>0){
       y+=10;if(y>240){doc.addPage();y=20}
       doc.setDrawColor(26,110,58);doc.line(14,y,196,y);y+=6
       doc.setFontSize(12);doc.setFont('helvetica','bold');doc.setTextColor(26,110,58)
-      doc.text((currentLang==='fr'?'ÉQUIPE':'TEAM')+' ('+allEmployes.length+')',14,y);y+=8
+      doc.text('ÉQUIPE ('+allEmployes.length+' employés)',14,y);y+=8
       doc.setFontSize(9);doc.setFont('helvetica','normal');doc.setTextColor(30,30,30)
       allEmployes.forEach(e=>{if(y>270){doc.addPage();y=20};doc.text((e.prenom||'')+' '+e.nom+' — '+e.role+' ('+contratLabel(e.type_contrat)+')',16,y);y+=6})
     }
     doc.setTextColor(150,150,150);doc.setFontSize(8);doc.setFont('helvetica','normal')
-    doc.text('BTP Chantier Pro — '+today,14,285)
-    doc.save('report_'+currentChantier.nom.replace(/ /g,'_')+'_'+today.replace(/\//g,'-')+'.pdf')
-    showToast(t('toast_pdf_rapport'))
-  }catch(e){showToast('❌ '+e.message,true)}
+    doc.text('Rapport généré par BTP Chantier Pro — '+today,14,285)
+    doc.save('rapport_'+currentChantier.nom.replace(/ /g,'_')+'_'+today.replace(/\//g,'-')+'.pdf')
+    showToast('✅ Rapport PDF téléchargé !')
+  }catch(e){showToast('❌ Erreur: '+e.message,true)}
 }
 
 // INIT
@@ -929,11 +865,10 @@ db.auth.getSession().then(({data:{session}})=>{
   document.getElementById('user-email').textContent=email
   document.getElementById('user-avatar').textContent=email[0].toUpperCase()
   document.getElementById('menu-email').textContent=email
-  initLang()
   loadChantiers()
 })
 
-if('serviceWorker' in navigator){navigator.serviceWorker.register('/sw.js').then(()=>console.log('SW OK')).catch(e=>console.log('SW err',e))}
+if('serviceWorker' in navigator){navigator.serviceWorker.register('/sw.js').then(()=>console.log('SW OK')).catch(e=>console.log('SW erreur',e))}
 </script>
 </body>
 </html>

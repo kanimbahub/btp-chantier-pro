@@ -132,28 +132,6 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);font-size:14
 .profile-menu-item:hover{background:var(--bg3);}
 .profile-menu-item.danger{color:var(--red);}
 .profile-menu-item.danger:hover{background:var(--red-d);}
-
-/* NOTIFICATION BELL */
-.notif-btn{position:relative;width:34px;height:34px;border-radius:50%;background:var(--bg3);border:1px solid var(--border2);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px;transition:all 0.15s;}
-.notif-btn:hover{border-color:var(--amber);}
-.notif-btn.has-alerts{border-color:var(--red);background:var(--red-d);}
-[data-theme="light"] .notif-btn.has-alerts{background:var(--red-l);}
-.notif-badge{position:absolute;top:-4px;right:-4px;background:var(--red);color:#fff;font-size:9px;font-weight:700;min-width:16px;height:16px;border-radius:8px;display:flex;align-items:center;justify-content:center;padding:0 3px;}
-.notif-menu{display:none;position:absolute;right:0;top:44px;background:var(--bg2);border:1px solid var(--border2);border-radius:var(--radius-lg);width:300px;box-shadow:var(--shadow);z-index:300;overflow:hidden;}
-.notif-head{padding:12px 14px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
-.notif-head-title{font-size:13px;font-weight:600;}
-.notif-item{display:flex;align-items:center;gap:10px;padding:10px 14px;border-bottom:1px solid var(--border);cursor:pointer;transition:background 0.15s;}
-.notif-item:hover{background:var(--bg3);}
-.notif-item:last-child{border-bottom:none;}
-.notif-icon{width:32px;height:32px;border-radius:var(--radius);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;}
-.notif-icon.red{background:var(--red-d);}
-.notif-icon.amber{background:var(--amber-d);}
-[data-theme="light"] .notif-icon.red{background:var(--red-l);}
-[data-theme="light"] .notif-icon.amber{background:var(--amber-l);}
-.notif-empty{padding:20px;text-align:center;color:var(--text2);font-size:13px;}
-.notif-footer{padding:10px 14px;border-top:1px solid var(--border);text-align:center;}
-.notif-footer a{font-size:12px;color:var(--green);cursor:pointer;text-decoration:none;}
-
 @media(max-width:768px){
   .sidebar{transform:translateX(-100%);}
   .sidebar.open{transform:translateX(0);}
@@ -166,7 +144,6 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);font-size:14
   .grid2{grid-template-columns:1fr;}
   .form-grid2{grid-template-columns:1fr;}
   .toast{bottom:90px;}
-  .notif-menu{width:260px;}
 }
 @media(min-width:769px){
   .modal-overlay{align-items:center;}
@@ -191,7 +168,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);font-size:14
   <div class="nav-item" onclick="goPage('employes',this);closeSidebar()">👷 <span data-i18n="employes">Employés & RH</span></div>
   <div class="nav-item" onclick="goPage('pointage',this);closeSidebar()">✅ <span data-i18n="pointage">Pointage & Paie</span></div>
   <div class="nav-item" onclick="goPage('stock',this);closeSidebar()">📦 <span data-i18n="stock">Stock matériaux</span></div>
-  <div class="nav-item" onclick="goPage('budget',this);closeSidebar()">💰 <span data-i18n="budget">Budget & Imprévus</span> <span class="nav-badge" id="budget-badge" style="display:none;">!</span></div>
+  <div class="nav-item" onclick="goPage('budget',this);closeSidebar()">💰 <span data-i18n="budget">Budget & Imprévus</span> <span class="nav-badge">!</span></div>
   <div class="sidebar-bottom">
     <button class="theme-toggle" onclick="toggleTheme()"><span id="theme-label">🌙 Mode sombre</span><div class="toggle-pill"></div></button>
     <button class="lang-btn" id="lang-btn" onclick="toggleLang()">🇬🇧 EN</button>
@@ -206,22 +183,6 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);font-size:14
       <div class="page-title" id="page-title">Tableau de bord</div>
     </div>
     <div style="display:flex;align-items:center;gap:8px;">
-      <!-- NOTIFICATION BELL -->
-      <div style="position:relative;">
-        <div class="notif-btn" id="notif-btn" onclick="toggleNotifMenu()">
-          🔔
-          <span class="notif-badge" id="notif-badge" style="display:none;">0</span>
-        </div>
-        <div class="notif-menu" id="notif-menu">
-          <div class="notif-head">
-            <span class="notif-head-title">🔔 Alertes</span>
-            <span style="font-size:11px;color:var(--text2)" id="notif-count">0 alerte</span>
-          </div>
-          <div id="notif-list"><div class="notif-empty">✅ Aucune alerte</div></div>
-          <div class="notif-footer"><a onclick="goPageFromNotif('stock')">Voir le stock →</a></div>
-        </div>
-      </div>
-      <!-- PROFILE -->
       <div style="position:relative;">
         <div onclick="toggleProfileMenu()" style="width:34px;height:34px;border-radius:50%;background:var(--green);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:600;color:#fff;cursor:pointer;" id="user-avatar">?</div>
         <div class="profile-menu" id="profile-menu">
@@ -255,7 +216,12 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);font-size:14
           <div class="card-title" data-i18n="employes">Employés</div>
           <div style="display:flex;gap:6px;flex-wrap:wrap;">
             <select id="filtre-contrat" class="form-input" style="width:auto;padding:5px 8px;font-size:12px;" onchange="filterEmployes()">
-              <option value="">Tous</option><option value="permanent">Permanent</option><option value="cdd">CDD</option><option value="journalier">Journalier</option><option value="independant">Indépendant</option><option value="stagiaire">Stagiaire</option>
+              <option value="" data-i18n="tous">Tous</option>
+              <option value="permanent" data-i18n="permanent">Permanent</option>
+              <option value="cdd" data-i18n="cdd">CDD</option>
+              <option value="journalier" data-i18n="journalier">Journalier</option>
+              <option value="independant" data-i18n="independant">Indépendant</option>
+              <option value="stagiaire" data-i18n="stagiaire">Stagiaire</option>
             </select>
             <button class="btn btn-green btn-sm" onclick="openModal('modal-employe')" data-i18n="ajouter">+ Ajouter</button>
           </div>
@@ -300,7 +266,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);font-size:14
           </select>
         </div>
         <table class="tbl">
-          <thead><tr><th data-i18n="employe">Employé</th><th data-i18n="date">Date</th><th data-i18n="statut">Statut</th><th>GNF</th></tr></thead>
+          <thead><tr><th data-i18n="employe">Employé</th><th data-i18n="date">Date</th><th data-i18n="statut">Statut</th><th data-i18n="remuneration">GNF</th></tr></thead>
           <tbody id="historique-tbody"></tbody>
         </table>
       </div>
@@ -313,7 +279,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);font-size:14
         <div class="card-head">
           <div class="card-title" data-i18n="materiaux">Matériaux</div>
           <div style="display:flex;gap:6px;">
-            <button class="btn btn-outline btn-sm" onclick="openModal('modal-materiau')">+ Mat.</button>
+            <button class="btn btn-outline btn-sm" onclick="openModal('modal-materiau')">+ <span data-i18n="materiaux">Mat.</span></button>
             <button class="btn btn-green btn-sm" onclick="openModal('modal-stock')" data-i18n="entree_sortie">Entrée/Sortie</button>
           </div>
         </div>
@@ -333,7 +299,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);font-size:14
       <div class="alert-bar" id="budget-alert" style="display:none;">
         <span>⚠️</span>
         <div style="flex:1;font-size:13px;" id="budget-alert-text"></div>
-        <button class="btn btn-outline btn-sm" onclick="this.parentElement.style.display='none'">OK</button>
+        <button class="btn btn-outline btn-sm" onclick="this.parentElement.style.display='none'" data-i18n="annuler">OK</button>
       </div>
       <div class="stats-grid" id="budget-stats"></div>
       <div class="grid2">
@@ -374,10 +340,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);font-size:14
     <div class="bnav-item active" id="bn-dashboard" onclick="goPageMobile('dashboard',this)"><div class="bnav-icon">📊</div><span data-i18n="dashboard">Accueil</span></div>
     <div class="bnav-item" id="bn-employes" onclick="goPageMobile('employes',this)"><div class="bnav-icon">👷</div><span data-i18n="employes">Employés</span></div>
     <div class="bnav-item" id="bn-pointage" onclick="goPageMobile('pointage',this)"><div class="bnav-icon">✅</div><span data-i18n="pointage">Pointage</span></div>
-    <div class="bnav-item" id="bn-stock" onclick="goPageMobile('stock',this)">
-      <div class="bnav-icon" style="position:relative;">📦<span id="bnav-stock-badge" style="display:none;position:absolute;top:-4px;right:-4px;background:var(--red);color:#fff;font-size:8px;min-width:14px;height:14px;border-radius:7px;display:flex;align-items:center;justify-content:center;padding:0 2px;"></span></div>
-      <span data-i18n="stock">Stock</span>
-    </div>
+    <div class="bnav-item" id="bn-stock" onclick="goPageMobile('stock',this)"><div class="bnav-icon">📦</div><span data-i18n="stock">Stock</span></div>
     <div class="bnav-item" id="bn-budget" onclick="goPageMobile('budget',this)"><div class="bnav-icon">💰</div><span data-i18n="budget">Budget</span></div>
   </div>
 </div>
@@ -394,7 +357,10 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);font-size:14
     </div>
     <div class="form-group"><label data-i18n="budget_initial">Budget initial (GNF) *</label><input type="number" id="ch-budget" class="form-input" placeholder="450000000"></div>
     <div class="form-group"><label data-i18n="statut">Statut</label>
-      <select id="ch-statut" class="form-input"><option value="planifie">Planifié</option><option value="encours">En cours</option></select>
+      <select id="ch-statut" class="form-input">
+        <option value="planifie" data-i18n="planifie">Planifié</option>
+        <option value="encours" data-i18n="en_cours">En cours</option>
+      </select>
     </div>
     <div class="modal-footer"><button class="btn btn-outline" onclick="closeModal('modal-chantier')" data-i18n="annuler">Annuler</button><button class="btn btn-green" onclick="saveChantier()" data-i18n="creer">Créer →</button></div>
   </div>
@@ -402,7 +368,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);font-size:14
 
 <div class="modal-overlay" id="modal-employe">
   <div class="modal-box">
-    <div class="modal-head"><div class="modal-title" id="emp-modal-title">👷 Nouvel employé</div><button class="modal-close" onclick="closeModal('modal-employe')">✕</button></div>
+    <div class="modal-head"><div class="modal-title" id="emp-modal-title" data-i18n="nouvel_employe">👷 Nouvel employé</div><button class="modal-close" onclick="closeModal('modal-employe')">✕</button></div>
     <div class="section-divider" data-i18n="infos_perso">Informations personnelles</div>
     <div class="form-grid2">
       <div class="form-group"><label data-i18n="nom_label">Nom *</label><input type="text" id="emp-nom" class="form-input" placeholder="Konaté"></div>
@@ -418,7 +384,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);font-size:14
     </div>
     <div class="form-grid2">
       <div class="form-group"><label data-i18n="type_piece">Type pièce d'identité</label>
-        <select id="emp-type-piece" class="form-input"><option value="">-- Choisir --</option><option value="CNI">CNI</option><option value="passeport">Passeport</option><option value="permis">Permis</option><option value="autre">Autre</option></select>
+        <select id="emp-type-piece" class="form-input"><option value="" data-i18n="choisir">-- Choisir --</option><option value="CNI">CNI</option><option value="passeport">Passeport</option><option value="permis">Permis</option><option value="autre">Autre</option></select>
       </div>
       <div class="form-group"><label data-i18n="numero_piece">Numéro pièce</label><input type="text" id="emp-num-piece" class="form-input" placeholder="GN-123456"></div>
     </div>
@@ -436,7 +402,11 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);font-size:14
     <div class="form-grid2">
       <div class="form-group"><label data-i18n="type_contrat">Type de contrat *</label>
         <select id="emp-contrat" class="form-input" onchange="updateRemuFields()">
-          <option value="journalier">Journalier</option><option value="permanent">Salarié permanent</option><option value="cdd">CDD</option><option value="independant">Indépendant</option><option value="stagiaire">Stagiaire</option>
+          <option value="journalier" data-i18n="journalier">Journalier</option>
+          <option value="permanent" data-i18n="permanent">Salarié permanent</option>
+          <option value="cdd" data-i18n="cdd">CDD</option>
+          <option value="independant" data-i18n="independant">Indépendant</option>
+          <option value="stagiaire" data-i18n="stagiaire">Stagiaire</option>
         </select>
       </div>
       <div class="form-group"><label data-i18n="date_embauche">Date d'embauche</label><input type="date" id="emp-embauche" class="form-input"></div>
@@ -454,7 +424,10 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);font-size:14
     <div class="modal-head"><div class="modal-title" data-i18n="entree_sortie_titre">📦 Entrée / Sortie</div><button class="modal-close" onclick="closeModal('modal-stock')">✕</button></div>
     <div class="form-group"><label data-i18n="materiau">Matériau *</label><select id="st-materiau" class="form-input"></select></div>
     <div class="form-group"><label data-i18n="type">Type</label>
-      <select id="st-type" class="form-input"><option value="entree" data-i18n="entree">Entrée (livraison)</option><option value="sortie" data-i18n="sortie">Sortie (utilisation)</option></select>
+      <select id="st-type" class="form-input">
+        <option value="entree" data-i18n="entree">Entrée (livraison)</option>
+        <option value="sortie" data-i18n="sortie">Sortie (utilisation)</option>
+      </select>
     </div>
     <div class="form-group"><label data-i18n="quantite">Quantité *</label><input type="number" id="st-quantite" class="form-input" placeholder="50"></div>
     <div class="form-group"><label data-i18n="motif">Motif</label><input type="text" id="st-motif" class="form-input" placeholder="Livraison fournisseur"></div>
@@ -486,7 +459,11 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);font-size:14
     <div class="form-group"><label data-i18n="desc_label">Description</label><input type="text" id="bon-desc" class="form-input" placeholder="Fer à béton 2T"></div>
     <div class="form-group"><label data-i18n="montant">Montant (GNF)</label><input type="number" id="bon-montant" class="form-input" placeholder="28500000"></div>
     <div class="form-group"><label data-i18n="statut">Statut</label>
-      <select id="bon-statut" class="form-input"><option value="attente">En attente</option><option value="urgent">Urgent</option><option value="livre">Livré</option></select>
+      <select id="bon-statut" class="form-input">
+        <option value="attente" data-i18n="a_venir">En attente</option>
+        <option value="urgent" data-i18n="urgent">Urgent</option>
+        <option value="livre" data-i18n="termine">Livré</option>
+      </select>
     </div>
     <div class="modal-footer"><button class="btn btn-outline" onclick="closeModal('modal-bon')" data-i18n="annuler">Annuler</button><button class="btn btn-green" onclick="saveBon()" data-i18n="creer">Créer →</button></div>
   </div>
@@ -504,7 +481,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);font-size:14
 <script>
 const{createClient}=supabase
 const db=createClient('https://aktwkafyzrujqgvojolx.supabase.co','eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFrdHdrYWZ5enJ1anFndm9qb2x4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM2OTY2MDAsImV4cCI6MjA4OTI3MjYwMH0.OLBuhijTx3lRK5VofjxmoplGgQ1UsxbgIs3igj2hGpM')
-let currentChantier=null,employesData=[],allEmployes=[],currentUser=null,alertesStock=[]
+let currentChantier=null,employesData=[],allEmployes=[],currentUser=null
 
 function fmt(n){if(!n)return'0';if(n>=1e9)return(n/1e9).toFixed(1)+'Md';if(n>=1e6)return(n/1e6).toFixed(1)+'M';return Number(n).toLocaleString('fr-FR')}
 function fmtPDF(n){if(!n)return'0 GNF';if(n>=1e9)return(n/1e9).toFixed(1)+'Md GNF';if(n>=1e6)return(n/1e6).toFixed(1)+'M GNF';return Number(n).toLocaleString('fr-FR')+' GNF'}
@@ -530,14 +507,6 @@ function goPageMobile(id,el){
   document.querySelectorAll('.nav-item').forEach((n,i)=>{if(i===navMap[id])n.classList.add('active')})
 }
 
-function goPageFromNotif(id){
-  toggleNotifMenu()
-  const navItems=document.querySelectorAll('.nav-item')
-  const navMap={stock:3}
-  goPage(id,navItems[navMap[id]])
-  document.querySelectorAll('.bnav-item').forEach((n,i)=>{n.classList.toggle('active',i===navMap[id])})
-}
-
 function openModal(id){document.getElementById(id).style.display='flex';if(id==='modal-stock')loadMateriauxSelect()}
 function closeModal(id){document.getElementById(id).style.display='none'}
 function contratLabel(type){return t(type)||type}
@@ -545,67 +514,8 @@ function contratClass(type){return'contrat-'+(type||'journalier')}
 function remuLabel(e){if(e.type_contrat==='permanent'||e.type_contrat==='cdd')return fmt(e.salaire_mensuel)+'/mois';if(e.type_contrat==='independant')return fmt(e.tarif_prestation)+'/prest.';return fmt(e.taux_journalier)+'/j'}
 function remuJour(e){if(e.type_contrat==='permanent'||e.type_contrat==='cdd')return Number(e.salaire_mensuel)/26;if(e.type_contrat==='independant')return 0;return Number(e.taux_journalier)}
 function updateRemuFields(){const v=document.getElementById('emp-contrat').value;document.getElementById('remu-journalier').style.display=(v==='journalier'||v==='stagiaire')?'block':'none';document.getElementById('remu-mensuel').style.display=(v==='permanent'||v==='cdd')?'block':'none';document.getElementById('remu-prestation').style.display=v==='independant'?'block':'none'}
-
 function toggleProfileMenu(){const m=document.getElementById('profile-menu');m.style.display=m.style.display==='block'?'none':'block'}
-function toggleNotifMenu(){const m=document.getElementById('notif-menu');m.style.display=m.style.display==='block'?'none':'block'}
-
-document.addEventListener('click',e=>{
-  if(!e.target.closest('#user-avatar')&&!e.target.closest('#profile-menu')){const m=document.getElementById('profile-menu');if(m)m.style.display='none'}
-  if(!e.target.closest('#notif-btn')&&!e.target.closest('#notif-menu')){const m=document.getElementById('notif-menu');if(m)m.style.display='none'}
-})
-
-// ===== NOTIFICATIONS =====
-function updateNotifBell(alertes){
-  alertesStock=alertes
-  const count=alertes.length
-  const badge=document.getElementById('notif-badge')
-  const btn=document.getElementById('notif-btn')
-  const countEl=document.getElementById('notif-count')
-  const budgetBadge=document.getElementById('budget-badge')
-
-  if(count>0){
-    badge.textContent=count
-    badge.style.display='flex'
-    btn.classList.add('has-alerts')
-    btn.textContent='🔔'
-    if(budgetBadge)budgetBadge.style.display='inline-flex'
-    // Badge bottom nav stock
-    const bnavBadge=document.getElementById('bnav-stock-badge')
-    if(bnavBadge){bnavBadge.textContent=count;bnavBadge.style.display='flex'}
-  } else {
-    badge.style.display='none'
-    btn.classList.remove('has-alerts')
-    btn.textContent='🔔'
-    if(budgetBadge)budgetBadge.style.display='none'
-    const bnavBadge=document.getElementById('bnav-stock-badge')
-    if(bnavBadge)bnavBadge.style.display='none'
-  }
-
-  countEl.textContent=count+' alerte'+(count>1?'s':'')
-
-  const list=document.getElementById('notif-list')
-  if(count===0){
-    list.innerHTML='<div class="notif-empty">✅ '+t('aucune_alerte')+'</div>'
-    return
-  }
-
-  list.innerHTML=alertes.map(m=>{
-    const isRupture=Number(m.quantite_stock)===0
-    return`<div class="notif-item" onclick="goPageFromNotif('stock')">
-      <div class="notif-icon ${isRupture?'red':'amber'}">${isRupture?'🔴':'🟡'}</div>
-      <div style="flex:1;min-width:0;">
-        <div style="font-size:13px;font-weight:500">${m.nom}</div>
-        <div style="font-size:11px;color:var(--text2)">${isRupture?'⚠️ Rupture totale':'📉 Stock faible'} — ${m.quantite_stock} / ${m.quantite_max} ${m.unite}</div>
-      </div>
-      <span class="badge ${isRupture?'bg-red':'bg-amber'}">${isRupture?t('rupture'):t('faible')}</span>
-    </div>`}).join('')
-
-  // Toast si nouvelles alertes critiques (rupture)
-  const ruptures=alertes.filter(m=>Number(m.quantite_stock)===0)
-  if(ruptures.length>0){
-    showToast('🔴 '+ruptures.length+' rupture'+(ruptures.length>1?'s':'')+' de stock !',true)
-  }
-}
+document.addEventListener('click',e=>{if(!e.target.closest('#user-avatar')&&!e.target.closest('#profile-menu')){const m=document.getElementById('profile-menu');if(m)m.style.display='none'}})
 
 async function logout(){await db.auth.signOut();window.location.href='login.html'}
 
@@ -621,7 +531,7 @@ async function changePassword(){
 
 async function loadChantiers(){
   const{data,error}=await db.from('chantiers').select('*').eq('user_id',currentUser.id)
-  if(error){showToast('❌ Error',true);return}
+  if(error){showToast('❌ Error loading',true);return}
   const sel=document.getElementById('chantier-sel')
   if(!data||data.length===0){
     sel.innerHTML='<option value="">--</option>'
@@ -646,10 +556,14 @@ async function loadDashboard(){
   document.getElementById('dash-stats').innerHTML=`
     <div class="stat-card"><div class="stat-label">${t('mes_chantiers')}</div><div class="stat-value c-blue">${(ch||[]).length}</div><div class="stat-sub">${t('total')}</div></div>
     <div class="stat-card"><div class="stat-label">${t('employes_stat')}</div><div class="stat-value c-green">${(emp||[]).length}</div><div class="stat-sub">${perm} ${t('permanents')}</div></div>
-    <div class="stat-card"><div class="stat-label">${t('budget_stat')}</div><div class="stat-value c-amber">${fmt(currentChantier.budget_initial)}</div><div class="stat-sub">GNF</div></div>
+    <div class="stat-card"><div class="stat-label">${t('budget_stat')}</div><div class="stat-value c-amber">${fmt(currentChantier.budget_initial)}</div><div class="stat-sub">${t('gnf')}</div></div>
     <div class="stat-card"><div class="stat-label">${t('alertes')}</div><div class="stat-value c-red">${alertes.length}</div><div class="stat-sub">${t('ruptures')}</div></div>`
-  document.getElementById('dash-chantiers').innerHTML=(ch||[]).map(c=>{const col=c.statut==='encours'?'var(--green)':c.statut==='retard'?'var(--amber)':'var(--text3)';const badge=c.statut==='encours'?'bg-green':c.statut==='retard'?'bg-amber':'bg-blue';const lbl=c.statut==='encours'?t('en_cours'):c.statut==='retard'?t('retard'):t('planifie');return`<div style="margin-bottom:12px;"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:5px;"><span style="font-size:13px;font-weight:500">${c.nom}</span><span class="badge ${badge}">${lbl}</span></div><div class="pbar-bg"><div class="pbar-fill" style="width:${c.avancement}%;background:${col};"></div></div><div style="font-size:11px;color:var(--text2);margin-top:3px">${c.avancement}% — ${fmt(c.budget_initial)} GNF</div></div>`}).join('')
-  document.getElementById('dash-alertes').innerHTML=alertes.length===0?`<div style="color:var(--text2);font-size:13px;text-align:center;padding:20px">${t('aucune_alerte')}</div>`:alertes.map(m=>`<div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--border);cursor:pointer;" onclick="goPageFromNotif('stock')"><span>${Number(m.quantite_stock)===0?'🔴':'🟡'}</span><div style="flex:1"><div style="font-size:13px;font-weight:500">${m.nom}</div><div style="font-size:11px;color:var(--text2)">${m.quantite_stock} / ${m.quantite_max} ${m.unite}</div></div><span class="badge ${Number(m.quantite_stock)===0?'bg-red':'bg-amber'}">${Number(m.quantite_stock)===0?t('rupture'):t('faible')}</span></div>`).join('')
+  document.getElementById('dash-chantiers').innerHTML=(ch||[]).map(c=>{
+    const col=c.statut==='encours'?'var(--green)':c.statut==='retard'?'var(--amber)':'var(--text3)'
+    const badge=c.statut==='encours'?'bg-green':c.statut==='retard'?'bg-amber':'bg-blue'
+    const lbl=c.statut==='encours'?t('en_cours'):c.statut==='retard'?t('retard'):t('planifie')
+    return`<div style="margin-bottom:12px;"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:5px;"><span style="font-size:13px;font-weight:500">${c.nom}</span><span class="badge ${badge}">${lbl}</span></div><div class="pbar-bg"><div class="pbar-fill" style="width:${c.avancement}%;background:${col};"></div></div><div style="font-size:11px;color:var(--text2);margin-top:3px">${c.avancement}% — ${fmt(c.budget_initial)} GNF</div></div>`}).join('')
+  document.getElementById('dash-alertes').innerHTML=alertes.length===0?`<div style="color:var(--text2);font-size:13px;text-align:center;padding:20px">${t('aucune_alerte')}</div>`:alertes.map(m=>`<div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--border);"><span>⚠️</span><div style="flex:1"><div style="font-size:13px;font-weight:500">${m.nom}</div><div style="font-size:11px;color:var(--text2)">${m.quantite_stock} ${m.unite}</div></div><span class="badge bg-red">${t('urgent')}</span></div>`).join('')
 }
 
 async function loadEmployes(){
@@ -711,7 +625,7 @@ async function editEmploye(id){
   updateRemuFields();openModal('modal-employe')
 }
 
-async function deleteEmploye(id){if(!confirm('?'))return;await db.from('employes').update({actif:false}).eq('id',id);showToast(t('toast_employe_retire'));loadEmployes()}
+async function deleteEmploye(id){if(!confirm(t('aucun_employe')))return;await db.from('employes').update({actif:false}).eq('id',id);showToast(t('toast_employe_retire'));loadEmployes()}
 
 async function loadPointage(){
   const{data}=await db.from('employes').select('*').eq('chantier_id',currentChantier.id).eq('actif',true)
@@ -727,7 +641,7 @@ function renderPointage(){
   const paieJour=employesData.filter(e=>e.present).reduce((s,e)=>s+remuJour(e),0)
   document.getElementById('point-stats').innerHTML=`
     <div class="stat-card"><div class="stat-label">${t('presents')}</div><div class="stat-value c-green">${presents}</div><div class="stat-sub">/ ${employesData.length}</div></div>
-    <div class="stat-card"><div class="stat-label">${t('absents')}</div><div class="stat-value c-red">${employesData.length-presents}</div><div class="stat-sub">auj.</div></div>
+    <div class="stat-card"><div class="stat-label">${t('absents')}</div><div class="stat-value c-red">${employesData.length-presents}</div><div class="stat-sub">${t('date')}</div></div>
     <div class="stat-card"><div class="stat-label">${t('paie_jour')}</div><div class="stat-value c-green">${fmt(Math.round(paieJour))}</div><div class="stat-sub">GNF</div></div>
     <div class="stat-card"><div class="stat-label">${t('effectif')}</div><div class="stat-value c-blue">${employesData.length}</div><div class="stat-sub">${t('actifs')}</div></div>`
   document.getElementById('pointage-list').innerHTML=employesData.length===0?`<div class="empty-state"><div>👷</div><p>${t('aucun_employe')}</p></div>`:employesData.map((e,i)=>`
@@ -769,14 +683,12 @@ async function loadStock(){
   const urgent=mat.filter(m=>Number(m.quantite_stock)===0).length
   const faible=mat.filter(m=>Number(m.quantite_stock)>0&&Number(m.quantite_stock)<=Number(m.seuil_alerte)).length
   const valeur=mat.reduce((s,m)=>s+Number(m.quantite_stock)*Number(m.prix_unitaire),0)
-  const alertes=mat.filter(m=>Number(m.quantite_stock)<=Number(m.seuil_alerte))
-  updateNotifBell(alertes)
   document.getElementById('stock-stats').innerHTML=`
     <div class="stat-card"><div class="stat-label">${t('references')}</div><div class="stat-value c-blue">${mat.length}</div><div class="stat-sub">${t('materiaux')}</div></div>
     <div class="stat-card"><div class="stat-label">${t('rupture')}</div><div class="stat-value c-red">${urgent}</div><div class="stat-sub">${t('urgent')}</div></div>
     <div class="stat-card"><div class="stat-label">${t('faible')}</div><div class="stat-value c-amber">${faible}</div><div class="stat-sub">${t('surveiller')}</div></div>
     <div class="stat-card"><div class="stat-label">${t('valeur')}</div><div class="stat-value c-green">${fmt(valeur)}</div><div class="stat-sub">GNF</div></div>`
-  document.getElementById('stock-list').innerHTML=mat.length===0?`<div class="empty-state"><div>📦</div><p>${t('aucun_materiau')}</p></div>`:mat.map(m=>{const pct=Number(m.quantite_max)>0?Math.min(100,Math.round(Number(m.quantite_stock)/Number(m.quantite_max)*100)):0;const alert=Number(m.quantite_stock)===0?'urgent':Number(m.quantite_stock)<=Number(m.seuil_alerte)?'moyen':'ok';const col=alert==='urgent'?'var(--red)':alert==='moyen'?'var(--amber)':'var(--green)';const badge=alert==='urgent'?'bg-red':alert==='moyen'?'bg-amber':'bg-green';return`<div class="stock-row"><div class="stock-icon">${alert==='urgent'?'🔴':alert==='moyen'?'🟡':'📦'}</div><div style="flex:1"><div style="font-size:13px;font-weight:500">${m.nom}</div><div class="pbar-bg" style="margin-top:4px;"><div class="pbar-fill" style="width:${pct}%;background:${col};"></div></div><div style="font-size:11px;color:var(--text2);margin-top:2px">${m.quantite_stock} / ${m.quantite_max} ${m.unite}</div></div><span class="badge ${badge}">${alert==='urgent'?t('rupture'):alert==='moyen'?t('faible'):'OK'}</span></div>`}).join('')
+  document.getElementById('stock-list').innerHTML=mat.length===0?`<div class="empty-state"><div>📦</div><p>${t('aucun_materiau')}</p></div>`:mat.map(m=>{const pct=Number(m.quantite_max)>0?Math.min(100,Math.round(Number(m.quantite_stock)/Number(m.quantite_max)*100)):0;const alert=Number(m.quantite_stock)===0?'urgent':Number(m.quantite_stock)<=Number(m.seuil_alerte)?'moyen':'ok';const col=alert==='urgent'?'var(--red)':alert==='moyen'?'var(--amber)':'var(--green)';const badge=alert==='urgent'?'bg-red':alert==='moyen'?'bg-amber':'bg-green';return`<div class="stock-row"><div class="stock-icon">📦</div><div style="flex:1"><div style="font-size:13px;font-weight:500">${m.nom}</div><div class="pbar-bg" style="margin-top:4px;"><div class="pbar-fill" style="width:${pct}%;background:${col};"></div></div><div style="font-size:11px;color:var(--text2);margin-top:2px">${m.quantite_stock} / ${m.quantite_max} ${m.unite}</div></div><span class="badge ${badge}">${alert==='urgent'?t('rupture'):alert==='moyen'?t('faible'):'OK'}</span></div>`}).join('')
   document.getElementById('bons-tbody').innerHTML=(bons||[]).length===0?`<tr><td colspan="3" style="text-align:center;color:var(--text2);padding:20px">${t('aucun_bon')}</td></tr>`:(bons||[]).map(b=>{const badge=b.statut==='livre'?'bg-green':b.statut==='urgent'?'bg-red':'bg-amber';return`<tr><td style="font-weight:500">${b.fournisseur}</td><td style="font-family:var(--mono)">${fmt(b.montant)}</td><td><span class="badge ${badge}">${b.statut}</span></td></tr>`}).join('')
 }
 
@@ -871,33 +783,57 @@ async function exportPDFPaie(){
   if(!window.jspdf){showToast('⚠️ jsPDF not loaded',true);return}
   showToast('⏳ Generating PDF...')
   try{
-    const jsPDF=window.jspdf.jsPDF;const doc=new jsPDF();const today=new Date().toLocaleDateString('fr-FR');let y=20
+    const jsPDF=window.jspdf.jsPDF
+    const doc=new jsPDF()
+    const today=new Date().toLocaleDateString('fr-FR')
+    let y=20
     doc.setFillColor(26,110,58);doc.rect(0,0,210,35,'F')
-    doc.setTextColor(255,255,255);doc.setFontSize(18);doc.setFont('helvetica','bold');doc.text('BTP CHANTIER PRO',14,14)
-    doc.setFontSize(11);doc.setFont('helvetica','normal');doc.text(currentLang==='fr'?'Récapitulatif de paie':'Payroll Summary',14,22);doc.text(today,196,14,{align:'right'})
-    y=45;doc.setTextColor(30,30,30);doc.setFontSize(12);doc.setFont('helvetica','bold')
-    doc.text((currentLang==='fr'?'Chantier : ':'Project: ')+currentChantier.nom,14,y);y+=7
-    doc.setFontSize(10);doc.setFont('helvetica','normal');doc.setTextColor(80,80,80);doc.text((currentLang==='fr'?'Date : ':'Date: ')+today,14,y);y+=12
+    doc.setTextColor(255,255,255);doc.setFontSize(18);doc.setFont('helvetica','bold')
+    doc.text('BTP CHANTIER PRO',14,14)
+    doc.setFontSize(11);doc.setFont('helvetica','normal')
+    doc.text(currentLang==='fr'?'Récapitulatif de paie':'Payroll Summary',14,22)
+    doc.text(today,196,14,{align:'right'})
+    y=45
+    doc.setTextColor(30,30,30);doc.setFontSize(12);doc.setFont('helvetica','bold')
+    doc.text((currentLang==='fr'?'Chantier : ':'Project: ')+currentChantier.nom,14,y)
+    y+=7;doc.setFontSize(10);doc.setFont('helvetica','normal');doc.setTextColor(80,80,80)
+    doc.text((currentLang==='fr'?'Date : ':'Date: ')+today,14,y)
+    y+=12
     doc.setDrawColor(26,110,58);doc.setLineWidth(0.5);doc.line(14,y,196,y);y+=8
     doc.setFillColor(240,247,240);doc.rect(14,y-4,182,8,'F')
     doc.setTextColor(30,30,30);doc.setFontSize(9);doc.setFont('helvetica','bold')
-    doc.text(t('employe'),16,y+1);doc.text('Role',70,y+1);doc.text('Contract',110,y+1);doc.text('Rate/day',148,y+1,{align:'right'});doc.text('Total',196,y+1,{align:'right'})
-    y+=10;let grandTotal=0;doc.setFont('helvetica','normal')
+    doc.text(t('employe'),16,y+1);doc.text(t('role')||'Role',70,y+1)
+    doc.text(t('type_contrat')||'Contract',110,y+1)
+    doc.text(t('taux_journalier')||'Rate/day',148,y+1,{align:'right'})
+    doc.text('Total',196,y+1,{align:'right'})
+    y+=10
+    let grandTotal=0
+    doc.setFont('helvetica','normal')
     employesData.forEach((e,i)=>{
       if(y>270){doc.addPage();y=20}
       if(i%2===0){doc.setFillColor(250,252,250);doc.rect(14,y-4,182,8,'F')}
-      const rj=remuJour(e);const total=e.present?Math.round(rj):0;grandTotal+=total
+      const rj=remuJour(e)
+      const total=e.present?Math.round(rj):0
+      grandTotal+=total
       doc.setTextColor(30,30,30);doc.setFontSize(9)
-      doc.text((e.prenom||'')+' '+e.nom,16,y+1);doc.text(e.role||'',70,y+1);doc.text(contratLabel(e.type_contrat),110,y+1);doc.text(fmtPDF(rj),148,y+1,{align:'right'})
-      if(!e.present){doc.setTextColor(180,50,50);doc.text('Absent',196,y+1,{align:'right'})}
+      doc.text((e.prenom||'')+' '+e.nom,16,y+1)
+      doc.text(e.role||'',70,y+1)
+      doc.text(contratLabel(e.type_contrat),110,y+1)
+      doc.text(fmtPDF(rj),148,y+1,{align:'right'})
+      if(!e.present){doc.setTextColor(180,50,50);doc.text(currentLang==='fr'?'Absent':'Absent',196,y+1,{align:'right'})}
       else{doc.setFont('helvetica','bold');doc.text(fmtPDF(total),196,y+1,{align:'right'})}
-      doc.setFont('helvetica','normal');doc.setTextColor(30,30,30);y+=8
+      doc.setFont('helvetica','normal');doc.setTextColor(30,30,30)
+      y+=8
     })
     y+=4;doc.setDrawColor(26,110,58);doc.line(14,y,196,y);y+=6
-    doc.setFillColor(26,110,58);doc.rect(100,y-4,96,10,'F');doc.setTextColor(255,255,255);doc.setFontSize(11);doc.setFont('helvetica','bold')
-    doc.text(currentLang==='fr'?'TOTAL À PAYER':'TOTAL TO PAY',102,y+2);doc.text(fmtPDF(grandTotal),196,y+2,{align:'right'})
-    doc.setTextColor(150,150,150);doc.setFontSize(8);doc.setFont('helvetica','normal');doc.text('BTP Chantier Pro — '+today,14,285)
-    doc.save('payroll_'+currentChantier.nom.replace(/ /g,'_')+'_'+today.replace(/\//g,'-')+'.pdf');showToast(t('toast_pdf_paie'))
+    doc.setFillColor(26,110,58);doc.rect(100,y-4,96,10,'F')
+    doc.setTextColor(255,255,255);doc.setFontSize(11);doc.setFont('helvetica','bold')
+    doc.text(currentLang==='fr'?'TOTAL À PAYER':'TOTAL TO PAY',102,y+2)
+    doc.text(fmtPDF(grandTotal),196,y+2,{align:'right'})
+    doc.setTextColor(150,150,150);doc.setFontSize(8);doc.setFont('helvetica','normal')
+    doc.text('BTP Chantier Pro — '+today,14,285)
+    doc.save('payroll_'+currentChantier.nom.replace(/ /g,'_')+'_'+today.replace(/\//g,'-')+'.pdf')
+    showToast(t('toast_pdf_paie'))
   }catch(e){showToast('❌ '+e.message,true)}
 }
 
@@ -907,34 +843,55 @@ async function exportPDFRapport(){
   try{
     const{data:phases}=await db.from('phases').select('*').eq('chantier_id',currentChantier.id).order('ordre')
     const{data:imp}=await db.from('imprevus').select('*').eq('chantier_id',currentChantier.id)
-    const jsPDF=window.jspdf.jsPDF;const doc=new jsPDF();const today=new Date().toLocaleDateString('fr-FR');let y=20
-    doc.setFillColor(26,110,58);doc.rect(0,0,210,35,'F');doc.setTextColor(255,255,255);doc.setFontSize(18);doc.setFont('helvetica','bold');doc.text('BTP CHANTIER PRO',14,14)
-    doc.setFontSize(11);doc.setFont('helvetica','normal');doc.text(currentLang==='fr'?'Rapport d\'avancement':'Progress Report',14,22);doc.text(today,196,14,{align:'right'})
-    y=45;doc.setTextColor(30,30,30);doc.setFontSize(13);doc.setFont('helvetica','bold');doc.text(currentChantier.nom,14,y);y+=7
+    const jsPDF=window.jspdf.jsPDF
+    const doc=new jsPDF()
+    const today=new Date().toLocaleDateString('fr-FR')
+    let y=20
+    doc.setFillColor(26,110,58);doc.rect(0,0,210,35,'F')
+    doc.setTextColor(255,255,255);doc.setFontSize(18);doc.setFont('helvetica','bold')
+    doc.text('BTP CHANTIER PRO',14,14)
+    doc.setFontSize(11);doc.setFont('helvetica','normal')
+    doc.text(currentLang==='fr'?'Rapport d\'avancement':'Progress Report',14,22)
+    doc.text(today,196,14,{align:'right'})
+    y=45
+    doc.setTextColor(30,30,30);doc.setFontSize(13);doc.setFont('helvetica','bold')
+    doc.text(currentChantier.nom,14,y);y+=7
     doc.setFontSize(10);doc.setFont('helvetica','normal');doc.setTextColor(80,80,80)
     doc.text((currentLang==='fr'?'Statut : ':'Status: ')+currentChantier.statut+' | '+(currentLang==='fr'?'Avancement : ':'Progress: ')+currentChantier.avancement+'%',14,y);y+=6
-    doc.text((currentLang==='fr'?'Budget : ':'Budget: ')+fmtPDF(currentChantier.budget_initial),14,y);y+=10
-    doc.setDrawColor(200,200,200);doc.setLineWidth(0.3);doc.rect(14,y,182,6);doc.setFillColor(26,110,58);doc.rect(14,y,Math.max(1,182*(currentChantier.avancement/100)),6,'F')
-    doc.setTextColor(30,30,30);doc.setFontSize(8);doc.text(currentChantier.avancement+'%',197,y+4.5,{align:'right'});y+=14
+    doc.text((currentLang==='fr'?'Budget initial : ':'Initial budget: ')+fmtPDF(currentChantier.budget_initial),14,y);y+=10
+    doc.setDrawColor(200,200,200);doc.setLineWidth(0.3);doc.rect(14,y,182,6)
+    doc.setFillColor(26,110,58);doc.rect(14,y,Math.max(1,182*(currentChantier.avancement/100)),6,'F')
+    doc.setTextColor(30,30,30);doc.setFontSize(8);doc.text(currentChantier.avancement+'%',197,y+4.5,{align:'right'})
+    y+=14
     if(phases&&phases.length>0){
-      doc.setDrawColor(26,110,58);doc.line(14,y,196,y);y+=6;doc.setFontSize(12);doc.setFont('helvetica','bold');doc.setTextColor(26,110,58)
-      doc.text(currentLang==='fr'?'PHASES':'PROJECT PHASES',14,y);y+=8
-      doc.setFillColor(240,247,240);doc.rect(14,y-4,182,8,'F');doc.setFontSize(9);doc.setTextColor(30,30,30);doc.setFont('helvetica','bold')
-      doc.text('Phase',16,y+1);doc.text('%',90,y+1);doc.text('Budget',130,y+1,{align:'right'});doc.text('Actual',165,y+1,{align:'right'});doc.text('Var.',196,y+1,{align:'right'})
+      doc.setDrawColor(26,110,58);doc.line(14,y,196,y);y+=6
+      doc.setFontSize(12);doc.setFont('helvetica','bold');doc.setTextColor(26,110,58)
+      doc.text(currentLang==='fr'?'PHASES DU CHANTIER':'PROJECT PHASES',14,y);y+=8
+      doc.setFillColor(240,247,240);doc.rect(14,y-4,182,8,'F')
+      doc.setFontSize(9);doc.setTextColor(30,30,30);doc.setFont('helvetica','bold')
+      doc.text(t('phases'),16,y+1);doc.text('%',90,y+1)
+      doc.text(currentLang==='fr'?'Prévu':'Budget',130,y+1,{align:'right'})
+      doc.text(currentLang==='fr'?'Réel':'Actual',165,y+1,{align:'right'})
+      doc.text(t('ecart'),196,y+1,{align:'right'})
       y+=10;doc.setFont('helvetica','normal')
       phases.forEach((p,i)=>{
         if(y>260){doc.addPage();y=20}
         if(i%2===0){doc.setFillColor(250,252,250);doc.rect(14,y-4,182,8,'F')}
-        const ecart=Number(p.budget_reel)-Number(p.budget_prevu);doc.setTextColor(30,30,30)
-        doc.text(p.nom,16,y+1);doc.text(p.avancement+'%',90,y+1);doc.text(fmtPDF(p.budget_prevu),130,y+1,{align:'right'})
+        const ecart=Number(p.budget_reel)-Number(p.budget_prevu)
+        doc.setTextColor(30,30,30)
+        doc.text(p.nom,16,y+1);doc.text(p.avancement+'%',90,y+1)
+        doc.text(fmtPDF(p.budget_prevu),130,y+1,{align:'right'})
         doc.text(p.avancement>0?fmtPDF(p.budget_reel):'—',165,y+1,{align:'right'})
         if(ecart>0)doc.setTextColor(200,50,50);else if(ecart<0)doc.setTextColor(26,110,58)
-        doc.text(p.avancement>0?(ecart>0?'+':'')+fmtPDF(ecart):'—',196,y+1,{align:'right'});doc.setTextColor(30,30,30);y+=8
-      });y+=6
+        doc.text(p.avancement>0?(ecart>0?'+':'')+fmtPDF(ecart):'—',196,y+1,{align:'right'})
+        doc.setTextColor(30,30,30);y+=8
+      })
+      y+=6
     }
     if(imp&&imp.length>0){
       if(y>240){doc.addPage();y=20}
-      doc.setDrawColor(26,110,58);doc.line(14,y,196,y);y+=6;doc.setFontSize(12);doc.setFont('helvetica','bold');doc.setTextColor(26,110,58)
+      doc.setDrawColor(26,110,58);doc.line(14,y,196,y);y+=6
+      doc.setFontSize(12);doc.setFont('helvetica','bold');doc.setTextColor(26,110,58)
       doc.text(currentLang==='fr'?'IMPRÉVUS':'UNEXPECTED COSTS',14,y);y+=8
       const totalImp=imp.reduce((s,i)=>s+Number(i.montant),0)
       doc.setFontSize(9);doc.setFont('helvetica','normal');doc.setTextColor(30,30,30)
@@ -942,20 +899,25 @@ async function exportPDFRapport(){
         if(y>270){doc.addPage();y=20}
         if(i%2===0){doc.setFillColor(255,245,245);doc.rect(14,y-4,182,8,'F')}
         doc.text(im.description,16,y+1);doc.text(im.priorite,140,y+1)
-        doc.setTextColor(200,50,50);doc.setFont('helvetica','bold');doc.text('+'+fmtPDF(im.montant),196,y+1,{align:'right'})
+        doc.setTextColor(200,50,50);doc.setFont('helvetica','bold')
+        doc.text('+'+fmtPDF(im.montant),196,y+1,{align:'right'})
         doc.setFont('helvetica','normal');doc.setTextColor(30,30,30);y+=8
       })
-      y+=4;doc.setFont('helvetica','bold');doc.text((currentLang==='fr'?'Total : ':'Total: ')+'+'+fmtPDF(totalImp),196,y,{align:'right'})
+      y+=4;doc.setFont('helvetica','bold')
+      doc.text((currentLang==='fr'?'Total imprévus : ':'Total costs: ')+'+'+fmtPDF(totalImp),196,y,{align:'right'})
     }
     if(allEmployes.length>0){
       y+=10;if(y>240){doc.addPage();y=20}
-      doc.setDrawColor(26,110,58);doc.line(14,y,196,y);y+=6;doc.setFontSize(12);doc.setFont('helvetica','bold');doc.setTextColor(26,110,58)
+      doc.setDrawColor(26,110,58);doc.line(14,y,196,y);y+=6
+      doc.setFontSize(12);doc.setFont('helvetica','bold');doc.setTextColor(26,110,58)
       doc.text((currentLang==='fr'?'ÉQUIPE':'TEAM')+' ('+allEmployes.length+')',14,y);y+=8
       doc.setFontSize(9);doc.setFont('helvetica','normal');doc.setTextColor(30,30,30)
       allEmployes.forEach(e=>{if(y>270){doc.addPage();y=20};doc.text((e.prenom||'')+' '+e.nom+' — '+e.role+' ('+contratLabel(e.type_contrat)+')',16,y);y+=6})
     }
-    doc.setTextColor(150,150,150);doc.setFontSize(8);doc.setFont('helvetica','normal');doc.text('BTP Chantier Pro — '+today,14,285)
-    doc.save('report_'+currentChantier.nom.replace(/ /g,'_')+'_'+today.replace(/\//g,'-')+'.pdf');showToast(t('toast_pdf_rapport'))
+    doc.setTextColor(150,150,150);doc.setFontSize(8);doc.setFont('helvetica','normal')
+    doc.text('BTP Chantier Pro — '+today,14,285)
+    doc.save('report_'+currentChantier.nom.replace(/ /g,'_')+'_'+today.replace(/\//g,'-')+'.pdf')
+    showToast(t('toast_pdf_rapport'))
   }catch(e){showToast('❌ '+e.message,true)}
 }
 

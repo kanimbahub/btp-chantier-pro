@@ -9,6 +9,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="BTP Pro">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="pdf.js"></script>
 <style>
 [data-theme="dark"]{--bg:#0e1510;--bg2:#141e15;--bg3:#1a2a1c;--bg4:#223024;--border:rgba(255,255,255,0.07);--border2:rgba(255,255,255,0.13);--text:#e4ece5;--text2:#7d9e80;--text3:#4a6b4d;--shadow:0 2px 16px rgba(0,0,0,0.5);}
 [data-theme="light"]{--bg:#f4f7f4;--bg2:#ffffff;--bg3:#edf2ed;--bg4:#e0ebe0;--border:rgba(0,0,0,0.07);--border2:rgba(0,0,0,0.13);--text:#1a2b1c;--text2:#4a6e4d;--text3:#8aaa8d;--shadow:0 2px 16px rgba(0,0,0,0.1);}
@@ -274,7 +275,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);font-size:14
         <div class="card-body" style="padding:8px 14px;" id="pointage-list"><div class="loading">...</div></div>
       </div>
       <div class="card">
-        <div class="card-head"><div class="card-title">Paie du jour</div></div>
+        <div class="card-head"><div class="card-title">Paie du jour</div><button class="btn btn-outline btn-sm" onclick="exportPDFPaie()">📄 PDF Paie</button></div>
         <table class="tbl">
           <thead><tr><th>Employé</th><th>Rémunération</th><th>Contrat</th><th>Statut</th></tr></thead>
           <tbody id="paie-tbody"></tbody>
@@ -332,7 +333,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);font-size:14
       </div>
       <div class="stats-grid" id="budget-stats"></div>
       <div class="grid2">
-        <div class="card"><div class="card-head"><div class="card-title">Phases</div></div><div class="card-body" id="budget-phases"><div class="loading">...</div></div></div>
+        <div class="card"><div class="card-head"><div class="card-title">Phases</div><button class="btn btn-outline btn-sm" onclick="exportPDFRapport()">📄 PDF Rapport</button></div><div class="card-body" id="budget-phases"><div class="loading">...</div></div></div>
         <div class="card"><div class="card-head"><div class="card-title">Imprévus</div></div><div class="card-body" style="padding:8px 14px;" id="imprevus-list"><div class="loading">...</div></div></div>
       </div>
       <div class="card">

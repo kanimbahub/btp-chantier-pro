@@ -273,13 +273,13 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);font-size:14
     <button class="btn btn-primary" style="width:100%;margin-bottom:6px;justify-content:center;" onclick="openModal('modal-chantier');closeSidebar()"><svg width="12" height="12"><use href="#ic-plus"/></svg> Nouveau chantier</button>
   </div>
   <div class="nav-group-label">Navigation</div>
-  <div class="nav-item active" id="nav-dashboard" onclick="goPage('dashboard',this);closeSidebar()"><svg><use href="#ic-grid"/></svg> Tableau de bord</div>
-  <div class="nav-item" id="nav-employes" onclick="goPage('employes',this);closeSidebar()"><svg><use href="#ic-users"/></svg> Employés & RH</div>
-  <div class="nav-item" id="nav-pointage" onclick="goPage('pointage',this);closeSidebar()"><svg><use href="#ic-check-sq"/></svg> Pointage & Paie</div>
-  <div class="nav-item" id="nav-stock" onclick="goPage('stock',this);closeSidebar()"><svg><use href="#ic-box"/></svg> Stock & Commandes<span class="nav-badge" id="stock-badge" style="display:none;">!</span></div>
-  <div class="nav-item" id="nav-budget" onclick="goPage('budget',this);closeSidebar()"><svg><use href="#ic-wallet"/></svg> Budget & Dépenses</div>
-  <div class="nav-item" id="nav-journal" onclick="goPage('journal',this);closeSidebar()"><svg><use href="#ic-book"/></svg> Journal chantier</div>
-  <div class="nav-item" id="nav-equipe" onclick="goPage('equipe',this);closeSidebar()"><svg><use href="#ic-team"/></svg> Mon équipe</div>
+  <div class="nav-item active" id="nav-dashboard" onclick="goPage('dashboard',this);closeSidebar()"><svg><use href="#ic-grid"/></svg> <span>Tableau de bord</span></div>
+  <div class="nav-item" id="nav-employes" onclick="goPage('employes',this);closeSidebar()"><svg><use href="#ic-users"/></svg> <span>Employés & RH</span></div>
+  <div class="nav-item" id="nav-pointage" onclick="goPage('pointage',this);closeSidebar()"><svg><use href="#ic-check-sq"/></svg> <span>Pointage & Paie</span></div>
+  <div class="nav-item" id="nav-stock" onclick="goPage('stock',this);closeSidebar()"><svg><use href="#ic-box"/></svg> <span>Stock & Commandes</span><span class="nav-badge" id="stock-badge" style="display:none;">!</span></div>
+  <div class="nav-item" id="nav-budget" onclick="goPage('budget',this);closeSidebar()"><svg><use href="#ic-wallet"/></svg> <span>Budget & Dépenses</span></div>
+  <div class="nav-item" id="nav-journal" onclick="goPage('journal',this);closeSidebar()"><svg><use href="#ic-book"/></svg> <span>Journal chantier</span></div>
+  <div class="nav-item" id="nav-equipe" onclick="goPage('equipe',this);closeSidebar()"><svg><use href="#ic-team"/></svg> <span>Mon équipe</span></div>
   <div class="sidebar-bottom">
     <button class="sidebar-btn" onclick="toggleTheme()"><svg id="theme-icon"><use href="#ic-moon"/></svg><span id="theme-label">Mode sombre</span><div class="toggle-pill"></div></button>
     <button class="sidebar-btn" onclick="toggleLang()" id="lang-btn"><svg><use href="#ic-globe"/></svg><span id="lang-label">Français</span><span style="margin-left:auto;font-size:10px;color:var(--text3);" id="lang-code">FR</span></button>
@@ -527,11 +527,11 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);font-size:14
 <!-- BOTTOM NAV -->
 <div class="bottom-nav">
   <div class="bottom-nav-inner">
-    <div class="bnav-item active" id="bn-dashboard" onclick="goPageMobile('dashboard',this)"><svg><use href="#ic-grid"/></svg>Accueil</div>
-    <div class="bnav-item" id="bn-employes" onclick="goPageMobile('employes',this)"><svg><use href="#ic-users"/></svg>Employés</div>
-    <div class="bnav-item" id="bn-pointage" onclick="goPageMobile('pointage',this)"><svg><use href="#ic-check-sq"/></svg>Pointage</div>
+    <div class="bnav-item active" id="bn-dashboard" onclick="goPageMobile('dashboard',this)"><svg><use href="#ic-grid"/></svg><span>Accueil</span></div>
+    <div class="bnav-item" id="bn-employes" onclick="goPageMobile('employes',this)"><svg><use href="#ic-users"/></svg><span>Employés</span></div>
+    <div class="bnav-item" id="bn-pointage" onclick="goPageMobile('pointage',this)"><svg><use href="#ic-check-sq"/></svg><span>Pointage</span></div>
     <div class="bnav-item" id="bn-stock" onclick="goPageMobile('stock',this)" style="position:relative;"><svg><use href="#ic-box"/></svg>Stock<span id="bnav-stock-badge" style="display:none;position:absolute;top:4px;right:6px;background:var(--red);color:#fff;font-size:8px;min-width:14px;height:14px;border-radius:7px;align-items:center;justify-content:center;padding:0 2px;font-family:var(--mono);font-weight:700;"></span></div>
-    <div class="bnav-item" id="bn-budget" onclick="goPageMobile('budget',this)"><svg><use href="#ic-wallet"/></svg>Budget</div>
+    <div class="bnav-item" id="bn-budget" onclick="goPageMobile('budget',this)"><svg><use href="#ic-wallet"/></svg><span>Budget</span></div>
   </div>
 </div>
 
@@ -1752,7 +1752,7 @@ async function exportPDFRapport(){
 }
 
 // ── INIT ──
-db.auth.getSession().then(({data:{session}})=>{
+db.auth.getSession().then(({data:{session}})=>{applyLang(localStorage.getItem('btp_lang')||'fr');
   if(!session){window.location.href='login.html';return}
   currentUser=session.user
   const email=currentUser.email

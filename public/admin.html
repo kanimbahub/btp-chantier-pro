@@ -8,33 +8,33 @@
 <style>
 [data-theme="dark"]{--bg:#0b1118;--bg2:#111820;--bg3:#182030;--bg4:#1e2a3a;--border:rgba(255,255,255,0.06);--border2:rgba(255,255,255,0.12);--text:#e2e8f0;--text2:#7a9bb5;--text3:#3d5a75;--shadow:0 4px 24px rgba(0,0,0,0.6);}
 [data-theme="light"]{--bg:#f0f4f8;--bg2:#ffffff;--bg3:#e8edf2;--bg4:#dde4ec;--border:rgba(0,0,0,0.06);--border2:rgba(0,0,0,0.12);--text:#0f1923;--text2:#4a6a85;--text3:#8aaac0;--shadow:0 4px 24px rgba(0,0,0,0.08);}
-:root{--amber:#f59e0b;--amber-d:rgba(245,158,11,0.08);--green:#10b981;--green-d:rgba(16,185,129,0.08);--red:#ef4444;--red-d:rgba(239,68,68,0.08);--blue:#3b82f6;--blue-d:rgba(59,130,246,0.08);--purple:#8b5cf6;--purple-d:rgba(139,92,246,0.08);--font:'DM Sans',sans-serif;--font-head:'Syne',sans-serif;--mono:'DM Mono',monospace;--radius:8px;--radius-lg:12px;--radius-xl:16px;}
+:root{--amber:#f59e0b;--amber-d:rgba(245,158,11,0.08);--green:#10b981;--green-d:rgba(16,185,129,0.08);--red:#ef4444;--red-d:rgba(239,68,68,0.08);--blue:#3b82f6;--blue-d:rgba(59,130,246,0.08);--font:'DM Sans',sans-serif;--font-head:'Syne',sans-serif;--mono:'DM Mono',monospace;--radius:8px;--radius-lg:12px;--radius-xl:16px;}
 *{box-sizing:border-box;margin:0;padding:0;}
 button,select,input,textarea{outline:none;cursor:pointer;font-family:var(--font);}
 input,textarea{cursor:text;}
 body{background:var(--bg);color:var(--text);font-family:var(--font);font-size:14px;min-height:100vh;}
 .topbar{background:var(--bg2);border-bottom:1px solid var(--border);padding:0 24px;height:54px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;}
 .topbar-title{font-size:16px;font-weight:700;display:flex;align-items:center;gap:10px;}
-.topbar-title span{background:var(--amber);color:#000;font-size:10px;font-weight:700;padding:2px 8px;border-radius:4px;font-family:var(--mono);}
+.admin-badge{background:var(--amber);color:#000;font-size:10px;font-weight:700;padding:2px 8px;border-radius:4px;font-family:var(--mono);}
 .topbar-right{display:flex;align-items:center;gap:10px;}
 .admin-email{font-size:12px;color:var(--text2);}
-.btn-logout{background:var(--red-d);color:var(--red);border:1px solid rgba(239,68,68,0.2);padding:6px 14px;border-radius:var(--radius);font-size:12px;cursor:pointer;}
 .content{padding:24px;max-width:1200px;margin:0 auto;}
 .stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:24px;}
 .stat-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:16px;display:flex;align-items:center;gap:14px;}
-.stat-icon{width:40px;height:40px;border-radius:var(--radius);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
-.stat-icon.amber{background:var(--amber-d);}
-.stat-icon.green{background:var(--green-d);}
-.stat-icon.red{background:var(--red-d);}
-.stat-icon.blue{background:var(--blue-d);}
+.stat-icon{width:40px;height:40px;border-radius:var(--radius);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.stat-icon svg{width:18px;height:18px;}
+.stat-icon.amber{background:var(--amber-d);color:var(--amber);}
+.stat-icon.green{background:var(--green-d);color:var(--green);}
+.stat-icon.red{background:var(--red-d);color:var(--red);}
+.stat-icon.blue{background:var(--blue-d);color:var(--blue);}
 .stat-val{font-size:24px;font-weight:700;font-family:var(--font-head);line-height:1;}
 .stat-lbl{font-size:11px;color:var(--text2);margin-top:3px;}
 .c-amber{color:var(--amber);}.c-green{color:var(--green);}.c-red{color:var(--red);}.c-blue{color:var(--blue);}
 .card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;margin-bottom:16px;}
-.card-head{padding:14px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;}
+.card-head{padding:14px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:8px;}
 .card-title{font-size:14px;font-weight:600;}
-.card-body{padding:16px 18px;}
-.btn{padding:8px 16px;border-radius:var(--radius);font-size:12px;font-weight:500;cursor:pointer;border:none;transition:all 0.15s;display:inline-flex;align-items:center;gap:6px;user-select:none;}
+.btn{padding:8px 16px;border-radius:var(--radius);font-size:12px;font-weight:500;cursor:pointer;border:none;transition:all 0.15s;display:inline-flex;align-items:center;gap:6px;user-select:none;-webkit-tap-highlight-color:transparent;}
+.btn svg{width:13px;height:13px;}
 .btn-primary{background:var(--amber);color:#000;font-weight:600;}
 .btn-primary:hover{opacity:0.9;}
 .btn-outline{background:transparent;border:1px solid var(--border2);color:var(--text2);}
@@ -43,7 +43,6 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);font-size:14
 .btn-danger{background:var(--red-d);color:var(--red);border:1px solid rgba(239,68,68,0.2);}
 .btn-blue{background:var(--blue-d);color:var(--blue);border:1px solid rgba(59,130,246,0.2);}
 .btn-whatsapp{background:#25D366;color:#fff;border:none;}
-.btn-whatsapp:hover{opacity:0.88;}
 .btn-sm{padding:5px 10px;font-size:11px;}
 .badge{display:inline-flex;align-items:center;padding:3px 8px;border-radius:6px;font-size:10px;font-weight:600;font-family:var(--mono);}
 .badge-green{background:var(--green-d);color:var(--green);}
@@ -61,7 +60,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);font-size:14
 .modal-box{background:var(--bg2);border-radius:var(--radius-xl);padding:24px;width:100%;max-width:520px;border:1px solid var(--border2);max-height:90vh;overflow-y:auto;}
 .modal-hd{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;}
 .modal-title{font-size:15px;font-weight:700;}
-.modal-close{background:var(--bg3);border:1px solid var(--border);color:var(--text2);width:28px;height:28px;border-radius:6px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:16px;}
+.modal-close{background:var(--bg3);border:1px solid var(--border);color:var(--text2);width:28px;height:28px;border-radius:6px;cursor:pointer;display:flex;align-items:center;justify-content:center;}
 .modal-footer{display:flex;gap:8px;margin-top:18px;justify-content:flex-end;flex-wrap:wrap;}
 .form-group{margin-bottom:12px;}
 .form-label{font-size:10px;color:var(--text2);display:block;margin-bottom:5px;text-transform:uppercase;letter-spacing:0.6px;font-weight:600;}
@@ -73,14 +72,13 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);font-size:14
 .credentials-box{background:var(--bg3);border:1px solid var(--border2);border-radius:var(--radius);padding:14px;margin-top:14px;}
 .credentials-box p{font-size:11px;color:var(--text2);margin-bottom:10px;}
 .cred-line{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid var(--border);}
-.cred-line:last-child{border-bottom:none;}
+.cred-line:last-child{border-bottom:none;padding-bottom:0;}
 .cred-label{font-size:11px;color:var(--text3);}
 .cred-val{font-family:var(--mono);font-size:12px;font-weight:600;color:var(--amber);}
 .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);z-index:999;background:var(--bg2);border:1px solid var(--border2);color:var(--text);padding:10px 18px;border-radius:var(--radius-xl);font-size:12px;box-shadow:var(--shadow);white-space:nowrap;font-weight:500;}
 .toast.success{border-color:rgba(16,185,129,0.4);color:var(--green);}
 .toast.error{border-color:rgba(239,68,68,0.4);color:var(--red);}
-.loading{text-align:center;padding:40px;color:var(--text3);}
-.empty-state{text-align:center;padding:40px;color:var(--text3);}
+.empty-state{text-align:center;padding:40px;color:var(--text3);font-size:13px;}
 .days-left{font-family:var(--mono);font-size:11px;}
 .days-left.urgent{color:var(--red);}
 .days-left.warning{color:var(--amber);}
@@ -88,335 +86,408 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);font-size:14
 @media(max-width:768px){
   .stats-grid{grid-template-columns:1fr 1fr;}
   .fg2{grid-template-columns:1fr;}
-  .tbl th:nth-child(4),.tbl td:nth-child(4){display:none;}
 }
 </style>
 </head>
 <body>
 
+<svg style="display:none" xmlns="http://www.w3.org/2000/svg">
+  <symbol id="ic-users" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></symbol>
+  <symbol id="ic-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></symbol>
+  <symbol id="ic-alert" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></symbol>
+  <symbol id="ic-clock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></symbol>
+  <symbol id="ic-plus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></symbol>
+  <symbol id="ic-logout" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></symbol>
+  <symbol id="ic-copy" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></symbol>
+  <symbol id="ic-mail" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></symbol>
+  <symbol id="ic-whatsapp" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></symbol>
+  <symbol id="ic-refresh" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></symbol>
+</svg>
+
 <div class="topbar">
   <div class="topbar-title">
-    🏗 BTP Chantier Pro
-    <span>ADMIN</span>
+    BTP Chantier Pro
+    <span class="admin-badge">ADMIN</span>
   </div>
   <div class="topbar-right">
     <span class="admin-email" id="admin-email"></span>
-    <button class="btn-logout" onclick="logout()">Déconnexion</button>
+    <button class="btn btn-danger btn-sm" id="btn-logout">
+      <svg><use href="#ic-logout"/></svg> Deconnexion
+    </button>
   </div>
 </div>
 
 <div class="content">
-  <div class="stats-grid" id="stats-grid">
-    <div class="stat-card"><div class="stat-icon amber">👥</div><div><div class="stat-val c-amber" id="stat-total">—</div><div class="stat-lbl">Total clients</div></div></div>
-    <div class="stat-card"><div class="stat-icon green">✅</div><div><div class="stat-val c-green" id="stat-actifs">—</div><div class="stat-lbl">Clients actifs</div></div></div>
-    <div class="stat-card"><div class="stat-icon blue">🕐</div><div><div class="stat-val c-blue" id="stat-essai">—</div><div class="stat-lbl">En essai</div></div></div>
-    <div class="stat-card"><div class="stat-icon red">⚠️</div><div><div class="stat-val c-red" id="stat-expires">—</div><div class="stat-lbl">Expirés / Suspendus</div></div></div>
+  <div class="stats-grid">
+    <div class="stat-card"><div class="stat-icon amber"><svg><use href="#ic-users"/></svg></div><div><div class="stat-val c-amber" id="stat-total">—</div><div class="stat-lbl">Total clients</div></div></div>
+    <div class="stat-card"><div class="stat-icon green"><svg><use href="#ic-check"/></svg></div><div><div class="stat-val c-green" id="stat-actifs">—</div><div class="stat-lbl">Clients actifs</div></div></div>
+    <div class="stat-card"><div class="stat-icon blue"><svg><use href="#ic-clock"/></svg></div><div><div class="stat-val c-blue" id="stat-essai">—</div><div class="stat-lbl">En essai</div></div></div>
+    <div class="stat-card"><div class="stat-icon red"><svg><use href="#ic-alert"/></svg></div><div><div class="stat-val c-red" id="stat-expires">—</div><div class="stat-lbl">Expires / Suspendus</div></div></div>
   </div>
 
   <div class="card">
     <div class="card-head">
       <div class="card-title">Clients</div>
-      <button class="btn btn-primary" onclick="openModal()">+ Nouveau client</button>
+      <button class="btn btn-primary" id="btn-nouveau">
+        <svg><use href="#ic-plus"/></svg> Nouveau client
+      </button>
     </div>
-    <div id="clients-list"><div class="loading">Chargement...</div></div>
+    <div id="clients-list"><div class="empty-state">Chargement...</div></div>
   </div>
 </div>
 
-<!-- MODAL NOUVEAU CLIENT -->
 <div class="modal-overlay" id="modal-client">
   <div class="modal-box">
     <div class="modal-hd">
       <div class="modal-title" id="modal-title">Nouveau client</div>
-      <button class="modal-close" onclick="closeModal()">✕</button>
+      <button class="modal-close" id="btn-close-modal">x</button>
     </div>
 
     <div id="form-section">
       <div class="section-sep">Informations client</div>
-      <div class="form-group"><label class="form-label req">Nom de l'entreprise</label><input type="text" id="cl-entreprise" class="form-input" placeholder="BTP Pro Conakry"></div>
+      <div class="form-group"><label class="form-label req">Nom de l entreprise</label><input type="text" id="cl-entreprise" class="form-input" placeholder="BTP Pro Conakry"></div>
       <div class="fg2">
         <div class="form-group"><label class="form-label req">Email</label><input type="email" id="cl-email" class="form-input" placeholder="contact@btppro.gn"></div>
-        <div class="form-group"><label class="form-label">Téléphone</label><input type="text" id="cl-tel" class="form-input" placeholder="+224 620 000 000"></div>
+        <div class="form-group"><label class="form-label">Telephone</label><input type="text" id="cl-tel" class="form-input" placeholder="+224 620 000 000"></div>
       </div>
       <div class="fg2">
-        <div class="form-group"><label class="form-label">Pays</label><select id="cl-pays" class="form-input"><option value="Guinée">Guinée</option><option value="Sénégal">Sénégal</option><option value="Côte d'Ivoire">Côte d'Ivoire</option><option value="Mali">Mali</option><option value="Burkina Faso">Burkina Faso</option><option value="Cameroun">Cameroun</option><option value="France">France</option><option value="Autre">Autre</option></select></div>
-        <div class="form-group"><label class="form-label">Plan</label><select id="cl-plan" class="form-input"><option value="essai">Essai gratuit (30 jours)</option><option value="payant">Payant</option></select></div>
+        <div class="form-group"><label class="form-label">Pays</label>
+          <select id="cl-pays" class="form-input">
+            <option value="Guinee">Guinee</option>
+            <option value="Senegal">Senegal</option>
+            <option value="Cote d Ivoire">Cote d Ivoire</option>
+            <option value="Mali">Mali</option>
+            <option value="Burkina Faso">Burkina Faso</option>
+            <option value="Cameroun">Cameroun</option>
+            <option value="France">France</option>
+            <option value="Autre">Autre</option>
+          </select>
+        </div>
+        <div class="form-group"><label class="form-label">Plan</label>
+          <select id="cl-plan" class="form-input">
+            <option value="essai">Essai gratuit (30 jours)</option>
+            <option value="payant">Payant</option>
+          </select>
+        </div>
       </div>
       <div class="section-sep">Mot de passe temporaire</div>
       <div class="form-group">
         <label class="form-label req">Mot de passe temporaire</label>
         <div style="display:flex;gap:8px;">
-          <input type="text" id="cl-password" class="form-input" placeholder="Minimum 8 caractères">
-          <button class="btn btn-outline" onclick="genPassword()" style="white-space:nowrap;flex-shrink:0;">🎲 Générer</button>
+          <input type="text" id="cl-password" class="form-input" placeholder="Minimum 8 caracteres">
+          <button class="btn btn-outline" id="btn-gen-pw" style="white-space:nowrap;flex-shrink:0;">Generer</button>
         </div>
-        <div style="font-size:10px;color:var(--text3);margin-top:4px;">Le client devra changer ce mot de passe à sa première connexion.</div>
+        <div style="font-size:10px;color:var(--text3);margin-top:4px;">Le client devra changer ce mot de passe a la premiere connexion.</div>
       </div>
       <div class="form-group"><label class="form-label">Notes internes</label><textarea id="cl-notes" class="form-input" rows="2" placeholder="Notes visibles uniquement par vous..."></textarea></div>
       <div class="modal-footer">
-        <button class="btn btn-outline" onclick="closeModal()">Annuler</button>
-        <button class="btn btn-primary" onclick="createClient()">Créer le compte client</button>
+        <button class="btn btn-outline" id="btn-annuler">Annuler</button>
+        <button class="btn btn-primary" id="btn-creer-client">Creer le compte client</button>
       </div>
     </div>
 
-    <!-- Section credentials après création -->
     <div id="credentials-section" style="display:none;">
       <div style="text-align:center;margin-bottom:16px;">
-        <div style="font-size:32px;margin-bottom:8px;">✅</div>
-        <div style="font-size:15px;font-weight:700;">Compte créé avec succès !</div>
-        <div style="font-size:12px;color:var(--text2);margin-top:4px;">Envoyez les accès au client</div>
+        <div style="font-size:15px;font-weight:700;color:var(--green);">Compte cree avec succes !</div>
+        <div style="font-size:12px;color:var(--text2);margin-top:4px;">Envoyez les acces au client</div>
       </div>
       <div class="credentials-box">
-        <p>📋 Informations de connexion à transmettre au client :</p>
-        <div class="cred-line"><span class="cred-label">🌐 URL</span><span class="cred-val" id="cred-url"></span></div>
-        <div class="cred-line"><span class="cred-label">📧 Email</span><span class="cred-val" id="cred-email"></span></div>
-        <div class="cred-line"><span class="cred-label">🔑 Mot de passe</span><span class="cred-val" id="cred-password"></span></div>
-        <div class="cred-line"><span class="cred-label">📅 Fin essai</span><span class="cred-val" id="cred-essai"></span></div>
+        <p>Informations de connexion a transmettre au client :</p>
+        <div class="cred-line"><span class="cred-label">URL</span><span class="cred-val" id="cred-url"></span></div>
+        <div class="cred-line"><span class="cred-label">Email</span><span class="cred-val" id="cred-email"></span></div>
+        <div class="cred-line"><span class="cred-label">Mot de passe</span><span class="cred-val" id="cred-password"></span></div>
+        <div class="cred-line"><span class="cred-label">Fin essai</span><span class="cred-val" id="cred-essai"></span></div>
       </div>
       <div style="display:flex;gap:8px;margin-top:14px;flex-wrap:wrap;">
-        <button class="btn btn-outline" onclick="copyCredentials()" style="flex:1;">📋 Copier</button>
-        <button class="btn btn-whatsapp" onclick="shareWhatsApp()" style="flex:1;">📱 Envoyer WhatsApp</button>
-        <button class="btn btn-blue" onclick="shareEmail()" style="flex:1;">📧 Envoyer Email</button>
+        <button class="btn btn-outline" id="btn-copy" style="flex:1;"><svg><use href="#ic-copy"/></svg> Copier</button>
+        <button class="btn btn-whatsapp" id="btn-share-wa" style="flex:1;"><svg><use href="#ic-whatsapp"/></svg> WhatsApp</button>
+        <button class="btn btn-blue" id="btn-share-email" style="flex:1;"><svg><use href="#ic-mail"/></svg> Email</button>
       </div>
       <div class="modal-footer">
-        <button class="btn btn-primary" onclick="closeModal()">Terminer</button>
+        <button class="btn btn-primary" id="btn-terminer">Terminer</button>
       </div>
     </div>
-
   </div>
 </div>
 
 <script>
-const{createClient}=supabase
-const db=createClient('https://aktwkafyzrujqgvojolx.supabase.co','eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFrdHdrYWZ5enJ1anFndm9qb2x4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM2OTY2MDAsImV4cCI6MjA4OTI3MjYwMH0.OLBuhijTx3lRK5VofjxmoplGgQ1UsxbgIs3igj2hGpM')
+var sb = supabase.createClient(
+  'https://aktwkafyzrujqgvojolx.supabase.co',
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFrdHdrYWZ5enJ1anFndm9qb2x4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM2OTY2MDAsImV4cCI6MjA4OTI3MjYwMH0.OLBuhijTx3lRK5VofjxmoplGgQ1UsxbgIs3igj2hGpM'
+);
 
-const ADMIN_EMAIL = 'kanimban8n@gmail.com'
-const APP_URL = 'https://btp-chantier-pro.vercel.app'
+var ADMIN_EMAIL = 'kanimban8n@gmail.com';
+var APP_URL = 'https://btp-chantier-pro.vercel.app';
+var currentUser = null;
+var lastCreated = null;
 
-let currentUser = null
-let lastCreated = null
-
-function showToast(msg,type='success'){
-  document.querySelectorAll('.toast').forEach(t=>t.remove())
-  const el=document.createElement('div')
-  el.className='toast '+type
-  el.textContent=msg
-  document.body.appendChild(el)
-  setTimeout(()=>el.remove(),3500)
+function showToast(msg, type) {
+  type = type || 'success';
+  var els = document.querySelectorAll('.toast');
+  for (var i = 0; i < els.length; i++) els[i].remove();
+  var el = document.createElement('div');
+  el.className = 'toast ' + type;
+  el.textContent = msg;
+  document.body.appendChild(el);
+  setTimeout(function() { el.remove(); }, 3500);
 }
 
-function formatDate(d){if(!d)return'—';return new Date(d).toLocaleDateString('fr-FR')}
-
-function daysLeft(dateStr){
-  if(!dateStr)return null
-  const diff=Math.ceil((new Date(dateStr)-new Date())/(1000*60*60*24))
-  return diff
+function formatDate(d) {
+  if (!d) return '—';
+  return new Date(d).toLocaleDateString('fr-FR');
 }
 
-function genPassword(){
-  const chars='ABCDEFGHJKMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz23456789!@#'
-  let pw=''
-  for(let i=0;i<10;i++)pw+=chars[Math.floor(Math.random()*chars.length)]
-  document.getElementById('cl-password').value=pw
+function daysLeft(dateStr) {
+  if (!dateStr) return null;
+  return Math.ceil((new Date(dateStr) - new Date()) / (1000 * 60 * 60 * 24));
 }
 
-function openModal(){
-  document.getElementById('modal-client').classList.add('open')
-  document.getElementById('form-section').style.display='block'
-  document.getElementById('credentials-section').style.display='none'
-  document.getElementById('modal-title').textContent='Nouveau client'
-  document.getElementById('cl-entreprise').value=''
-  document.getElementById('cl-email').value=''
-  document.getElementById('cl-tel').value=''
-  document.getElementById('cl-notes').value=''
-  document.getElementById('cl-password').value=''
-  document.getElementById('cl-plan').value='essai'
-  genPassword()
+function genPassword() {
+  var chars = 'ABCDEFGHJKMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz23456789';
+  var pw = '';
+  for (var i = 0; i < 10; i++) pw += chars[Math.floor(Math.random() * chars.length)];
+  document.getElementById('cl-password').value = pw;
 }
 
-function closeModal(){
-  document.getElementById('modal-client').classList.remove('open')
-  lastCreated=null
-  loadClients()
+function openModal() {
+  document.getElementById('modal-client').classList.add('open');
+  document.getElementById('form-section').style.display = 'block';
+  document.getElementById('credentials-section').style.display = 'none';
+  document.getElementById('modal-title').textContent = 'Nouveau client';
+  document.getElementById('cl-entreprise').value = '';
+  document.getElementById('cl-email').value = '';
+  document.getElementById('cl-tel').value = '';
+  document.getElementById('cl-notes').value = '';
+  document.getElementById('cl-plan').value = 'essai';
+  genPassword();
 }
 
-async function createClient(){
-  const entreprise=document.getElementById('cl-entreprise').value
-  const email=document.getElementById('cl-email').value
-  const password=document.getElementById('cl-password').value
-  const tel=document.getElementById('cl-tel').value
-  const pays=document.getElementById('cl-pays').value
-  const plan=document.getElementById('cl-plan').value
-  const notes=document.getElementById('cl-notes').value
-
-  if(!entreprise){showToast('Nom entreprise obligatoire','error');return}
-  if(!email){showToast('Email obligatoire','error');return}
-  if(!password||password.length<8){showToast('Mot de passe min. 8 caractères','error');return}
-
-  // Créer le compte Supabase Auth
-  const{data:authData,error:authError}=await db.auth.signUp({
-    email,
-    password,
-    options:{data:{entreprise_nom:entreprise}}
-  })
-
-  if(authError){showToast(authError.message,'error');return}
-
-  // Enregistrer dans clients_admin
-  const finEssai=new Date()
-  finEssai.setDate(finEssai.getDate()+30)
-
-  const{error:dbError}=await db.from('clients_admin').insert({
-    user_id:authData.user?.id,
-    email,
-    nom_entreprise:entreprise,
-    pays,
-    telephone:tel||null,
-    plan,
-    date_fin_essai:plan==='essai'?finEssai.toISOString():null,
-    actif:true,
-    notes:notes||null,
-    created_by:currentUser.email
-  })
-
-  if(dbError){showToast(dbError.message,'error');return}
-
-  // Stocker pour affichage credentials
-  lastCreated={email,password,entreprise,plan,finEssai:finEssai.toLocaleDateString('fr-FR')}
-
-  // Afficher credentials
-  document.getElementById('cred-url').textContent=APP_URL+'/login.html'
-  document.getElementById('cred-email').textContent=email
-  document.getElementById('cred-password').textContent=password
-  document.getElementById('cred-essai').textContent=plan==='essai'?finEssai.toLocaleDateString('fr-FR'):'Payant'
-
-  document.getElementById('form-section').style.display='none'
-  document.getElementById('credentials-section').style.display='block'
-  document.getElementById('modal-title').textContent='Accès client créés'
+function closeModal() {
+  document.getElementById('modal-client').classList.remove('open');
+  lastCreated = null;
+  loadClients();
 }
 
-function copyCredentials(){
-  if(!lastCreated)return
-  const txt=`BTP Chantier Pro — Vos accès\n\n🌐 URL: ${APP_URL}/login.html\n📧 Email: ${lastCreated.email}\n🔑 Mot de passe: ${lastCreated.password}\n📅 Fin essai: ${lastCreated.finEssai}\n\n⚠️ Changez votre mot de passe à la première connexion.`
-  navigator.clipboard.writeText(txt).then(()=>showToast('Copié !'))
+function copyCredentials() {
+  if (!lastCreated) return;
+  var txt = 'BTP Chantier Pro — Acces\n\n'
+    + 'URL: ' + APP_URL + '/login.html\n'
+    + 'Email: ' + lastCreated.email + '\n'
+    + 'Mot de passe: ' + lastCreated.password + '\n'
+    + 'Fin essai: ' + lastCreated.finEssai + '\n\n'
+    + 'Changez votre mot de passe a la premiere connexion.';
+  navigator.clipboard.writeText(txt).then(function() { showToast('Copie !'); });
 }
 
-function shareWhatsApp(){
-  if(!lastCreated)return
-  const msg=`Bonjour ${lastCreated.entreprise} ! 🏗\n\nVoici vos accès BTP Chantier Pro :\n\n🌐 ${APP_URL}/login.html\n📧 ${lastCreated.email}\n🔑 ${lastCreated.password}\n📅 Essai gratuit jusqu'au : ${lastCreated.finEssai}\n\n⚠️ Pensez à changer votre mot de passe à la première connexion.`
-  window.open('https://wa.me/?text='+encodeURIComponent(msg),'_blank')
+function shareWhatsApp() {
+  if (!lastCreated) return;
+  var msg = 'Bonjour ' + lastCreated.entreprise + ' !\n\n'
+    + 'Voici vos acces BTP Chantier Pro :\n\n'
+    + 'URL: ' + APP_URL + '/login.html\n'
+    + 'Email: ' + lastCreated.email + '\n'
+    + 'Mot de passe: ' + lastCreated.password + '\n'
+    + 'Fin essai: ' + lastCreated.finEssai + '\n\n'
+    + 'Changez votre mot de passe a la premiere connexion.';
+  window.open('https://wa.me/?text=' + encodeURIComponent(msg), '_blank');
 }
 
-function shareEmail(){
-  if(!lastCreated)return
-  const subject=encodeURIComponent('Vos accès BTP Chantier Pro')
-  const body=encodeURIComponent(`Bonjour ${lastCreated.entreprise},\n\nVoici vos accès BTP Chantier Pro :\n\nURL: ${APP_URL}/login.html\nEmail: ${lastCreated.email}\nMot de passe: ${lastCreated.password}\nFin essai: ${lastCreated.finEssai}\n\nPensez à changer votre mot de passe à la première connexion.\n\nCordialement`)
-  window.open(`mailto:${lastCreated.email}?subject=${subject}&body=${body}`)
+function shareEmail() {
+  if (!lastCreated) return;
+  var subject = encodeURIComponent('Vos acces BTP Chantier Pro');
+  var body = encodeURIComponent(
+    'Bonjour ' + lastCreated.entreprise + ',\n\n'
+    + 'URL: ' + APP_URL + '/login.html\n'
+    + 'Email: ' + lastCreated.email + '\n'
+    + 'Mot de passe: ' + lastCreated.password + '\n'
+    + 'Fin essai: ' + lastCreated.finEssai + '\n\n'
+    + 'Changez votre mot de passe a la premiere connexion.\n\nCordialement'
+  );
+  window.open('mailto:' + lastCreated.email + '?subject=' + subject + '&body=' + body);
 }
 
-async function loadClients(){
-  const{data,error}=await db.from('clients_admin').select('*').order('created_at',{ascending:false})
-
-  if(error){
-    document.getElementById('clients-list').innerHTML='<div class="empty-state">Erreur chargement</div>'
-    return
-  }
-
-  if(!data||data.length===0){
-    document.getElementById('clients-list').innerHTML='<div class="empty-state">Aucun client — cliquez sur "+ Nouveau client"</div>'
-    updateStats([])
-    return
-  }
-
-  updateStats(data)
-
-  document.getElementById('clients-list').innerHTML=`<table class="tbl">
-    <thead><tr>
-      <th>Entreprise</th>
-      <th>Email</th>
-      <th>Pays</th>
-      <th>Téléphone</th>
-      <th>Plan</th>
-      <th>Essai / Statut</th>
-      <th>Actions</th>
-    </tr></thead>
-    <tbody>
-      ${data.map(c=>{
-        const days=c.plan==='essai'&&c.date_fin_essai?daysLeft(c.date_fin_essai):null
-        const daysClass=days===null?'':days<=3?'urgent':days<=7?'warning':'ok'
-        const planBadge=c.plan==='payant'?'badge-green':c.plan==='suspendu'?'badge-red':'badge-amber'
-        const planLabel=c.plan==='payant'?'PAYANT':c.plan==='suspendu'?'SUSPENDU':'ESSAI'
-        return`<tr>
-          <td style="font-weight:600">${c.nom_entreprise}</td>
-          <td style="color:var(--text2);font-size:12px">${c.email}</td>
-          <td style="color:var(--text2);font-size:12px">${c.pays||'—'}</td>
-          <td style="color:var(--text2);font-size:12px">${c.telephone||'—'}</td>
-          <td><span class="badge ${planBadge}">${planLabel}</span></td>
-          <td>
-            ${days!==null
-              ?`<span class="days-left ${daysClass}">${days>0?days+' jours restants':'EXPIRÉ'}</span>`
-              :c.plan==='payant'?'<span style="color:var(--green);font-size:12px">✓ Actif</span>':'<span style="color:var(--red);font-size:12px">Suspendu</span>'
-            }
-          </td>
-          <td>
-            <div style="display:flex;gap:6px;flex-wrap:wrap;">
-              ${c.plan==='essai'?`<button class="btn btn-success btn-sm" onclick="changerPlan('${c.id}','payant')">✓ Activer</button>`:''}
-              ${c.plan==='payant'?`<button class="btn btn-danger btn-sm" onclick="changerPlan('${c.id}','suspendu')">⏸ Suspendre</button>`:''}
-              ${c.plan==='suspendu'?`<button class="btn btn-success btn-sm" onclick="changerPlan('${c.id}','payant')">▶ Réactiver</button>`:''}
-              <button class="btn btn-outline btn-sm" onclick="envoyerWhatsApp('${c.email}','${c.nom_entreprise}','${c.telephone||''}')">📱</button>
-            </div>
-          </td>
-        </tr>`
-      }).join('')}
-    </tbody>
-  </table>`
-}
-
-function updateStats(data){
-  const total=data.length
-  const actifs=data.filter(c=>c.plan==='payant'&&c.actif).length
-  const essai=data.filter(c=>c.plan==='essai').length
-  const expires=data.filter(c=>c.plan==='suspendu'||(c.plan==='essai'&&daysLeft(c.date_fin_essai)<=0)).length
-  document.getElementById('stat-total').textContent=total
-  document.getElementById('stat-actifs').textContent=actifs
-  document.getElementById('stat-essai').textContent=essai
-  document.getElementById('stat-expires').textContent=expires
-}
-
-async function changerPlan(id,plan){
-  const labels={payant:'activer ce client',suspendu:'suspendre ce client'}
-  if(!confirm(`Voulez-vous ${labels[plan]||plan} ?`))return
-  const{error}=await db.from('clients_admin').update({plan}).eq('id',id)
-  if(error){showToast(error.message,'error');return}
-  showToast('Statut mis à jour')
-  loadClients()
-}
-
-function envoyerWhatsApp(email,entreprise,tel){
-  const msg=`Bonjour ${entreprise} ! 🏗\n\nVotre accès BTP Chantier Pro :\n🌐 ${APP_URL}/login.html\n📧 ${email}`
-  if(tel){
-    const num=tel.replace(/\s+/g,'').replace('+','')
-    window.open(`https://wa.me/${num}?text=`+encodeURIComponent(msg),'_blank')
+function envoyerWhatsApp(email, entreprise, tel) {
+  var msg = 'Bonjour ' + entreprise + ' !\n\nVotre acces BTP Chantier Pro :\nURL: ' + APP_URL + '/login.html\nEmail: ' + email;
+  if (tel) {
+    var num = tel.replace(/\s+/g, '').replace('+', '');
+    window.open('https://wa.me/' + num + '?text=' + encodeURIComponent(msg), '_blank');
   } else {
-    window.open('https://wa.me/?text='+encodeURIComponent(msg),'_blank')
+    window.open('https://wa.me/?text=' + encodeURIComponent(msg), '_blank');
   }
 }
 
-async function logout(){
-  await db.auth.signOut()
-  window.location.href='login.html'
+function updateStats(data) {
+  var total = data.length;
+  var actifs = 0, essai = 0, expires = 0;
+  for (var i = 0; i < data.length; i++) {
+    if (data[i].plan === 'payant' && data[i].actif) actifs++;
+    if (data[i].plan === 'essai') essai++;
+    if (data[i].plan === 'suspendu') expires++;
+    if (data[i].plan === 'essai' && daysLeft(data[i].date_fin_essai) <= 0) expires++;
+  }
+  document.getElementById('stat-total').textContent = total;
+  document.getElementById('stat-actifs').textContent = actifs;
+  document.getElementById('stat-essai').textContent = essai;
+  document.getElementById('stat-expires').textContent = expires;
 }
 
-// INIT — Vérifier que c'est bien l'admin
-db.auth.getSession().then(({data:{session}})=>{
-  if(!session){window.location.href='login.html';return}
-  currentUser=session.user
-  if(currentUser.email!==ADMIN_EMAIL){
-    alert('Accès refusé.')
-    window.location.href='index.html'
-    return
+function renderClients(data) {
+  if (!data || data.length === 0) {
+    document.getElementById('clients-list').innerHTML = '<div class="empty-state">Aucun client — cliquez sur Nouveau client</div>';
+    updateStats([]);
+    return;
   }
-  document.getElementById('admin-email').textContent=currentUser.email
-  loadClients()
-})
+  updateStats(data);
+  var rows = '';
+  for (var i = 0; i < data.length; i++) {
+    var c = data[i];
+    var days = (c.plan === 'essai' && c.date_fin_essai) ? daysLeft(c.date_fin_essai) : null;
+    var daysClass = days === null ? '' : (days <= 3 ? 'urgent' : (days <= 7 ? 'warning' : 'ok'));
+    var planBadge = c.plan === 'payant' ? 'badge-green' : (c.plan === 'suspendu' ? 'badge-red' : 'badge-amber');
+    var planLabel = c.plan === 'payant' ? 'PAYANT' : (c.plan === 'suspendu' ? 'SUSPENDU' : 'ESSAI');
+    var daysHtml = '';
+    if (days !== null) {
+      daysHtml = '<span class="days-left ' + daysClass + '">' + (days > 0 ? days + ' jours' : 'EXPIRE') + '</span>';
+    } else if (c.plan === 'payant') {
+      daysHtml = '<span style="color:var(--green);font-size:12px">Actif</span>';
+    } else {
+      daysHtml = '<span style="color:var(--red);font-size:12px">Suspendu</span>';
+    }
+    var actionsHtml = '<div style="display:flex;gap:6px;flex-wrap:wrap;">';
+    if (c.plan === 'essai') actionsHtml += '<button class="btn btn-success btn-sm" onclick="changerPlan(\'' + c.id + '\',\'payant\')">Activer</button>';
+    if (c.plan === 'payant') actionsHtml += '<button class="btn btn-danger btn-sm" onclick="changerPlan(\'' + c.id + '\',\'suspendu\')">Suspendre</button>';
+    if (c.plan === 'suspendu') actionsHtml += '<button class="btn btn-success btn-sm" onclick="changerPlan(\'' + c.id + '\',\'payant\')">Reactiver</button>';
+    actionsHtml += '<button class="btn btn-outline btn-sm" onclick="envoyerWhatsApp(\'' + c.email + '\',\'' + c.nom_entreprise + '\',\'' + (c.telephone || '') + '\')"><svg width="12" height="12"><use href="#ic-whatsapp"/></svg></button>';
+    actionsHtml += '</div>';
+    rows += '<tr>'
+      + '<td style="font-weight:600">' + c.nom_entreprise + '</td>'
+      + '<td style="color:var(--text2);font-size:12px">' + c.email + '</td>'
+      + '<td style="color:var(--text2);font-size:12px">' + (c.pays || '—') + '</td>'
+      + '<td style="color:var(--text2);font-size:12px">' + (c.telephone || '—') + '</td>'
+      + '<td><span class="badge ' + planBadge + '">' + planLabel + '</span></td>'
+      + '<td>' + daysHtml + '</td>'
+      + '<td>' + actionsHtml + '</td>'
+      + '</tr>';
+  }
+  document.getElementById('clients-list').innerHTML = '<table class="tbl"><thead><tr>'
+    + '<th>Entreprise</th><th>Email</th><th>Pays</th><th>Tel</th><th>Plan</th><th>Statut</th><th>Actions</th>'
+    + '</tr></thead><tbody>' + rows + '</tbody></table>';
+}
+
+function loadClients() {
+  sb.from('clients_admin').select('*').order('created_at', { ascending: false })
+    .then(function(result) {
+      if (result.error) {
+        document.getElementById('clients-list').innerHTML = '<div class="empty-state">Erreur: ' + result.error.message + '</div>';
+        return;
+      }
+      renderClients(result.data);
+    });
+}
+
+function changerPlan(id, plan) {
+  var labels = { payant: 'activer', suspendu: 'suspendre' };
+  if (!confirm('Voulez-vous ' + (labels[plan] || plan) + ' ce client ?')) return;
+  sb.from('clients_admin').update({ plan: plan }).eq('id', id)
+    .then(function(result) {
+      if (result.error) { showToast(result.error.message, 'error'); return; }
+      showToast('Statut mis a jour');
+      loadClients();
+    });
+}
+
+function createClient() {
+  var entreprise = document.getElementById('cl-entreprise').value;
+  var email = document.getElementById('cl-email').value;
+  var password = document.getElementById('cl-password').value;
+  var tel = document.getElementById('cl-tel').value;
+  var pays = document.getElementById('cl-pays').value;
+  var plan = document.getElementById('cl-plan').value;
+  var notes = document.getElementById('cl-notes').value;
+
+  if (!entreprise) { showToast('Nom entreprise obligatoire', 'error'); return; }
+  if (!email) { showToast('Email obligatoire', 'error'); return; }
+  if (!password || password.length < 8) { showToast('Mot de passe min. 8 caracteres', 'error'); return; }
+
+  var btn = document.getElementById('btn-creer-client');
+  btn.disabled = true;
+  btn.textContent = 'Creation...';
+
+  sb.auth.signUp({ email: email, password: password, options: { data: { entreprise_nom: entreprise } } })
+    .then(function(authResult) {
+      if (authResult.error) {
+        showToast(authResult.error.message, 'error');
+        btn.disabled = false;
+        btn.textContent = 'Creer le compte client';
+        return;
+      }
+      var finEssai = new Date();
+      finEssai.setDate(finEssai.getDate() + 30);
+      return sb.from('clients_admin').insert({
+        user_id: authResult.data.user ? authResult.data.user.id : null,
+        email: email,
+        nom_entreprise: entreprise,
+        pays: pays,
+        telephone: tel || null,
+        plan: plan,
+        date_fin_essai: plan === 'essai' ? finEssai.toISOString() : null,
+        actif: true,
+        notes: notes || null,
+        created_by: currentUser.email
+      }).then(function(dbResult) {
+        if (dbResult.error) {
+          showToast(dbResult.error.message, 'error');
+          btn.disabled = false;
+          btn.textContent = 'Creer le compte client';
+          return;
+        }
+        lastCreated = {
+          email: email,
+          password: password,
+          entreprise: entreprise,
+          plan: plan,
+          finEssai: finEssai.toLocaleDateString('fr-FR')
+        };
+        document.getElementById('cred-url').textContent = APP_URL + '/login.html';
+        document.getElementById('cred-email').textContent = email;
+        document.getElementById('cred-password').textContent = password;
+        document.getElementById('cred-essai').textContent = plan === 'essai' ? finEssai.toLocaleDateString('fr-FR') : 'Payant';
+        document.getElementById('form-section').style.display = 'none';
+        document.getElementById('credentials-section').style.display = 'block';
+        document.getElementById('modal-title').textContent = 'Acces client crees';
+        btn.disabled = false;
+        btn.textContent = 'Creer le compte client';
+      });
+    });
+}
+
+// EVENT LISTENERS
+document.getElementById('btn-logout').addEventListener('click', function() {
+  sb.auth.signOut().then(function() { window.location.href = 'login.html'; });
+});
+
+document.getElementById('btn-nouveau').addEventListener('click', openModal);
+document.getElementById('btn-close-modal').addEventListener('click', closeModal);
+document.getElementById('btn-annuler').addEventListener('click', closeModal);
+document.getElementById('btn-terminer').addEventListener('click', closeModal);
+document.getElementById('btn-gen-pw').addEventListener('click', genPassword);
+document.getElementById('btn-creer-client').addEventListener('click', createClient);
+document.getElementById('btn-copy').addEventListener('click', copyCredentials);
+document.getElementById('btn-share-wa').addEventListener('click', shareWhatsApp);
+document.getElementById('btn-share-email').addEventListener('click', shareEmail);
+
+// INIT
+sb.auth.getSession().then(function(result) {
+  var session = result.data.session;
+  if (!session) { window.location.href = 'login.html'; return; }
+  currentUser = session.user;
+  if (currentUser.email !== ADMIN_EMAIL) {
+    alert('Acces refuse.');
+    window.location.href = 'index.html';
+    return;
+  }
+  document.getElementById('admin-email').textContent = currentUser.email;
+  loadClients();
+});
 </script>
 </body>
 </html>

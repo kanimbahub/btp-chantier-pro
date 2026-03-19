@@ -679,7 +679,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);font-size:14
     <div class="form-group"><label class="form-label req">Type de document</label><select id="pj-type" class="form-input"><option value="facture">Facture d'achat</option><option value="bon_livraison">Bon de livraison</option><option value="justificatif">Justificatif de paiement</option><option value="devis">Devis</option><option value="autre">Autre document</option></select></div>
     <div class="form-group">
       <label class="form-label req">Fichier</label>
-      <div class="upload-zone" onclick="document.getElementById('pj-file').click()">
+      <div class="upload-zone" id="upload-zone" onclick="document.getElementById('pj-file').click()">
         <svg><use href="#ic-paperclip"/></svg>
         <p id="upload-zone-text">Cliquer pour choisir un fichier (PDF, image max 10 Mo)</p>
       </div>

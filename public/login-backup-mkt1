@@ -104,7 +104,7 @@ async function login(){
     btn.disabled=false;btn.textContent='Se connecter →'
     return
   }
-  const{data:cl}=await db.from('clients_admin').select('plan').eq('email',email).single();if(cl&&cl.plan==='suspendu'){showMsg('Compte suspendu. Contactez le support.');await db.auth.signOut();btn.disabled=false;btn.textContent='Se connecter \u2192';return;}window.location.href='index.html'
+  window.location.href='index.html'
 }
 
 async function resetPassword(){

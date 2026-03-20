@@ -823,30 +823,6 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);font-size:14
     <div class="modal-footer"><button class="btn btn-outline" onclick="closeModal('modal-password')">Annuler</button><button class="btn btn-primary" onclick="changePassword()">Mettre à jour</button></div>
   </div>
 </div>
-<div class="modal-overlay" id="modal-photos">
-  <div class="modal-box" style="max-width:700px;">
-    <div class="modal-hd">
-      <div class="modal-title" id="photos-modal-title">Photos de la phase</div>
-      <button class="modal-close" onclick="closeModal('modal-photos')"><svg width="14" height="14"><use href="#ic-x"/></svg></button>
-    </div>
-    <div class="form-group">
-      <label class="form-label">Legende (optionnel)</label>
-      <input type="text" id="photo-legende" class="form-input" placeholder="Ex: Coulage des fondations - Jour 3">
-    </div>
-    <div class="upload-zone" id="photo-upload-zone" onclick="document.getElementById('photo-file').click()">
-      <svg><use href="#ic-paperclip"/></svg>
-      <p id="photo-upload-text">Cliquer pour choisir une photo (JPG, PNG max 5 Mo)</p>
-    </div>
-    <input type="file" id="photo-file" accept=".jpg,.jpeg,.png,.webp" style="display:none;" onchange="onPhotoSelected(this)">
-    <div class="modal-footer" style="margin-bottom:16px;">
-      <button class="btn btn-outline" onclick="closeModal('modal-photos')">Fermer</button>
-      <button class="btn btn-primary" id="btn-upload-photo" onclick="uploadPhoto()">Ajouter la photo</button>
-    </div>
-    <div class="section-sep">Photos de la phase</div>
-    <div id="photos-galerie" style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:8px;"></div>
-  </div>
-</div>
-
 
 <script>// ══════════════════════════════════════════
 // TRADUCTIONS FR / EN
@@ -1606,7 +1582,7 @@ function renderPhases(phases){
     return`<div class="phase-card ${sc[p.statut]||'pending'}">
       <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px;">
         <div><div style="font-size:13px;font-weight:700;font-family:var(--font-head)">${phaseLabel(p.nom)}</div>${p.description?`<div style="font-size:11px;color:var(--text2);margin-top:2px">${p.description}</div>`:''}</div>
-        <div style="display:flex;gap:8px;align-items:center;"><span class="badge ${sb[p.statut]||'badge-gray'}">${sl[p.statut]||p.statut}</span><button class="btn btn-blue btn-sm" onclick="openPhotosPhase('${p.id}','${phaseLabel(p.nom)}')" style="margin-right:4px"><svg width="11" height="11"><use href="#ic-paperclip"/></svg> Photos</button><button class="btn btn-outline btn-sm" onclick="editPhase('${p.id}')"><svg width="11" height="11"><use href="#ic-edit"/></svg></button></div>
+        <div style="display:flex;gap:8px;align-items:center;"><span class="badge ${sb[p.statut]||'badge-gray'}">${sl[p.statut]||p.statut}</span><button class="btn btn-outline btn-sm" onclick="editPhase('${p.id}')"><svg width="11" height="11"><use href="#ic-edit"/></svg></button></div>
       </div>
       <div class="pbar" style="margin-bottom:6px;"><div class="pbar-fill" style="width:${p.avancement}%;background:${col[p.statut]||'var(--text3)'};"></div></div>
       <div style="display:flex;justify-content:space-between;align-items:center;">
@@ -1835,74 +1811,6 @@ async function exportPDFPaie(){
   }catch(e){showToast(e.message,'error')}
 }
 
-// ── PHOTOS PHASES ──
-let currentPhaseId=null
-
-function onPhotoSelected(input){
-  const file=input.files[0]
-  if(file){
-    document.getElementById('photo-upload-text').textContent='Photo: '+file.name+' ('+( file.size/1024).toFixed(1)+' Ko)'
-    document.getElementById('photo-upload-zone').style.borderColor='var(--amber)'
-  }
-}
-
-async function openPhotosPhase(phaseId,phaseNom){
-  currentPhaseId=phaseId
-  document.getElementById('photos-modal-title').textContent='Photos — '+phaseNom
-  document.getElementById('photo-legende').value=''
-  document.getElementById('photo-upload-text').textContent='Cliquer pour choisir une photo (JPG, PNG max 5 Mo)'
-  document.getElementById('photo-upload-zone').style.borderColor=''
-  document.getElementById('photo-file').value=''
-  document.getElementById('modal-photos').style.display='flex'
-  loadPhotosPhase(phaseId)
-}
-
-async function loadPhotosPhase(phaseId){
-  const{data}=await db.from('photos_phases').select('*').eq('phase_id',phaseId).order('created_at',{ascending:false})
-  const galerie=document.getElementById('photos-galerie')
-  if(!data||data.length===0){galerie.innerHTML='<div style="grid-column:1/-1;text-align:center;padding:20px;color:var(--text3);font-size:12px;">Aucune photo pour cette phase</div>';return}
-  const baseUrl='https://aktwkafyzrujqgvojolx.supabase.co/storage/v1/object/public/photos-chantier/'
-  galerie.innerHTML=data.map(p=>`
-    <div style="position:relative;border-radius:var(--radius);overflow:hidden;background:var(--bg3);aspect-ratio:1;">
-      <img src="${baseUrl+p.storage_path}" style="width:100%;height:100%;object-fit:cover;cursor:pointer;" onclick="window.open('${baseUrl+p.storage_path}','_blank')" onerror="this.parentElement.innerHTML='<div style=padding:20px;text-align:center;color:var(--text3);font-size:11px;>Image non disponible</div>'">
-      <div style="position:absolute;bottom:0;left:0;right:0;background:rgba(0,0,0,0.6);padding:6px 8px;">
-        <div style="font-size:10px;color:#fff;">${p.legende||''}</div>
-        <div style="font-size:9px;color:rgba(255,255,255,0.6);">${new Date(p.created_at).toLocaleDateString('fr-FR')}</div>
-      </div>
-      <button onclick="deletePhoto('${p.id}','${p.storage_path}')" style="position:absolute;top:4px;right:4px;background:rgba(239,68,68,0.8);border:none;color:#fff;width:22px;height:22px;border-radius:4px;cursor:pointer;font-size:12px;display:flex;align-items:center;justify-content:center;">x</button>
-    </div>`).join('')
-}
-
-async function uploadPhoto(){
-  const file=document.getElementById('photo-file').files[0]
-  if(!file){showToast('Choisissez une photo','error');return}
-  if(file.size>5*1024*1024){showToast('Photo trop grande (max 5 Mo)','error');return}
-  const btn=document.getElementById('btn-upload-photo')
-  btn.disabled=true;btn.textContent='Envoi...'
-  try{
-    const ext=file.name.split('.').pop()
-    const path=currentUser.id+'/'+currentChantier.id+'/'+currentPhaseId+'/'+Date.now()+'.'+ext
-    const{error:upErr}=await db.storage.from('photos-chantier').upload(path,file)
-    if(upErr){showToast(upErr.message,'error');return}
-    const{error:dbErr}=await db.from('photos_phases').insert({phase_id:currentPhaseId,chantier_id:currentChantier.id,storage_path:path,nom_fichier:file.name,legende:document.getElementById('photo-legende').value||null,uploaded_par:currentUser.email})
-    if(dbErr){showToast(dbErr.message,'error');return}
-    document.getElementById('photo-file').value=''
-    document.getElementById('photo-legende').value=''
-    document.getElementById('photo-upload-text').textContent='Cliquer pour choisir une photo (JPG, PNG max 5 Mo)'
-    document.getElementById('photo-upload-zone').style.borderColor=''
-    showToast('Photo ajoutee !')
-    loadPhotosPhase(currentPhaseId)
-  }catch(e){showToast(e.message,'error')}
-  finally{btn.disabled=false;btn.textContent='Ajouter la photo'}
-}
-
-async function deletePhoto(id,storagePath){
-  if(!confirm('Supprimer cette photo ?'))return
-  await db.storage.from('photos-chantier').remove([storagePath])
-  await db.from('photos_phases').delete().eq('id',id)
-  showToast('Photo supprimee')
-  loadPhotosPhase(currentPhaseId)
-}
 // ── PDF RAPPORT ──
 async function exportPDFRapport(){
   if(!window.jspdf){showToast('jsPDF non chargé','error');return}

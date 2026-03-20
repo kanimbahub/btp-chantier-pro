@@ -388,11 +388,11 @@ function loadClients() {
 }
 
 function deleteClient(id, email) {
-  if (!confirm('Supprimer le compte ' + email + ' ?\n\nLe client ne pourra plus se connecter.')) return;
-  sb.from('clients_admin').update({ plan: 'suspendu', actif: false }).eq('id', id)
+  if (!confirm('Supprimer le compte ' + email + ' ?\n\nCette action est irreversible.')) return;
+  sb.from('clients_admin').delete().eq('id', id)
     .then(function(result) {
       if (result.error) { showToast(result.error.message, 'error'); return; }
-      showToast('Compte desactive - le client ne peut plus se connecter');
+      showToast('Compte supprime');
       loadClients();
     });
 }

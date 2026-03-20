@@ -358,9 +358,7 @@ function renderClients(data) {
     if (c.plan === 'payant') actionsHtml += '<button class="btn btn-danger btn-sm" onclick="changerPlan(\'' + c.id + '\',\'suspendu\')">Suspendre</button>';
     if (c.plan === 'suspendu') actionsHtml += '<button class="btn btn-success btn-sm" onclick="changerPlan(\'' + c.id + '\',\'payant\')">Reactiver</button>';
     actionsHtml += '<button class="btn btn-outline btn-sm" onclick="envoyerWhatsApp(\'' + c.email + '\',\'' + c.nom_entreprise + '\',\'' + (c.telephone || '') + '\')"><svg width="12" height="12"><use href="#ic-whatsapp"/></svg></button>';
-    actionsHtml += '<button class="btn btn-outline btn-sm" onclick="editClient(\'' + c.id + '\')">Editer</button>';
-actionsHtml += '<button class="btn btn-danger btn-sm" onclick="deleteClient(\'' + c.id + '\',\'' + c.email + '\')">Supprimer</button>';
-actionsHtml += '</div>';
+    actionsHtml += '</div>';
     rows += '<tr>'
       + '<td style="font-weight:600">' + c.nom_entreprise + '</td>'
       + '<td style="color:var(--text2);font-size:12px">' + c.email + '</td>'
@@ -384,58 +382,6 @@ function loadClients() {
         return;
       }
       renderClients(result.data);
-    });
-}
-
-function deleteClient(id, email) {
-  if (!confirm('Supprimer le compte ' + email + ' ?\n\nCette action est irreversible.')) return;
-  sb.from('clients_admin').delete().eq('id', id)
-    .then(function(result) {
-      if (result.error) { showToast(result.error.message, 'error'); return; }
-      showToast('Compte supprime');
-      loadClients();
-    });
-}
-
-function editClient(id) {
-  sb.from('clients_admin').select('*').eq('id', id).single()
-    .then(function(result) {
-      if (result.error) { showToast(result.error.message, 'error'); return; }
-      var c = result.data;
-      document.getElementById('cl-entreprise').value = c.nom_entreprise || '';
-      document.getElementById('cl-email').value = c.email || '';
-      document.getElementById('cl-tel').value = c.telephone || '';
-      document.getElementById('cl-pays').value = c.pays || 'Guinee';
-      document.getElementById('cl-plan').value = c.plan || 'essai';
-      document.getElementById('cl-notes').value = c.notes || '';
-      document.getElementById('cl-password').value = '';
-      document.getElementById('modal-title').textContent = 'Modifier client';
-      document.getElementById('btn-creer-client').textContent = 'Mettre a jour';
-      document.getElementById('btn-creer-client').onclick = function() { updateClient(id); };
-      document.getElementById('form-section').style.display = 'block';
-      document.getElementById('credentials-section').style.display = 'none';
-      document.getElementById('modal-client').classList.add('open');
-    });
-}
-
-function updateClient(id) {
-  var entreprise = document.getElementById('cl-entreprise').value;
-  var tel = document.getElementById('cl-tel').value;
-  var pays = document.getElementById('cl-pays').value;
-  var plan = document.getElementById('cl-plan').value;
-  var notes = document.getElementById('cl-notes').value;
-  if (!entreprise) { showToast('Nom entreprise obligatoire', 'error'); return; }
-  sb.from('clients_admin').update({
-    nom_entreprise: entreprise,
-    telephone: tel || null,
-    pays: pays,
-    plan: plan,
-    notes: notes || null
-  }).eq('id', id)
-    .then(function(result) {
-      if (result.error) { showToast(result.error.message, 'error'); return; }
-      closeModal();
-      showToast('Client mis a jour');
     });
 }
 

@@ -217,6 +217,7 @@ var sb = supabase.createClient(
 );
 
 var ADMIN_EMAIL = 'ahmed015diarra@gmail.com';
+var sb2 = supabase.createClient('https://aktwkafyzrujqgvojolx.supabase.co','eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFrdHdrYWZ5enJ1anFndm9qb2x4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM2OTY2MDAsImV4cCI6MjA4OTI3MjYwMH0.OLBuhijTx3lRK5VofjxmoplGgQ1UsxbgIs3igj2hGpM', {auth:{storageKey:'sb2-auth-token',autoRefreshToken:false,persistSession:false}});
 var APP_URL = 'https://btp-chantier-pro.vercel.app';
 var currentUser = null;
 var lastCreated = null;
@@ -412,7 +413,7 @@ function createClient() {
   btn.disabled = true;
   btn.textContent = 'Creation...';
 
-  sb.auth.signUp({ email: email, password: password, options: { data: { entreprise_nom: entreprise } } })
+  sb2.auth.signUp({ email: email, password: password, options: { data: { entreprise_nom: entreprise } } })
     .then(function(authResult) {
       if (authResult.error) {
         showToast(authResult.error.message, 'error');
